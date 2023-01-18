@@ -20,4 +20,6 @@ public:
     const Status& GetAllStatus() const { return m_enemyStatus; }
 private:
     Status m_enemyStatus;
+
+
 };

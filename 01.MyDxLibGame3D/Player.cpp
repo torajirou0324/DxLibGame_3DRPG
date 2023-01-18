@@ -375,10 +375,10 @@ void Player::LevelManager()
 		auto addMaxEXP = m_expMAX / 2;
 		m_expMAX = m_expMAX + addMaxEXP;
 		m_playerStatus.LV++;
-		m_playerStatus.HP = 3 + m_hpMAX;
-		m_playerStatus.ATK += 2;
-		m_playerStatus.AGL += 1;
-		m_hpMAX += 3;
+		m_playerStatus.HP = 2 + m_hpMAX;
+		m_playerStatus.ATK++;
+		m_playerStatus.AGL++;
+		m_hpMAX += 2;
 	}
 }
 

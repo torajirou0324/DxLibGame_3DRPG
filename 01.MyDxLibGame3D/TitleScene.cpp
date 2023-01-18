@@ -13,7 +13,7 @@
 TitleScene::TitleScene()
 {
 	m_TitleCommand = LoadGraph("data/Title/Title.png");
-	m_arrowHandle = LoadGraph("data/comand/arrow.png");
+	m_arrowHandle = LoadGraph("data/comand/arrow2.png");
 	m_arrowPosX = 500;
 	m_playFlag = true;
 	Player::InitCall();

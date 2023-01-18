@@ -18,7 +18,8 @@ private:
 	void BattleEvent();		// 戦闘イベント.
 	void BattleEventDraw(); // 戦闘イベント描画処理.
 
-	int m_blackWindow;		// コマンド選択時の黒枠.
+	int m_blackWindow;		// 行動後の結果文字描画用の黒枠.
+	int m_commandWindow[2];	// コマンド選択時の黒枠.
 	int m_statusWindow;		// レベル・経験値量・体力量を映す用の黒枠.
 	int m_arrowHandle;		// コマンド選択矢印のモデルハンドル.
 	int m_arrowPosX;		// コマンド選択矢印のX座標.

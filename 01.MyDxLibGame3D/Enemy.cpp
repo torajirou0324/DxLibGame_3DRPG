@@ -9,11 +9,13 @@
 //-----------------------------------------------------------------------------
 Enemy::Enemy()
 {
+
+
     m_enemyStatus.LV = 1;
     m_enemyStatus.HP = 10;
-    m_enemyStatus.ATK = 5;
-    m_enemyStatus.AGL = 5;
-    m_enemyStatus.EXP = 2;
+    m_enemyStatus.ATK = 4;
+    m_enemyStatus.AGL = 3;
+    m_enemyStatus.EXP = 1;
 }
 
 //-----------------------------------------------------------------------------

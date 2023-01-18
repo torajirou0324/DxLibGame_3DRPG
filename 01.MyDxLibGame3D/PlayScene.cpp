@@ -12,7 +12,7 @@
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 PlayScene::PlayScene()
-	: m_arrowPosX(900)
+	: m_arrowPosX(1540)
 	, m_arrowPosY(800)
 	, m_randomNumber(0)
 	, m_EncountInterval(0)
@@ -21,9 +21,11 @@ PlayScene::PlayScene()
 	//m_pEnemy = new Enemy;
 	//m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
 
-	m_blackWindow = LoadGraph("data/comand/BlackWindow.png");
-	m_statusWindow = LoadGraph("data/comand/StatusWindow.png");
-	m_arrowHandle = LoadGraph("data/comand/arrow.png");
+	m_blackWindow = LoadGraph("data/comand/BlackWindow2.png");
+	m_commandWindow[0] = LoadGraph("data/comand/commandWindow2.png");
+	m_commandWindow[1] = LoadGraph("data/comand/commandWindow3.png");
+	m_statusWindow = LoadGraph("data/comand/StatusWindow2.png");
+	m_arrowHandle = LoadGraph("data/comand/arrow3.png");
 }
 
 //-----------------------------------------------------------------------------
@@ -184,8 +186,8 @@ void PlayScene::BattleEvent()
 		if (Input::IsPress(UP)) { m_commandIndex = 0; }		// 上方向ボタンを押した処理
 		if (Input::IsPress(DOWN)) { m_commandIndex = 1; }	// 下方向ボタンを押した処理
 
-		if(m_commandIndex == 0) { m_arrowPosY = 800; }
-		if(m_commandIndex == 1) { m_arrowPosY = 930; }
+		if(m_commandIndex == 0) { m_arrowPosY = 940; }
+		if(m_commandIndex == 1) { m_arrowPosY = 1020; }
 
 		if (Input::IsPress(ENTER) && m_commandIndex == 0) { m_commandIndex = 2; }				// たたかうコマンドを選択
 		if (Input::IsPress(ENTER) && m_commandIndex == 1) { Player::SetBattleFlag(false); }		// にげるコマンドを選択
@@ -232,7 +234,7 @@ void PlayScene::BattleEventDraw()
 			DrawFormatString(280, 940, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, Player::GetHPMAX());
 			berdif = static_cast<float>(playerStatus.EXP) / Player::GetEXPMAX();
 			ber = 350 * berdif;
-			DrawBox(50, 990, 50 + ber, 1030, GetColor(0, 0, 255), TRUE);
+			DrawBox(50, 990, 50 + ber, 1030, GetColor(0, 255, 255), TRUE);
 			DrawBox(50, 990, 400, 1030, GetColor(255, 255, 255), FALSE);
 			DrawFormatString(280, 990, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, Player::GetEXPMAX());
 		}
@@ -249,17 +251,20 @@ void PlayScene::BattleEventDraw()
 			DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
 			DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
 			DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
-			SetFontSize(64);
+			SetFontSize(60);
 		}
 
-
+		auto white = GetColor(255, 255, 255);
+		auto black = GetColor(0, 0, 0);
 		if (m_commandIndex < 2)
 		{
-			DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+			DrawGraph(1520, 1000, m_commandWindow[1], TRUE);			// にげるウィンドウの表示
+			DrawFormatString(1600, 1010, black, "にげる");
 
-			DrawFormatString(1000, 800, GetColor(255, 255, 255), "たたかう");
-			DrawFormatString(1000, 930, GetColor(255, 255, 255), "にげる");
+			DrawGraph(1520, 920, m_commandWindow[1], TRUE);				// たたかうウィンドウの表示
+			DrawFormatString(1600, 930, black, "たたかう");
+
+			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
 		}
 		
 		if (m_commandIndex > 1 && m_commandIndex < 6)
