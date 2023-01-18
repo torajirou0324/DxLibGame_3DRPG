@@ -61,6 +61,8 @@ Player::Player()
 	m_playerStatus.ATK = 6;
 	m_playerStatus.AGL = 6;
 	m_playerStatus.EXP = 0;
+	m_hpMAX = m_playerStatus.HP;
+	m_expMAX = 2;
 }
 
 //-----------------------------------------------------------------------------
@@ -130,10 +132,11 @@ void Player::InitCall()
 //-----------------------------------------------------------------------------
 void Player::Update()
 {
-	m_player->Rotate();		// 回転
-	m_player->Animation();	// アニメーション
-	m_player->Input();		// 入力
-	m_player->Camera();		// 追従カメラ
+	m_player->Rotate();			// 回転
+	m_player->Animation();		// アニメーション
+	m_player->Input();			// 入力
+	m_player->Camera();			// 追従カメラ
+	m_player->LevelManager();	// レベルとステータス管理処理
 
 	m_player->m_position = VAdd(m_player->m_position, m_player->m_velocity);
 
@@ -362,6 +365,21 @@ void Player::Camera()
 	cameraPos.y = targetViewPoint.y + 20.0f;
 
 	SetCameraPositionAndTarget_UpVecY(cameraPos, targetViewPoint);
+}
+
+void Player::LevelManager()
+{
+	if (m_playerStatus.EXP >= m_expMAX)
+	{
+		m_playerStatus.EXP = 0;
+		auto addMaxEXP = m_expMAX / 2;
+		m_expMAX = m_expMAX + addMaxEXP;
+		m_playerStatus.LV++;
+		m_playerStatus.HP = 3 + m_hpMAX;
+		m_playerStatus.ATK += 2;
+		m_playerStatus.AGL += 1;
+		m_hpMAX += 3;
+	}
 }
 
 //-----------------------------------------------------------------------------

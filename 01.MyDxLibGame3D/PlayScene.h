@@ -27,7 +27,7 @@ private:
 	int m_EncountInterval;	// 敵とのエンカウント間隔判定用の変数.
 	int m_commandIndex;		// コマンド選択遷移の判定用変数.
 
-	int m_playerHPMAX;
+	//int m_playerHPMAX;
 	int m_enemyHPMAX;
 	class Enemy* m_pEnemy;
 };

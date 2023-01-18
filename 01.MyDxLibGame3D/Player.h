@@ -21,6 +21,8 @@ class Player
 private:
 	static Player* m_player;
 
+	int m_hpMAX;			// プレイヤーの最大HP保存変数.
+	int m_expMAX;			// プレイヤーのレベルアップに必要な経験値量.
 	int m_modelHandle;		// プレイヤーのモデルハンドル.
 	int m_animHandle[5];	// アニメーションのモデルハンドル.
 
@@ -40,6 +42,7 @@ private:
 
 	Status m_playerStatus;	// プレイヤーのステータス保存用構造体
 
+
 	bool m_rotateNow;		// 回転中か判定用.
 	bool m_battleFlag;		// 戦闘中か判定用.
 
@@ -52,6 +55,7 @@ private:
 	void Rotate();			// 回転処理.
 	void Animation();		// アニメーション処理.
 	void Camera();			// 追従カメラ更新処理.
+	void LevelManager();	// レベルとステータス管理処理.
 
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
@@ -75,7 +79,10 @@ public:
 	// セッター
 	static void SetBattleFlag(const bool& _flag) { m_player->m_battleFlag = _flag; }
 	static void SetAnimType(const Anim& _animType) { m_player->m_animType = _animType; }
+	static void SetAllStatus(const Status& _status) { m_player->m_playerStatus = _status; }
 	// ゲッター
+	static const int& GetHPMAX() { return m_player->m_hpMAX; }
+	static const int& GetEXPMAX() { return m_player->m_expMAX; }
 	static const bool& GetBattleFlag() { return m_player->m_battleFlag; }
 	static const float& GetAnimTime() { return m_player->m_animTime; }
 	static const float& GetAnimTotalTime() { return m_player->m_animTotalTime; }

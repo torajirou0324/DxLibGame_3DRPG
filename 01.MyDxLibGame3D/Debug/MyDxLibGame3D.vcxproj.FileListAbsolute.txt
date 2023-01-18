@@ -3,3 +3,4 @@ C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\後期3D\step1\01.My
 C:\Users\student\Desktop\self\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
 C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\後期3D\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
 C:\Users\student\Desktop\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
+C:\Users\student\Desktop\shougo\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

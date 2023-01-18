@@ -18,9 +18,8 @@ PlayScene::PlayScene()
 	, m_EncountInterval(0)
 	, m_commandIndex(0)
 {
-	m_pEnemy = new Enemy;
-	m_playerHPMAX = Player::GetAllStatus().HP;
-	m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
+	//m_pEnemy = new Enemy;
+	//m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
 
 	m_blackWindow = LoadGraph("data/comand/BlackWindow.png");
 	m_statusWindow = LoadGraph("data/comand/StatusWindow.png");
@@ -60,12 +59,23 @@ TAG_SCENE PlayScene::Update()
 			m_EncountInterval++;
 		}
 
+		if (m_pEnemy != nullptr)
+		{
+			delete m_pEnemy;
+			m_pEnemy = nullptr;
+		}
+
 		if (m_EncountInterval > 180)
 		{
 			m_randomNumber = GetRand(2);
 			if (m_randomNumber == 0)
 			{
 				Player::SetBattleFlag(true);
+				if (m_pEnemy == nullptr)
+				{
+					m_pEnemy = new Enemy;
+					m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
+				}
 			}
 			m_EncountInterval = 0;
 		}
@@ -81,9 +91,9 @@ TAG_SCENE PlayScene::Update()
 void PlayScene::Draw()
 {
 	// デバッグ用文字列＋変数値描画
-	//printfDx("PlayScene\n");
-	//printfDx("%d\n", m_randomNumber);
-	//printfDx("%d\n", m_EncountInterval);
+	printfDx("PlayScene\n");
+	printfDx("%d\n", m_randomNumber);
+	printfDx("%d\n", m_EncountInterval);
 	Field::DrawCall();
 	Player::DrawCall();
 	BattleEventDraw();
@@ -127,15 +137,22 @@ void PlayScene::BattleEvent()
 		{
 			m_commandIndex = 0;
 			// こうげきアニメーションが終了したので次の処理に移る
-			auto playerATKDamage = Player::GetAllStatus().ATK;
-			auto& enemyHP = m_pEnemy->GetAllStatus();
-			Status resultEnemyStatus = enemyHP;
-			resultEnemyStatus.HP = enemyHP.HP - playerATKDamage;
-			if (resultEnemyStatus.HP < 0) 
+			auto& playerStatus = Player::GetAllStatus();
+			auto& enemyStatus = m_pEnemy->GetAllStatus();
+			Status resultEnemyStatus = enemyStatus;
+			Status resultPlayerStatus = playerStatus;
+			resultEnemyStatus.HP = enemyStatus.HP - playerStatus.ATK;
+			resultPlayerStatus.HP = resultPlayerStatus.HP - enemyStatus.ATK;
+			if (resultEnemyStatus.HP <= 0) 
 			{ 
 				resultEnemyStatus.HP = 0;
 				m_commandIndex = 15;
 			}
+			else
+			{
+				Player::SetAllStatus(resultPlayerStatus);
+			}
+
 			m_pEnemy->SetAllStatus(resultEnemyStatus);
 			Player::SetAnimType(Idle);
 		}
@@ -178,7 +195,15 @@ void PlayScene::BattleEvent()
 	if (m_commandIndex == 15)
 	{
 		m_EncountInterval++;
-		if (m_EncountInterval > 180)
+		if (m_EncountInterval == 1)
+		{
+			auto& playerStatus = Player::GetAllStatus();
+			auto enemyEXP = m_pEnemy->GetAllStatus().EXP;
+			Status resultPlayerStatus = playerStatus;
+			resultPlayerStatus.EXP = resultPlayerStatus.EXP + enemyEXP;
+			Player::SetAllStatus(resultPlayerStatus);
+		}
+		if (m_EncountInterval > 120)
 		{
 			Player::SetBattleFlag(false);
 			m_commandIndex = 0;
@@ -195,25 +220,38 @@ void PlayScene::BattleEventDraw()
 	if (Player::GetBattleFlag())
 	{
 		// プレイヤーのステータス表示用の黒枠
-		SetFontSize(40);
-		DrawGraph(0, 834, m_statusWindow, TRUE);
-		auto& playerStatus = Player::GetAllStatus();
-		DrawFormatString(50, 870, GetColor(255, 255, 255), "Lv.%d", playerStatus.LV);
-		DrawBox(50, 980, 400, 1020, GetColor(0, 255, 0), TRUE);
-		DrawBox(50, 980, 400, 1020, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(280, 980, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_playerHPMAX);
+		{
+			SetFontSize(40);
+			DrawGraph(0, 834, m_statusWindow, TRUE);
+			auto& playerStatus = Player::GetAllStatus();
+			float berdif = static_cast<float>(playerStatus.HP) / Player::GetHPMAX();
+			auto ber = 350 * berdif;
+			DrawFormatString(50, 870, GetColor(255, 255, 255), "Lv.%d", playerStatus.LV);
+			DrawBox(50, 940, 50 + ber, 980, GetColor(0, 255, 0), TRUE);
+			DrawBox(50, 940, 400, 980, GetColor(255, 255, 255), FALSE);
+			DrawFormatString(280, 940, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, Player::GetHPMAX());
+			berdif = static_cast<float>(playerStatus.EXP) / Player::GetEXPMAX();
+			ber = 350 * berdif;
+			DrawBox(50, 990, 50 + ber, 1030, GetColor(0, 0, 255), TRUE);
+			DrawBox(50, 990, 400, 1030, GetColor(255, 255, 255), FALSE);
+			DrawFormatString(280, 990, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, Player::GetEXPMAX());
+		}
+
 
 		// エネミーのステータス表示用の黒枠
-		DrawGraph(1400, 0, m_statusWindow, TRUE);
-		auto& enemyStatus = m_pEnemy->GetAllStatus();
-		float HPberdif = static_cast<float>(enemyStatus.HP) / m_enemyHPMAX;
-		auto HPber = 350 * HPberdif;
+		{
+			DrawGraph(1400, 0, m_statusWindow, TRUE);
+			auto& enemyStatus = m_pEnemy->GetAllStatus();
+			float HPberdif = static_cast<float>(enemyStatus.HP) / m_enemyHPMAX;
+			auto HPber = 350 * HPberdif;
 
-		DrawFormatString(1450, 36, GetColor(255, 255, 255), "Lv.%d", enemyStatus.LV);
-		DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
-		DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
-		SetFontSize(64);
+			DrawFormatString(1450, 36, GetColor(255, 255, 255), "Lv.%d", enemyStatus.LV);
+			DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
+			DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
+			DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
+			SetFontSize(64);
+		}
+
 
 		if (m_commandIndex < 2)
 		{
