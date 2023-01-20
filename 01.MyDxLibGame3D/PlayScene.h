@@ -18,6 +18,18 @@ private:
 	void BattleEvent();		// 戦闘イベント.
 	void BattleEventDraw(); // 戦闘イベント描画処理.
 
+	enum BattleState		// バトルイベントの状態管理.
+	{
+		Start,				// 開始処理.
+		Wait,				// 待機処理.
+		Command,			// コマンド選択処理.
+		Comparison,			// 比較処理.（素早さ）
+		AttackProcess,		// 攻撃処理.
+		Victory,			// 勝利処理.
+		Defeat,				// 敗北処理.
+		Continue			// ターン継続処理.
+	};
+
 	int m_blackWindow;		// 行動後の結果文字描画用の黒枠.
 	int m_commandWindow[2];	// コマンド選択時の黒枠.
 	int m_statusWindow;		// レベル・経験値量・体力量を映す用の黒枠.
@@ -28,7 +40,10 @@ private:
 	int m_EncountInterval;	// 敵とのエンカウント間隔判定用の変数.
 	int m_commandIndex;		// コマンド選択遷移の判定用変数.
 
-	//int m_playerHPMAX;
+	int m_waitTimer;		// 待機時間保存用変数
+
 	int m_enemyHPMAX;
 	class Enemy* m_pEnemy;
+
+	BattleState m_battleState;// バトルイベントの状態管理.
 };

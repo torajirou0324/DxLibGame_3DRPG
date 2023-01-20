@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
+#include <DxLib.h>
 #include "Status.h"
 
 class Enemy
@@ -19,6 +20,10 @@ public:
     // ÉQÉbÉ^Å[
     const Status& GetAllStatus() const { return m_enemyStatus; }
 private:
+    int m_modelHandle;
+
+    VECTOR m_position;
+
     Status m_enemyStatus;
 
 

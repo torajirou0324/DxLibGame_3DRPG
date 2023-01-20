@@ -1,6 +1,5 @@
-﻿  PlayScene.cpp
-C:\Users\student\Desktop\self\Dxlib_h\DxLib.h(3811,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
-C:\Users\student\Desktop\self\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(232,24): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\self\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(237,24): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\self\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(251,28): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\self\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
+﻿  Enemy.cpp
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(2655,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(3535,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(3763,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  MyDxLibGame3D.vcxproj -> C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

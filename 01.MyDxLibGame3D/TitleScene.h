@@ -14,9 +14,15 @@ public:
 	void Draw() override;
 
 private:
-	int m_TitleCommand;
-	int m_arrowHandle;		// コマンド選択矢印のモデルハンドル.
-	int m_arrowPosX;		// コマンド選択矢印のX座標.
+	int m_TitleHandle;			// ゲームタイトル画像のモデルハンドル.
+	int m_arrowBesideHandle;	// コマンド選択横矢印のモデルハンドル.
+	int m_arrowVerticalHandle;	// コマンド選択縦矢印のモデルハンドル.
+	int m_arrowPosX;			// コマンド選択矢印のX座標.
+	int m_arrowPosY;
+	int m_BlackWindow;
+	int m_intervalNum;
+	int m_addNum;
 
 	bool m_playFlag;
+	bool m_nameSettingFlag;
 };

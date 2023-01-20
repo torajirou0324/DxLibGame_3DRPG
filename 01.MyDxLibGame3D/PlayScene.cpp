@@ -17,9 +17,9 @@ PlayScene::PlayScene()
 	, m_randomNumber(0)
 	, m_EncountInterval(0)
 	, m_commandIndex(0)
+	, m_waitTimer(0)
 {
-	//m_pEnemy = new Enemy;
-	//m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
+	m_battleState = Start;
 
 	m_blackWindow = LoadGraph("data/comand/BlackWindow2.png");
 	m_commandWindow[0] = LoadGraph("data/comand/commandWindow2.png");
@@ -81,8 +81,9 @@ TAG_SCENE PlayScene::Update()
 			}
 			m_EncountInterval = 0;
 		}
+
+		Player::Update();
 	}
-	Player::Update();
 
 	return TAG_SCENE::TAG_NONE;
 }
@@ -97,8 +98,16 @@ void PlayScene::Draw()
 	printfDx("%d\n", m_randomNumber);
 	printfDx("%d\n", m_EncountInterval);
 	Field::DrawCall();
-	Player::DrawCall();
-	BattleEventDraw();
+
+	if (Player::GetBattleFlag())
+	{
+		m_pEnemy->Draw();
+		BattleEventDraw();
+	}
+	else
+	{
+		Player::DrawCall();
+	}
 }
 
 void PlayScene::NormalEvent()
@@ -111,6 +120,28 @@ void PlayScene::NormalEvent()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEvent()
 {
+	switch (m_battleState)
+	{
+	case PlayScene::Start:
+		break;
+	case PlayScene::Wait:
+		break;
+	case PlayScene::Command:
+		break;
+	case PlayScene::Comparison:
+		break;
+	case PlayScene::AttackProcess:
+		break;
+	case PlayScene::Victory:
+		break;
+	case PlayScene::Defeat:
+		break;
+	case PlayScene::Continue:
+		break;
+	default:
+		break;
+	}
+
 	// コマンド：もちものの選択後処理
 	if (m_commandIndex > 10 && m_commandIndex < 15)
 	{
@@ -219,75 +250,72 @@ void PlayScene::BattleEvent()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEventDraw()
 {
-	if (Player::GetBattleFlag())
+	// プレイヤーのステータス表示用の黒枠
 	{
-		// プレイヤーのステータス表示用の黒枠
-		{
-			SetFontSize(40);
-			DrawGraph(0, 834, m_statusWindow, TRUE);
-			auto& playerStatus = Player::GetAllStatus();
-			float berdif = static_cast<float>(playerStatus.HP) / Player::GetHPMAX();
-			auto ber = 350 * berdif;
-			DrawFormatString(50, 870, GetColor(255, 255, 255), "Lv.%d", playerStatus.LV);
-			DrawBox(50, 940, 50 + ber, 980, GetColor(0, 255, 0), TRUE);
-			DrawBox(50, 940, 400, 980, GetColor(255, 255, 255), FALSE);
-			DrawFormatString(280, 940, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, Player::GetHPMAX());
-			berdif = static_cast<float>(playerStatus.EXP) / Player::GetEXPMAX();
-			ber = 350 * berdif;
-			DrawBox(50, 990, 50 + ber, 1030, GetColor(0, 255, 255), TRUE);
-			DrawBox(50, 990, 400, 1030, GetColor(255, 255, 255), FALSE);
-			DrawFormatString(280, 990, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, Player::GetEXPMAX());
-		}
+		SetFontSize(30);
+		DrawGraph(0, 834, m_statusWindow, TRUE);
+		auto& playerStatus = Player::GetAllStatus();
+		float berdif = static_cast<float>(playerStatus.HP) / Player::GetHPMAX();
+		auto ber = 350 * berdif;
+		DrawFormatString(50, 870, GetColor(255, 255, 255), "Lv.%d　　　キツキ　イチカ", playerStatus.LV);
+		DrawBox(50, 940, 50 + ber, 980, GetColor(0, 255, 0), TRUE);
+		DrawBox(48, 938, 402, 982, GetColor(255, 255, 255), FALSE);
+		DrawFormatString(280, 945, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, Player::GetHPMAX());
+		berdif = static_cast<float>(playerStatus.EXP) / Player::GetEXPMAX();
+		ber = 350 * berdif;
+		DrawBox(50, 990, 50 + ber, 1030, GetColor(0, 255, 255), TRUE);
+		DrawBox(50, 990, 400, 1030, GetColor(255, 255, 255), FALSE);
+		DrawFormatString(280, 990, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, Player::GetEXPMAX());
+	}
 
 
-		// エネミーのステータス表示用の黒枠
-		{
-			DrawGraph(1400, 0, m_statusWindow, TRUE);
-			auto& enemyStatus = m_pEnemy->GetAllStatus();
-			float HPberdif = static_cast<float>(enemyStatus.HP) / m_enemyHPMAX;
-			auto HPber = 350 * HPberdif;
+	// エネミーのステータス表示用の黒枠
+	{
+		DrawGraph(1400, 0, m_statusWindow, TRUE);
+		auto& enemyStatus = m_pEnemy->GetAllStatus();
+		float HPberdif = static_cast<float>(enemyStatus.HP) / m_enemyHPMAX;
+		auto HPber = 350 * HPberdif;
 
-			DrawFormatString(1450, 36, GetColor(255, 255, 255), "Lv.%d", enemyStatus.LV);
-			DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
-			DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
-			DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
-			SetFontSize(60);
-		}
+		DrawFormatString(1450, 36, GetColor(255, 255, 255), "Lv.%d", enemyStatus.LV);
+		DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
+		DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
+		DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
+		SetFontSize(60);
+	}
 
-		auto white = GetColor(255, 255, 255);
-		auto black = GetColor(0, 0, 0);
-		if (m_commandIndex < 2)
-		{
-			DrawGraph(1520, 1000, m_commandWindow[1], TRUE);			// にげるウィンドウの表示
-			DrawFormatString(1600, 1010, black, "にげる");
+	auto white = GetColor(255, 255, 255);
+	auto black = GetColor(0, 0, 0);
+	if (m_commandIndex < 2)
+	{
+		DrawGraph(1520, 1000, m_commandWindow[1], TRUE);			// にげるウィンドウの表示
+		DrawFormatString(1600, 1010, black, "にげる");
 
-			DrawGraph(1520, 920, m_commandWindow[1], TRUE);				// たたかうウィンドウの表示
-			DrawFormatString(1600, 930, black, "たたかう");
+		DrawGraph(1520, 920, m_commandWindow[1], TRUE);				// たたかうウィンドウの表示
+		DrawFormatString(1600, 930, black, "たたかう");
 
-			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
-		}
-		
-		if (m_commandIndex > 1 && m_commandIndex < 6)
-		{
-			DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+		DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+	}
 
-			DrawFormatString(1000, 800, GetColor(255, 255, 255), "こうげき");
-			DrawFormatString(1500, 800, GetColor(255, 255, 255), "もちもの");
-			DrawFormatString(1500, 930, GetColor(255, 255, 255), "へんかわざ");
-			DrawFormatString(1000, 930, GetColor(255, 255, 255), "もどる");
-		}
+	if (m_commandIndex > 1 && m_commandIndex < 6)
+	{
+		DrawGraph(0, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+		DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
 
-		if (m_commandIndex == 6)
-		{
-			DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-			DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーへ%dのこうげき",Player::GetAllStatus().ATK);
-		}
+		DrawFormatString(1000, 800, GetColor(255, 255, 255), "こうげき");
+		DrawFormatString(1500, 800, GetColor(255, 255, 255), "もちもの");
+		DrawFormatString(1500, 930, GetColor(255, 255, 255), "へんかわざ");
+		DrawFormatString(1000, 930, GetColor(255, 255, 255), "もどる");
+	}
 
-		if (m_commandIndex == 15)
-		{
-			DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-			DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーをたおした");
-		}
+	if (m_commandIndex == 6)
+	{
+		DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+		DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーへ%dのこうげき", Player::GetAllStatus().ATK);
+	}
+
+	if (m_commandIndex == 15)
+	{
+		DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+		DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーをたおした");
 	}
 }

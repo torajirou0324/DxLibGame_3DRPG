@@ -17,6 +17,7 @@ Player::Player()
 	, m_velocity(VGet(0.0f,0.0f,0.0f))
 	, m_dir(VGet(0, 0, 1))
 	, m_aimDir(VGet(0, 0, 0))
+	, m_cameraPosition(VGet(0.0f, 0.0f, 0.0f))
 	, m_cameraViewPoint(VGet(0.0f,0.0f,0.0f))
 	, m_rotateNow(false)
 	, m_battleFlag(true)
@@ -40,7 +41,7 @@ Player::Player()
 
 	// モデルの大きさをセット
 	MV1SetScale(m_modelHandle, VGet(0.2f, 0.2f, 0.2f));
-
+	
 	// アニメーションを保存
 	m_animHandle[0] = MV1LoadModel("data/player/animIdle.mv1");
 	m_animHandle[1] = MV1LoadModel("data/player/animWalk.mv1");
@@ -354,17 +355,16 @@ void Player::Animation()
 
 void Player::Camera()
 {
-	auto targetViewPoint = m_position;
-	VECTOR cameraPos = VGet(0.0f, 0.0f, 0.0f);
+	m_cameraViewPoint = m_position;
 
-	cameraPos.x = targetViewPoint.x + sinf(m_rotate.y) * r;
-	cameraPos.z = targetViewPoint.z + cosf(m_rotate.y) * r;
+	m_cameraPosition.x = m_cameraViewPoint.x + sinf(m_rotate.y) * r;
+	m_cameraPosition.z = m_cameraViewPoint.z + cosf(m_rotate.y) * r;
 
 	// カメラの注視点をセット
-	targetViewPoint.y = targetViewPoint.y + 15.0f;
-	cameraPos.y = targetViewPoint.y + 20.0f;
+	m_cameraViewPoint.y = m_cameraViewPoint.y + 15.0f;
+	m_cameraPosition.y = m_cameraViewPoint.y + 20.0f;
 
-	SetCameraPositionAndTarget_UpVecY(cameraPos, targetViewPoint);
+	SetCameraPositionAndTarget_UpVecY(m_cameraPosition, m_cameraViewPoint);
 }
 
 void Player::LevelManager()

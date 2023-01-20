@@ -3,7 +3,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
-#include "DxLib.h"
+#include <DxLib.h>
 #include "Status.h"
 
 // アニメーション管理構造体.
@@ -34,7 +34,7 @@ private:
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
-
+	VECTOR m_cameraPosition;// カメラの位置座標.
 	VECTOR m_cameraViewPoint;	// 追従カメラ注視座標.
 
 	Anim m_animType;		// 現在のアニメーション保存用変数.
@@ -86,6 +86,8 @@ public:
 	static const bool& GetBattleFlag() { return m_player->m_battleFlag; }
 	static const float& GetAnimTime() { return m_player->m_animTime; }
 	static const float& GetAnimTotalTime() { return m_player->m_animTotalTime; }
+	static const VECTOR& GetPlayerPosition() { return m_player->m_position; }
+	static const VECTOR& GetDir() { return m_player->m_dir; }
 	static const Anim& GetAnimType() { return m_player->m_animType; }
 	static const Status& GetAllStatus() { return m_player->m_playerStatus; }
 };
