@@ -43,6 +43,32 @@ Enemy::Enemy()
 //-----------------------------------------------------------------------------
 Enemy::~Enemy()
 {
+    MV1DeleteModel(m_modelHandle);
+}
+
+//-----------------------------------------------------------------------------
+// @brief  初期化処理.
+//-----------------------------------------------------------------------------
+void Enemy::Init(std::string name, int level)
+{
+    m_name = name;
+
+    m_enemyStatus.LV = level;
+    m_enemyStatus.HP = 10 + 2 * level;
+    m_enemyStatus.ATK = 3 + 1 * level;
+    m_enemyStatus.AGL = 2 + 1 * level;
+    m_enemyStatus.EXP = level;
+
+    m_position = Player::GetPlayerPosition();
+    // 向きに合わせてモデル回転
+    MATRIX rotYMat = MGetRotY(DX_PI_F / 180.0f);
+    VECTOR aimVec = VTransform(Player::GetDir(), rotYMat);
+
+    // モデルに回転をセットする
+    MV1SetRotationZYAxis(m_modelHandle, aimVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+
+    // ３Dモデルのポジション設定
+    MV1SetPosition(m_modelHandle, m_position);
 }
 
 //-----------------------------------------------------------------------------

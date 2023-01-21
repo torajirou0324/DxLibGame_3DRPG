@@ -2,6 +2,7 @@
 // @brief  プレイシーンクラス.
 //-----------------------------------------------------------------------------
 #include "PlayScene.h"
+#include <string>
 #include <DxLib.h>
 #include "Player.h"
 #include "Enemy.h"
@@ -21,7 +22,7 @@ PlayScene::PlayScene()
 {
 	m_battleState = Start;
 
-	m_blackWindow = LoadGraph("data/comand/BlackWindow2.png");
+	m_blackWindow = LoadGraph("data/comand/BlackWindow.png");
 	m_commandWindow[0] = LoadGraph("data/comand/commandWindow2.png");
 	m_commandWindow[1] = LoadGraph("data/comand/commandWindow3.png");
 	m_statusWindow = LoadGraph("data/comand/StatusWindow2.png");
@@ -76,8 +77,10 @@ TAG_SCENE PlayScene::Update()
 				if (m_pEnemy == nullptr)
 				{
 					m_pEnemy = new Enemy;
+					m_pEnemy->Init("センターパート君", 30);
 					m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
 				}
+				m_battleState = Start;
 			}
 			m_EncountInterval = 0;
 		}
@@ -123,10 +126,15 @@ void PlayScene::BattleEvent()
 	switch (m_battleState)
 	{
 	case PlayScene::Start:
-		break;
-	case PlayScene::Wait:
+		m_waitTimer++;
+		if (m_waitTimer > 60)
+		{
+			m_commandIndex++;
+			m_waitTimer = 0;
+		}
 		break;
 	case PlayScene::Command:
+		CommandEvent();
 		break;
 	case PlayScene::Comparison:
 		break;
@@ -142,107 +150,6 @@ void PlayScene::BattleEvent()
 		break;
 	}
 
-	// コマンド：もちものの選択後処理
-	if (m_commandIndex > 10 && m_commandIndex < 15)
-	{
-		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
-		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
-
-		if (m_commandIndex < 11) { m_commandIndex = 11; }
-		if (m_commandIndex > 14) { m_commandIndex = 14; }
-	}
-
-	// コマンド：へんかわざの選択後処理
-	if (m_commandIndex > 6 && m_commandIndex < 11)
-	{
-		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
-		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
-
-		if (m_commandIndex < 7) { m_commandIndex = 7; }
-		if (m_commandIndex > 10) { m_commandIndex = 10; }
-	}
-
-	// コマンド：こうげきの選択後処理
-	if (m_commandIndex == 6)
-	{
-		// こうげきアニメーションが終了したか判定
-		if (Player::GetAnimTime() >= Player::GetAnimTotalTime())
-		{
-			m_commandIndex = 0;
-			// こうげきアニメーションが終了したので次の処理に移る
-			auto& playerStatus = Player::GetAllStatus();
-			auto& enemyStatus = m_pEnemy->GetAllStatus();
-			Status resultEnemyStatus = enemyStatus;
-			Status resultPlayerStatus = playerStatus;
-			resultEnemyStatus.HP = enemyStatus.HP - playerStatus.ATK;
-			resultPlayerStatus.HP = resultPlayerStatus.HP - enemyStatus.ATK;
-			if (resultEnemyStatus.HP <= 0) 
-			{ 
-				resultEnemyStatus.HP = 0;
-				m_commandIndex = 15;
-			}
-			else
-			{
-				Player::SetAllStatus(resultPlayerStatus);
-			}
-
-			m_pEnemy->SetAllStatus(resultEnemyStatus);
-			Player::SetAnimType(Idle);
-		}
-	}
-
-	// もどる・こうげき・もちもの・へんかわざの選択処理
-	if (m_commandIndex > 1 && m_commandIndex < 6)
-	{
-		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
-		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
-
-		if (m_commandIndex < 2) { m_commandIndex = 2; }
-		if (m_commandIndex > 5) { m_commandIndex = 5; }
-
-		// →の座標移動処理
-		if (m_commandIndex == 2) { m_arrowPosX = 900; m_arrowPosY = 930; }
-		if (m_commandIndex == 3) { m_arrowPosX = 900; m_arrowPosY = 800; }
-		if (m_commandIndex == 4) { m_arrowPosX = 1400; m_arrowPosY = 930; }
-		if (m_commandIndex == 5) { m_arrowPosX = 1400; m_arrowPosY = 800; }
-
-		if (Input::IsPress(ENTER) && m_commandIndex == 2) { m_commandIndex = 0; }		// もどるコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 3) { m_commandIndex = 6; Player::SetAnimType(Attack); }	// こうげきコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 4) { m_commandIndex = 7; }		// へんかわざを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 5) { m_commandIndex = 11; }		// もちものを選択
-	}
-	// たたかう・にげるかの選択処理
-	else if (m_commandIndex < 2)
-	{
-		if (Input::IsPress(UP)) { m_commandIndex = 0; }		// 上方向ボタンを押した処理
-		if (Input::IsPress(DOWN)) { m_commandIndex = 1; }	// 下方向ボタンを押した処理
-
-		if(m_commandIndex == 0) { m_arrowPosY = 940; }
-		if(m_commandIndex == 1) { m_arrowPosY = 1020; }
-
-		if (Input::IsPress(ENTER) && m_commandIndex == 0) { m_commandIndex = 2; }				// たたかうコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 1) { Player::SetBattleFlag(false); }		// にげるコマンドを選択
-	}
-
-	// 敵を倒したリザルト処理
-	if (m_commandIndex == 15)
-	{
-		m_EncountInterval++;
-		if (m_EncountInterval == 1)
-		{
-			auto& playerStatus = Player::GetAllStatus();
-			auto enemyEXP = m_pEnemy->GetAllStatus().EXP;
-			Status resultPlayerStatus = playerStatus;
-			resultPlayerStatus.EXP = resultPlayerStatus.EXP + enemyEXP;
-			Player::SetAllStatus(resultPlayerStatus);
-		}
-		if (m_EncountInterval > 120)
-		{
-			Player::SetBattleFlag(false);
-			m_commandIndex = 0;
-			m_EncountInterval = 0;
-		}
-	}
 }
 
 //-----------------------------------------------------------------------------
@@ -250,6 +157,75 @@ void PlayScene::BattleEvent()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEventDraw()
 {
+	switch (m_battleState)
+	{
+	case PlayScene::Start:
+	if(m_commandIndex > 0)
+	{
+		DrawGraph(600, 700, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+		DrawFormatString(1000, 800, GetColor(255, 255, 255), "%sが現れた。", m_pEnemy->GetName().c_str());
+	}
+	else
+	{
+		int gaussianScreen = MakeScreen(1920, 1080);
+		GetDrawScreenGraph(0, 0, 1920, 1080, gaussianScreen);
+		GraphFilter(gaussianScreen, DX_GRAPH_FILTER_GAUSS, 16, 1400);
+		DrawGraph(0, 0, gaussianScreen, TRUE);
+	}
+
+		break;
+	case PlayScene::Command:
+	{
+		auto white = GetColor(255, 255, 255);
+		auto black = GetColor(0, 0, 0);
+		if (m_commandIndex < 2)
+		{
+			DrawGraph(1520, 1000, m_commandWindow[1], TRUE);			// にげるウィンドウの表示
+			DrawFormatString(1600, 1010, black, "にげる");
+
+			DrawGraph(1520, 920, m_commandWindow[1], TRUE);				// たたかうウィンドウの表示
+			DrawFormatString(1600, 930, black, "たたかう");
+
+			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+		}
+
+		if (m_commandIndex > 1 && m_commandIndex < 6)
+		{
+
+			DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+
+			DrawFormatString(1000, 800, GetColor(255, 255, 255), "こうげき");
+			DrawFormatString(1500, 800, GetColor(255, 255, 255), "もちもの");
+			DrawFormatString(1500, 930, GetColor(255, 255, 255), "へんかわざ");
+			DrawFormatString(1000, 930, GetColor(255, 255, 255), "もどる");
+		}
+	}
+
+		break;
+	case PlayScene::Comparison:
+		break;
+	case PlayScene::AttackProcess:
+		if (m_commandIndex == 6)
+		{
+			DrawGraph(840, 700, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+			DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーへ%dのこうげき", Player::GetAllStatus().ATK);
+		}
+		break;
+	case PlayScene::Victory:
+		if (m_commandIndex == 15)
+		{
+			DrawGraph(840, 700, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
+			DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーをたおした");
+		}
+		break;
+	case PlayScene::Defeat:
+		break;
+	case PlayScene::Continue:
+		break;
+	default:
+		break;
+	}
+
 	// プレイヤーのステータス表示用の黒枠
 	{
 		SetFontSize(30);
@@ -283,39 +259,111 @@ void PlayScene::BattleEventDraw()
 		SetFontSize(60);
 	}
 
-	auto white = GetColor(255, 255, 255);
-	auto black = GetColor(0, 0, 0);
-	if (m_commandIndex < 2)
+
+
+
+}
+
+//-----------------------------------------------------------------------------
+// @brief  バトルイベントの描画処理.
+//-----------------------------------------------------------------------------
+void PlayScene::CommandEvent()
+{
+	// コマンド：もちものの選択後処理
+	if (m_commandIndex > 10 && m_commandIndex < 15)
 	{
-		DrawGraph(1520, 1000, m_commandWindow[1], TRUE);			// にげるウィンドウの表示
-		DrawFormatString(1600, 1010, black, "にげる");
+		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
+		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
 
-		DrawGraph(1520, 920, m_commandWindow[1], TRUE);				// たたかうウィンドウの表示
-		DrawFormatString(1600, 930, black, "たたかう");
-
-		DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+		if (m_commandIndex < 11) { m_commandIndex = 11; }
+		if (m_commandIndex > 14) { m_commandIndex = 14; }
 	}
 
-	if (m_commandIndex > 1 && m_commandIndex < 6)
+	// コマンド：へんかわざの選択後処理
+	if (m_commandIndex > 6 && m_commandIndex < 11)
 	{
-		DrawGraph(0, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-		DrawGraph(m_arrowPosX, m_arrowPosY, m_arrowHandle, TRUE);	// 矢印の表示
+		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
+		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
 
-		DrawFormatString(1000, 800, GetColor(255, 255, 255), "こうげき");
-		DrawFormatString(1500, 800, GetColor(255, 255, 255), "もちもの");
-		DrawFormatString(1500, 930, GetColor(255, 255, 255), "へんかわざ");
-		DrawFormatString(1000, 930, GetColor(255, 255, 255), "もどる");
+		if (m_commandIndex < 7) { m_commandIndex = 7; }
+		if (m_commandIndex > 10) { m_commandIndex = 10; }
 	}
 
+	// コマンド：こうげきの選択後処理
 	if (m_commandIndex == 6)
 	{
-		DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-		DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーへ%dのこうげき", Player::GetAllStatus().ATK);
+		m_commandIndex = 0;
+		// こうげきアニメーションが終了したので次の処理に移る
+		auto& playerStatus = Player::GetAllStatus();
+		auto& enemyStatus = m_pEnemy->GetAllStatus();
+		Status resultEnemyStatus = enemyStatus;
+		Status resultPlayerStatus = playerStatus;
+		resultEnemyStatus.HP = enemyStatus.HP - playerStatus.ATK;
+		resultPlayerStatus.HP = resultPlayerStatus.HP - enemyStatus.ATK;
+		if (resultEnemyStatus.HP <= 0)
+		{
+			resultEnemyStatus.HP = 0;
+			m_commandIndex = 15;
+		}
+		else
+		{
+			Player::SetAllStatus(resultPlayerStatus);
+		}
+
+		m_pEnemy->SetAllStatus(resultEnemyStatus);
+		Player::SetAnimType(Idle);
 	}
 
+	// もどる・こうげき・もちもの・へんかわざの選択処理
+	if (m_commandIndex > 1 && m_commandIndex < 6)
+	{
+		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
+		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
+
+		if (m_commandIndex < 2) { m_commandIndex = 2; }
+		if (m_commandIndex > 5) { m_commandIndex = 5; }
+
+		// →の座標移動処理
+		if (m_commandIndex == 2) { m_arrowPosX = 900; m_arrowPosY = 930; }
+		if (m_commandIndex == 3) { m_arrowPosX = 900; m_arrowPosY = 800; }
+		if (m_commandIndex == 4) { m_arrowPosX = 1400; m_arrowPosY = 930; }
+		if (m_commandIndex == 5) { m_arrowPosX = 1400; m_arrowPosY = 800; }
+
+		if (Input::IsPress(ENTER) && m_commandIndex == 2) { m_commandIndex = 0; }		// もどるコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 3) { m_commandIndex = 6; Player::SetAnimType(Attack); }	// こうげきコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 4) { m_commandIndex = 7; }		// へんかわざを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 5) { m_commandIndex = 11; }		// もちものを選択
+	}
+	// たたかう・にげるかの選択処理
+	else if (m_commandIndex < 2)
+	{
+		if (Input::IsPress(UP)) { m_commandIndex = 0; }		// 上方向ボタンを押した処理
+		if (Input::IsPress(DOWN)) { m_commandIndex = 1; }	// 下方向ボタンを押した処理
+
+		if (m_commandIndex == 0) { m_arrowPosY = 940; }
+		if (m_commandIndex == 1) { m_arrowPosY = 1020; }
+
+		if (Input::IsPress(ENTER) && m_commandIndex == 0) { m_commandIndex = 2; }				// たたかうコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 1) { Player::SetBattleFlag(false); }		// にげるコマンドを選択
+	}
+
+	// 敵を倒したリザルト処理
 	if (m_commandIndex == 15)
 	{
-		DrawGraph(840, 718, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
-		DrawFormatString(1000, 800, GetColor(255, 255, 255), "エネミーをたおした");
+		m_EncountInterval++;
+		if (m_EncountInterval == 1)
+		{
+			auto& playerStatus = Player::GetAllStatus();
+			auto enemyEXP = m_pEnemy->GetAllStatus().EXP;
+			Status resultPlayerStatus = playerStatus;
+			resultPlayerStatus.EXP = resultPlayerStatus.EXP + enemyEXP;
+			Player::SetAllStatus(resultPlayerStatus);
+		}
+		if (m_EncountInterval > 120)
+		{
+			Player::SetBattleFlag(false);
+			m_commandIndex = 0;
+			m_EncountInterval = 0;
+		}
 	}
 }

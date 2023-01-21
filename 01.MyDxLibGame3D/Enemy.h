@@ -3,28 +3,33 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
+#include <string>
 #include <DxLib.h>
 #include "Status.h"
 
 class Enemy
 {
 public:
-    Enemy();
-    ~Enemy();
+    Enemy();        // コンストラクタ.
+    ~Enemy();       // デストラクタ.
 
-    void Update();
-    void Draw();
+    void Init(std::string name, int level);    // 初期化処理.
+    void Update();  // 更新処理.
+    void Draw();    // 描画処理.
 
     // セッター
     void SetAllStatus(const Status& _status) { m_enemyStatus = _status; }
     // ゲッター
+    const std::string& GetName() const { return m_name; }
     const Status& GetAllStatus() const { return m_enemyStatus; }
 private:
-    int m_modelHandle;
+    int m_modelHandle;      // エネミーのモデルハンドル
 
-    VECTOR m_position;
+    std::string m_name;     // エネミーの名前
 
-    Status m_enemyStatus;
+    VECTOR m_position;      // エネミーの座標
+
+    Status m_enemyStatus;   // エネミーのステータス
 
 
 };

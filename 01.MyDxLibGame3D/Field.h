@@ -7,7 +7,8 @@ class Field
 {
 private:
 	static Field* m_field;
-	int m_modelHandle;
+	int m_fieldHandle;
+	int m_wallHandle;
 
 	Field();
 	~Field();
