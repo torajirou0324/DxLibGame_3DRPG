@@ -58,7 +58,7 @@ TAG_SCENE TitleScene::Update()
 	{
 		if (Input::IsPress(ENTER))
 		{
-			Player::SetBattleFlag(false);
+			//Player::SetBattleFlag(false);
 			return TAG_SCENE::TAG_PLAY;
 		}
 	}
@@ -112,6 +112,4 @@ void TitleScene::Draw()
 		DrawFormatString(150, 760, GetColor(255, 255, 255), "あんたの名前は ”キツキ イチカ ”らしい\nこんな場所に迷い込んじまってさ　どうせなら\nたくさんモンスターを倒しレベルをあげて\nあのへやにいるやつをたおしてくれよ");
 		DrawGraph(m_arrowPosX, m_arrowPosY + m_addNum, m_arrowVerticalHandle, TRUE);
 	}
-
-
 }
