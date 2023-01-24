@@ -108,7 +108,8 @@ void TitleScene::Draw()
 	}
 	else
 	{
-		DrawGraph(100, 700, m_BlackWindow, TRUE);
+		DrawExtendGraph(100, 700, 1060, 1000, m_BlackWindow, TRUE);
+		//DrawGraph(100, 700, m_BlackWindow, TRUE);
 		DrawFormatString(150, 760, GetColor(255, 255, 255), "あんたの名前は ”キツキ イチカ ”らしい\nこんな場所に迷い込んじまってさ　どうせなら\nたくさんモンスターを倒しレベルをあげて\nあのへやにいるやつをたおしてくれよ");
 		DrawGraph(m_arrowPosX, m_arrowPosY + m_addNum, m_arrowVerticalHandle, TRUE);
 	}

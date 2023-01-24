@@ -27,6 +27,7 @@ private:
 		Command,			// コマンド選択処理.
 		Comparison,			// 比較処理.（素早さ）
 		AttackProcess,		// 攻撃処理.
+		DamageProcess,		// 被ダメ処理.
 		SpecialMoveProcess,	// 特殊技処理.
 		PersonalEffects,	// もちもの使用処理.
 		Victory,			// 勝利処理.

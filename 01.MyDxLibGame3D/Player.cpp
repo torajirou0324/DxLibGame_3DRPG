@@ -137,7 +137,6 @@ void Player::Update()
 	m_player->Animation();		// アニメーション
 	m_player->Input();			// 入力
 	m_player->Camera();			// 追従カメラ
-	m_player->LevelManager();	// レベルとステータス管理処理
 
 	m_player->m_position = VAdd(m_player->m_position, m_player->m_velocity);
 
@@ -353,6 +352,9 @@ void Player::Animation()
 	m_animTime += 0.3f;
 }
 
+//-----------------------------------------------------------------------------
+// @brief  カメラ処理.
+//-----------------------------------------------------------------------------
 void Player::Camera()
 {
 	m_cameraViewPoint = m_position;
@@ -367,18 +369,21 @@ void Player::Camera()
 	SetCameraPositionAndTarget_UpVecY(m_cameraPosition, m_cameraViewPoint);
 }
 
+//-----------------------------------------------------------------------------
+// @brief  レベル＋ステータス管理処理.
+//-----------------------------------------------------------------------------
 void Player::LevelManager()
 {
-	if (m_playerStatus.EXP >= m_expMAX)
+	if (m_player->m_playerStatus.EXP >= m_player->m_expMAX)
 	{
-		m_playerStatus.EXP = 0;
-		auto addMaxEXP = m_expMAX / 2;
-		m_expMAX = m_expMAX + addMaxEXP;
-		m_playerStatus.LV++;
-		m_playerStatus.HP = 2 + m_hpMAX;
-		m_playerStatus.ATK++;
-		m_playerStatus.AGL++;
-		m_hpMAX += 2;
+		m_player->m_playerStatus.EXP = 0;
+		auto addMaxEXP = m_player->m_expMAX / 2;
+		m_player->m_expMAX = m_player->m_expMAX + addMaxEXP;
+		m_player->m_playerStatus.LV++;
+		m_player->m_playerStatus.HP = 2 + m_player->m_hpMAX;
+		m_player->m_playerStatus.ATK++;
+		m_player->m_playerStatus.AGL++;
+		m_player->m_hpMAX += 2;
 	}
 }
 

@@ -55,7 +55,6 @@ private:
 	void Rotate();			// 回転処理.
 	void Animation();		// アニメーション処理.
 	void Camera();			// 追従カメラ更新処理.
-	void LevelManager();	// レベルとステータス管理処理.
 
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
@@ -74,7 +73,8 @@ public:
 
 	static void InitCall();		// 初期化処理呼び用関数.
 	static void Update();		// 更新処理.
-	static void DrawCall();			// 描画処理.
+	static void DrawCall();		// 描画処理.
+	static void LevelManager();	// レベルとステータス管理処理.
 
 	// セッター
 	static void SetBattleFlag(const bool& _flag) { m_player->m_battleFlag = _flag; }
