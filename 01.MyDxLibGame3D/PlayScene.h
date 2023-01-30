@@ -21,6 +21,14 @@ private:
 	void BattleEventDraw(); // 戦闘イベント描画処理.
 	void CommandEvent();	// コマンド選択処理.
 
+	enum NormalState		// ノーマルイベントの状態管理.
+	{
+		Round1,		// 1バトル目.
+		Round2,		// 2バトル目.
+		Round3,		// 3バトル目.
+		Boss		// ボス戦.
+	};
+
 	enum BattleState		// バトルイベントの状態管理.
 	{
 		Start,				// 開始処理.
