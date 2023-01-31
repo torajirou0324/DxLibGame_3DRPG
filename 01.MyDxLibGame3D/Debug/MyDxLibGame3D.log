@@ -1,17 +1,2 @@
 ﻿  App.cpp
-  DebugDrawGrid.cpp
-  EndScene.cpp
-  Enemy.cpp
-  Field.cpp
-  Input.cpp
-  PlayScene.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(278,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(283,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(296,27): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Player.cpp
-  SceneManager.cpp
-  TitleScene.cpp
-  main.cpp
-  コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
+  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

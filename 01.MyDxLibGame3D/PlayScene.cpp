@@ -368,7 +368,7 @@ void PlayScene::CommandEvent()
 	// コマンド：こうげきの選択後処理
 	if (m_commandIndex == 6)
 	{
-		m_battleState = AttackProcess;
+		m_battleState = Comparison;
 	}
 
 	// もどる・こうげき・もちもの・へんかわざの選択処理

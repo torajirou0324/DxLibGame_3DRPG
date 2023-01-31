@@ -16,6 +16,7 @@ App::App()
 	SetUseDirect3DVersion(DX_DIRECT3D_11);
 	DxLib_Init();
 	SetMainWindowText("RPG");
+	SetBackgroundColor(250, 250, 250);
 	SetDrawScreen(DX_SCREEN_BACK);
 	SetMouseDispFlag(FALSE);
 

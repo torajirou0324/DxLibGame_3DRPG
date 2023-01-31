@@ -2,46 +2,23 @@
 // @brief  プレイヤークラス.
 //-----------------------------------------------------------------------------
 #pragma once
+#include "Character.h"
 
-#include <DxLib.h>
-#include "Status.h"
-
-// アニメーション管理構造体.
-enum Anim
-{
-	Idle,				// 待機
-	Walk,				// 歩く
-	Attack,				// 攻撃
-	Damage,				// 被ダメ
-	Death				// 死亡
-};
-
-class Player
+class Player : public Character
 {
 private:
 	static Player* m_player;
 
-	int m_hpMAX;			// プレイヤーの最大HP保存変数.
 	int m_expMAX;			// プレイヤーのレベルアップに必要な経験値量.
-	int m_modelHandle;		// プレイヤーのモデルハンドル.
 	int m_animHandle[5];	// アニメーションのモデルハンドル.
 
-	float m_animTime;		// アニメーションの経過時間.
-	float m_animTotalTime;	// アニメーションの総再生時間.
-
-	VECTOR m_position;		// プレイヤーの位置座標.
 	VECTOR m_rotate;		// プレイヤーの角度.
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
+
 	VECTOR m_cameraPosition;// カメラの位置座標.
 	VECTOR m_cameraViewPoint;	// 追従カメラ注視座標.
-
-	Anim m_animType;		// 現在のアニメーション保存用変数.
-	Anim m_beforeAnimType;	// 1つ前のアニメーション保存用変数.
-
-	Status m_playerStatus;	// プレイヤーのステータス保存用構造体
-
 
 	bool m_rotateNow;		// 回転中か判定用.
 	bool m_battleFlag;		// 戦闘中か判定用.
@@ -79,9 +56,9 @@ public:
 	// セッター
 	static void SetBattleFlag(const bool& _flag) { m_player->m_battleFlag = _flag; }
 	static void SetAnimType(const Anim& _animType) { m_player->m_animType = _animType; }
-	static void SetAllStatus(const Status& _status) { m_player->m_playerStatus = _status; }
+	static void SetAllStatus(const Status& _status) { m_player->m_status = _status; }
 	// ゲッター
-	static const int& GetHPMAX() { return m_player->m_hpMAX; }
+	static const int& GetHPMAX() { return m_player->m_hpMax; }
 	static const int& GetEXPMAX() { return m_player->m_expMAX; }
 	static const bool& GetBattleFlag() { return m_player->m_battleFlag; }
 	static const float& GetAnimTime() { return m_player->m_animTime; }
@@ -89,5 +66,5 @@ public:
 	static const VECTOR& GetPlayerPosition() { return m_player->m_position; }
 	static const VECTOR& GetDir() { return m_player->m_dir; }
 	static const Anim& GetAnimType() { return m_player->m_animType; }
-	static const Status& GetAllStatus() { return m_player->m_playerStatus; }
+	static const Status& GetAllStatus() { return m_player->m_status; }
 };

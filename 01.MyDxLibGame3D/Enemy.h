@@ -3,11 +3,9 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
-#include <string>
-#include <DxLib.h>
-#include "Status.h"
+#include "Character.h"
 
-class Enemy
+class Enemy : public Character
 {
 public:
     Enemy();        // コンストラクタ.
@@ -18,18 +16,9 @@ public:
     void Draw();    // 描画処理.
 
     // セッター
-    void SetAllStatus(const Status& _status) { m_enemyStatus = _status; }
+    void SetAllStatus(const Status& _status) { m_status = _status; }
     // ゲッター
     const std::string& GetName() const { return m_name; }
-    const Status& GetAllStatus() const { return m_enemyStatus; }
+    const Status& GetAllStatus() const { return m_status; }
 private:
-    int m_modelHandle;      // エネミーのモデルハンドル
-
-    std::string m_name;     // エネミーの名前
-
-    VECTOR m_position;      // エネミーの座標
-
-    Status m_enemyStatus;   // エネミーのステータス
-
-
 };

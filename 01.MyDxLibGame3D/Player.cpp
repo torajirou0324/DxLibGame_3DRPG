@@ -266,16 +266,6 @@ void Player::Input()
 	}
 	else
 	{
-		//auto posX = m_position.x + sinf(m_rotate.y) * -30;
-		//auto posZ = m_position.z + cosf(m_rotate.y) * -30;
-		//auto aimPos = VGet(posX, 0.0f, posZ);
-		//aimPos = VSub(m_position, aimPos);
-		//VScale(aimPos, -1);
-		//aimPos = VNorm(aimPos);
-
-		//m_dir = aimPos;
-		//m_aimDir = aimPos;
-
 		m_velocity.x = m_velocity.x * 0.99f;
 		m_velocity.z = m_velocity.z * 0.99f;
 
