@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include "SceneBase.h"
+#include "Character.h"
 
 class PlayScene : public Scene
 {
@@ -55,13 +56,10 @@ private:
 
 	int m_waitTimer;		// 待機時間保存用変数
 
-	int m_enemyHPMAX;
-
 	bool m_textFlag;
 	std::vector<bool> m_colorFlag;
 	std::vector<std::string> m_commandName;
-
-	class Enemy* m_pEnemy;
+	std::vector<Character*> m_pCharacter;
 
 	BattleState m_battleState;// バトルイベントの状態管理.
 };

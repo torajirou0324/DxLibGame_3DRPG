@@ -12,19 +12,13 @@ const float r = -60.0f;					// プレイヤーとカメラの距離
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 Player::Player()
-	: m_position(VGet(0, 0, 0))
-	, m_rotate(VGet(0.0f,0.0f,0.0f))
+	: m_rotate(VGet(0.0f,0.0f,0.0f))
 	, m_velocity(VGet(0.0f,0.0f,0.0f))
 	, m_dir(VGet(0, 0, 1))
 	, m_aimDir(VGet(0, 0, 0))
 	, m_cameraPosition(VGet(0.0f, 0.0f, 0.0f))
 	, m_cameraViewPoint(VGet(0.0f,0.0f,0.0f))
 	, m_rotateNow(false)
-	, m_battleFlag(true)
-	, m_animTime(0.0f)
-	, m_animTotalTime(0.0f)
-	, m_animType(Idle)
-	, m_beforeAnimType(Idle)
 {
 	// モデルにテクスチャをセット
 	m_modelHandle = (MV1LoadModel("data/player/Player.mv1"));
@@ -57,12 +51,12 @@ Player::Player()
 	m_beforeAnimType = m_animType;
 
 	// ステータスの初期化
-	m_playerStatus.LV = 1;
-	m_playerStatus.HP = 12;
-	m_playerStatus.ATK = 6;
-	m_playerStatus.AGL = 6;
-	m_playerStatus.EXP = 0;
-	m_hpMAX = m_playerStatus.HP;
+	m_status.LV = 1;
+	m_status.HP = 12;
+	m_status.ATK = 6;
+	m_status.AGL = 6;
+	m_status.EXP = 0;
+	m_hpMax = m_status.HP;
 	m_expMAX = 2;
 }
 
@@ -116,7 +110,6 @@ void Player::Init()
 	m_aimDir = vec;
 	m_cameraViewPoint = vec;
 	m_rotateNow = false;
-	m_battleFlag = true;
 	m_animType = Idle;
 	m_beforeAnimType = Idle;
 	m_animTime = 0.0f;
@@ -128,27 +121,32 @@ void Player::InitCall()
 	m_player->Init();
 }
 
+void Player::UpdateCall()
+{
+	m_player->Update();
+}
+
 //-----------------------------------------------------------------------------
 // @brief  更新処理.
 //-----------------------------------------------------------------------------
 void Player::Update()
 {
-	m_player->Rotate();			// 回転
-	m_player->Animation();		// アニメーション
-	m_player->Input();			// 入力
-	m_player->Camera();			// 追従カメラ
+	Rotate();			// 回転
+	Animation();		// アニメーション
+	Input();			// 入力
+	Camera();			// 追従カメラ
 
-	m_player->m_position = VAdd(m_player->m_position, m_player->m_velocity);
+	m_position = VAdd(m_position, m_velocity);
 
 	// 向きに合わせてモデル回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
-	VECTOR negativeVec = VTransform(m_player->m_dir, rotYMat);
+	VECTOR negativeVec = VTransform(m_dir, rotYMat);
 
 	// モデルに回転をセットする
-	MV1SetRotationZYAxis(m_player->m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
+	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
 	// ３Dモデルのポジション設定
-	MV1SetPosition(m_player->m_modelHandle, m_player->m_position);
+	MV1SetPosition(m_modelHandle, m_position);
 }
 
 void Player::DrawCall()
@@ -171,17 +169,6 @@ void Player::Draw()
 //-----------------------------------------------------------------------------
 void Player::Input()
 {
-	if (m_battleFlag) 
-	{ 
-		m_velocity = VGet(0.0f, 0.0f, 0.0f);
-		// 戦闘中のため歩くモーションは停止
-		if (m_animType == Walk)
-		{
-			m_animType = Idle;
-		}
-		return;
-	}
-
 	VECTOR inputVector = { 0.0f,0.0f,0.0f }; // 押した合計座標取得用関数
 
 	// 前後左右
@@ -364,16 +351,16 @@ void Player::Camera()
 //-----------------------------------------------------------------------------
 void Player::LevelManager()
 {
-	if (m_player->m_playerStatus.EXP >= m_player->m_expMAX)
+	if (m_player->m_status.EXP >= m_player->m_expMAX)
 	{
-		m_player->m_playerStatus.EXP = 0;
-		auto addMaxEXP = m_player->m_expMAX / 2;
+		m_player->m_status.EXP = 0;
+		auto addMaxEXP = m_player->m_expMAX * 2;
 		m_player->m_expMAX = m_player->m_expMAX + addMaxEXP;
-		m_player->m_playerStatus.LV++;
-		m_player->m_playerStatus.HP = 2 + m_player->m_hpMAX;
-		m_player->m_playerStatus.ATK++;
-		m_player->m_playerStatus.AGL++;
-		m_player->m_hpMAX += 2;
+		m_player->m_status.LV++;
+		m_player->m_status.HP = 2 + m_player->m_hpMax;
+		m_player->m_status.ATK++;
+		m_player->m_status.AGL++;
+		m_player->m_hpMax += 2;
 	}
 }
 

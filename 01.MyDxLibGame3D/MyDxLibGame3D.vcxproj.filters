@@ -67,6 +67,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\GameObject\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="Deamon.cpp">
+      <Filter>ソース ファイル\GameObject\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayScene.h">
@@ -106,6 +109,9 @@
       <Filter>ソース ファイル\GameObject\h</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
+      <Filter>ソース ファイル\GameObject\h</Filter>
+    </ClInclude>
+    <ClInclude Include="Deamon.h">
       <Filter>ソース ファイル\GameObject\h</Filter>
     </ClInclude>
   </ItemGroup>

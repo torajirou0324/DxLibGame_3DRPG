@@ -4,7 +4,7 @@
 #include "PlayScene.h"
 #include <DxLib.h>
 #include "Player.h"
-#include "Enemy.h"
+#include "Deamon.h"
 #include "Field.h"
 #include "Input.h"
 
@@ -40,10 +40,15 @@ PlayScene::PlayScene()
 	m_commandName.push_back("たたかう");
 	m_commandName.push_back("");
 	m_commandName.push_back("");
-
-	m_pEnemy = new Enemy;
-	m_pEnemy->Init("センターパート君", 1);
-	m_enemyHPMAX = m_pEnemy->GetAllStatus().HP;
+	auto player = Player::GetAddress();
+	m_pCharacter.push_back(player);
+	for (int i = 1; i < 4; i++)
+	{
+		auto obj = new Deamon;
+		obj->Init("センターパート", i);
+		m_pCharacter.push_back(obj);
+	}
+	
 	m_battleState = Start;
 }
 
@@ -52,9 +57,14 @@ PlayScene::PlayScene()
 //-----------------------------------------------------------------------------
 PlayScene::~PlayScene()
 {
-	delete m_pEnemy;
 	m_commandName.clear();
 	m_colorFlag.clear();
+	for (int i = 0; i < m_pCharacter.size(); i++)
+	{
+		delete m_pCharacter[i];
+		m_pCharacter[i] = nullptr;
+	}
+	m_pCharacter.clear();
 	DeleteGraph(m_blackWindow);
 	DeleteGraph(m_statusWindow);
 	for (int i = 0; i < 2; i++)

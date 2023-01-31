@@ -161,6 +161,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Deamon.cpp" />
     <ClCompile Include="DebugDrawGrid.cpp" />
     <ClCompile Include="EndScene.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -175,6 +176,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Deamon.h" />
     <ClInclude Include="DebugDrawGrid.h">
       <SubType>
       </SubType>
