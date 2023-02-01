@@ -3,9 +3,9 @@
 //-----------------------------------------------------------------------------
 #include "TitleScene.h"
 #include <DxLib.h>
-#include "Player.h"
 #include "Field.h"
 #include "Input.h"
+#include "AssetManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -14,15 +14,15 @@ TitleScene::TitleScene()
 	: m_intervalNum(0)
 	, m_addNum(0)
 {
-	m_TitleHandle = LoadGraph("data/Title/Title.png");
-	m_arrowBesideHandle = LoadGraph("data/comand/arrow3.png");
-	m_arrowVerticalHandle = LoadGraph("data/comand/arrow2.png");
+	
+	m_TitleHandle = AssetManager::UseImage(AssetManager::Title);
+	m_arrowBesideHandle = AssetManager::UseImage(AssetManager::RightArrow);
+	m_arrowVerticalHandle = AssetManager::UseImage(AssetManager::DownArrow);
 	m_arrowPosX = 500;
 	m_arrowPosY = 640;
 	m_playFlag = true;
 	m_nameSettingFlag = false;
-	m_BlackWindow = LoadGraph("data/comand/BlackWindow.png");
-	Player::InitCall();
+	m_BlackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
 }
 
 //-----------------------------------------------------------------------------
@@ -30,9 +30,6 @@ TitleScene::TitleScene()
 //-----------------------------------------------------------------------------
 TitleScene::~TitleScene()
 {
-	DeleteGraph(m_TitleHandle);
-	DeleteGraph(m_arrowBesideHandle);
-	DeleteGraph(m_arrowVerticalHandle);
 }
 
 //-----------------------------------------------------------------------------
@@ -40,7 +37,6 @@ TitleScene::~TitleScene()
 //-----------------------------------------------------------------------------
 TAG_SCENE TitleScene::Update()
 {
-	Player::Update();
 	SetCameraPositionAndTarget_UpVecY(VGet(5.0f, 30.0f,10.0f), VGet(5.0f, 32.0f,0.0f));
 
 	if (Input::IsPress(LEFT))
@@ -97,7 +93,6 @@ void TitleScene::Draw()
 {
 	//printfDx("TitleScene\n");
 	Field::DrawCall();
-	Player::DrawCall();
 	DrawGraph(100, 420, m_TitleHandle, TRUE);
 	if (!m_nameSettingFlag)
 	{

@@ -3,7 +3,6 @@
 //-----------------------------------------------------------------------------
 #include "PlayScene.h"
 #include <DxLib.h>
-#include "Player.h"
 #include "Deamon.h"
 #include "Field.h"
 #include "Input.h"
@@ -16,20 +15,20 @@ PlayScene::PlayScene()
 	, m_arrowPosY(0)
 	, m_arrowMoveNum(0)
 	, m_intervalNum(0)
-	//, m_randomNumber(0)
-	//, m_EncountInterval(0)
 	, m_textFlag(false)
+	, m_battleFlag(false)
+	, m_enemyDeadFlag(false)
 	, m_commandIndex(0)
 	, m_waitTimer(0)
 {
 	m_battleState = Start;
 
-	m_blackWindow = LoadGraph("data/comand/BlackWindow.png");
-	m_commandWindow[0] = LoadGraph("data/comand/commandWindow2.png");
-	m_commandWindow[1] = LoadGraph("data/comand/commandWindow3.png");
-	m_statusWindow = LoadGraph("data/comand/StatusWindow2.png");
-	m_arrowHandle[0] = LoadGraph("data/comand/arrow3.png");
-	m_arrowHandle[1] = LoadGraph("data/comand/arrow2.png");
+	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
+	m_commandWindow[0] = AssetManager::UseImage(AssetManager::CommandWindowWhite);
+	m_commandWindow[1] = AssetManager::UseImage(AssetManager::CommandWindowBlack);
+	m_statusWindow = AssetManager::UseImage(AssetManager::StatusWindow);
+	m_arrowHandle[0] = AssetManager::UseImage(AssetManager::RightArrow);
+	m_arrowHandle[1] = AssetManager::UseImage(AssetManager::DownArrow);
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -40,16 +39,10 @@ PlayScene::PlayScene()
 	m_commandName.push_back("たたかう");
 	m_commandName.push_back("");
 	m_commandName.push_back("");
-	auto player = Player::GetAddress();
-	m_pCharacter.push_back(player);
-	for (int i = 1; i < 4; i++)
-	{
-		auto obj = new Deamon;
-		obj->Init("センターパート", i);
-		m_pCharacter.push_back(obj);
-	}
 	
 	m_battleState = Start;
+
+	m_pPlayer = new Player;
 }
 
 //-----------------------------------------------------------------------------
@@ -59,19 +52,19 @@ PlayScene::~PlayScene()
 {
 	m_commandName.clear();
 	m_colorFlag.clear();
-	for (int i = 0; i < m_pCharacter.size(); i++)
+	for (int i = 0; i < m_pEnemyArray.size(); i++)
 	{
-		delete m_pCharacter[i];
-		m_pCharacter[i] = nullptr;
+		delete m_pEnemyArray[i];
+		m_pEnemyArray[i] = nullptr;
 	}
-	m_pCharacter.clear();
+	m_pEnemyArray.clear();
 	DeleteGraph(m_blackWindow);
 	DeleteGraph(m_statusWindow);
 	for (int i = 0; i < 2; i++)
 	{
 		DeleteGraph(m_arrowHandle[i]);
 	}
-
+	delete m_pPlayer;
 }
 
 //-----------------------------------------------------------------------------
@@ -79,29 +72,17 @@ PlayScene::~PlayScene()
 //-----------------------------------------------------------------------------
 TAG_SCENE PlayScene::Update()
 {
-	if (Player::GetBattleFlag())
+	if (m_battleFlag)
 	{
 		BattleEvent();
 	}
 	else
 	{
+		NormalEvent();
 		if (Input::IsPress(ENTER))
 		{
 			return TAG_SCENE::TAG_END;
 		}
-
-		if (Player::GetAnimType() == Walk)
-		{
-			//m_EncountInterval++;
-		}
-
-		if (m_pEnemy != nullptr)
-		{
-			delete m_pEnemy;
-			m_pEnemy = nullptr;
-		}
-
-		Player::Update();
 	}
 
 	m_intervalNum++;
@@ -129,20 +110,35 @@ void PlayScene::Draw()
 	//printfDx("%d\n", m_EncountInterval);
 	Field::DrawCall();
 
-	if (Player::GetBattleFlag())
+	if (m_battleFlag)
 	{
-		m_pEnemy->Draw();
 		BattleEventDraw();
 	}
 	else
 	{
-		Player::DrawCall();
 	}
 }
 
 void PlayScene::NormalEvent()
 {
-	Player::Update();
+	for (int i = 0; i < m_pEnemyArray.size(); i++)
+	{
+		delete m_pEnemyArray[i];
+		m_pEnemyArray[i] = nullptr;
+	}
+	m_pEnemyArray.clear();
+	m_battleState = Start;
+	int appare = GetRand(2) + 1;
+	for (int i = 0; i < appare; i++)
+	{
+		int level = GetRand(2) + 1;
+		auto obj = new Deamon;
+		obj->Init("センターパート", level);
+		obj->SetAttackObjectAddress(m_pPlayer);
+		m_pEnemyArray.push_back(obj);
+	}
+
+	m_battleFlag = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -161,66 +157,92 @@ void PlayScene::BattleEvent()
 		{
 			m_battleState = Command;
 			m_waitTimer = 0;
+			m_pCharacter.push_back(m_pPlayer);
+			for (int i = 0; i < m_pEnemyArray.size(); i++)
+			{
+				m_pCharacter.push_back(m_pEnemyArray[i]);
+			}
 		}
 		break;
 	case PlayScene::Command:		// コマンド選択処理
 		m_arrowPosX = 1370;
 		m_textFlag = false;
+		if (m_pPlayer->GetDeathFlag())
+		{
+			m_battleState = Defeat;
+		}
 		CommandEvent();
 		break;
 	case PlayScene::Comparison:		// 素早さ比較処理
-
-		break;
-	case PlayScene::AttackProcess:	// プレイヤーの攻撃処理
 		m_arrowPosX = 1240;
 		m_arrowPosY = 950;
 		m_textFlag = true;
-	{
-		m_commandIndex = 0;
-		// こうげきアニメーションが終了したので次の処理に移る
-		auto& playerStatus = Player::GetAllStatus();
-		auto& enemyStatus = m_pEnemy->GetAllStatus();
-		Status resultEnemyStatus = enemyStatus;
-		Status resultPlayerStatus = playerStatus;
-		resultEnemyStatus.HP = enemyStatus.HP - playerStatus.ATK;
 
-		if (resultEnemyStatus.HP <= 0)
+		for (int i = 0; i < m_pCharacter.size(); i++)
 		{
-			resultEnemyStatus.HP = 0;
-			resultPlayerStatus.EXP = playerStatus.EXP + enemyStatus.EXP;
-			Player::SetAllStatus(resultPlayerStatus);
+
+		}
+
+		break;
+	case PlayScene::MoveMent:
+		break;
+	case PlayScene::AttackProcess:
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		m_textFlag = true;
+
+		m_enemyDeadFlag = true;
+		{
+			int playerAtk = m_pPlayer->GetAllStatus().ATK;
+			// プレイヤーからエネミーへ攻撃
+			for (int i = 0; i < m_pEnemyArray.size(); i++)
+			{
+				m_pEnemyArray[i]->Damage(playerAtk);
+				if (!m_pEnemyArray[i]->GetDeathFlag())
+				{
+					if (m_pEnemyArray[i]->GetAllStatus().HP <= 0)
+					{
+						m_pEnemyArray[i]->Dead();
+						int exp = m_pEnemyArray[i]->GetAllStatus().EXP;
+						m_pPlayer->EXPAdd(exp);
+						m_enemyDeadFlag = true;
+					}
+					else
+					{
+						m_enemyDeadFlag = false;
+					}
+				}
+			}
+		}
+		// 敵を全滅させたか判定
+		if (m_enemyDeadFlag)
+		{
 			m_battleState = Victory;
 		}
 		else
 		{
-			m_pEnemy->SetAllStatus(resultEnemyStatus);
-			m_battleState = Comparison;
+			m_battleState = Continue;
 		}
-	}
-		break;
-	case PlayScene::DamageProcess:	// プレイヤーの被ダメ処理
-	{
-		m_arrowPosX = 1240;
-		m_arrowPosY = 950;
 
-		auto& playerStatus = Player::GetAllStatus();
-		auto& enemyStatus = m_pEnemy->GetAllStatus();
-		Status resultEnemyStatus = enemyStatus;
-		Status resultPlayerStatus = playerStatus;
-		resultPlayerStatus.HP = resultPlayerStatus.HP - enemyStatus.ATK;
-
-		Player::SetAllStatus(resultPlayerStatus);
-	}
+		// 生きているエネミーからプレイヤーへ攻撃
+		// プレイヤーとエネミーの素早さ判定
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			if (!m_pEnemyArray[i]->GetDeathFlag() && !m_pPlayer->GetDeathFlag())
+			{
+				m_pEnemyArray[i]->Attack();
+			}
+		}
 		break;
 	case PlayScene::Victory:		// 勝利処理
 		m_textFlag = true;
 		m_arrowPosX = 1240;
 		m_arrowPosY = 950;
 
-		Player::LevelManager();
 		if (Input::IsPress(ENTER))
 		{
-			Player::SetBattleFlag(false);
+			m_battleFlag = false;
+			m_pCharacter.clear();
 		}
 		break;
 	case PlayScene::Defeat:			// 敗北処理
@@ -229,16 +251,31 @@ void PlayScene::BattleEvent()
 		m_arrowPosY = 950;
 		if (Input::IsPress(ENTER))
 		{
-			Player::SetBattleFlag(false);
+			m_battleFlag = false;
+			m_pCharacter.clear();
+		}
+		break;
+	case PlayScene::Escape:
+		m_textFlag = true;
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		if (Input::IsPress(ENTER))
+		{
+			m_battleFlag = false;
+			m_pCharacter.clear();
 		}
 		break;
 	case PlayScene::Continue:		// ターン継続処理
 		m_battleState = Command;
+		m_commandIndex = 0;
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			m_pCharacter[i]->ActionInit();
+		}
 		break;
 	default:
 		break;
 	}
-
 }
 
 //-----------------------------------------------------------------------------
@@ -281,38 +318,46 @@ void PlayScene::BattleEventDraw()
 	// プレイヤーのステータス表示用の黒枠
 	{
 		DrawGraph(0, 750, m_statusWindow, TRUE);
-		auto& playerStatus = Player::GetAllStatus();
-		float berdif = static_cast<float>(playerStatus.HP) / Player::GetHPMAX();
+		auto& playerStatus = m_pPlayer->GetAllStatus();
+		float berdif = static_cast<float>(playerStatus.HP) / m_pPlayer->GetHPMAX();
 		auto ber = 350 * berdif;
 		DrawFormatString(50, 786, GetColor(255, 255, 255), "Lv.%d　　　キツキ　イチカ", playerStatus.LV);
 		DrawBox(50, 870, 50 + ber, 910, GetColor(0, 255, 0), TRUE);
 		DrawBox(48, 870, 402, 910, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(280, 875, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, Player::GetHPMAX());
-		berdif = static_cast<float>(playerStatus.EXP) / Player::GetEXPMAX();
+		DrawFormatString(280, 875, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_pPlayer->GetHPMAX());
+		berdif = static_cast<float>(playerStatus.EXP) / m_pPlayer->GetEXPMAX();
 		ber = 350 * berdif;
 		DrawBox(50, 920, 50 + ber, 960, GetColor(0, 255, 255), TRUE);
 		DrawBox(50, 920, 400, 960, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(280, 925, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, Player::GetEXPMAX());
+		DrawFormatString(280, 925, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, m_pPlayer->GetEXPMAX());
 	}
 
 	// エネミーのステータス表示用の黒枠
 	{
-		DrawGraph(1400, 0, m_statusWindow, TRUE);
-		auto& enemyStatus = m_pEnemy->GetAllStatus();
-		float HPberdif = static_cast<float>(enemyStatus.HP) / m_enemyHPMAX;
-		auto HPber = 350 * HPberdif;
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			int addNum = i + 1;
+			DrawGraph(1920 - (520 * addNum), 0, m_statusWindow, TRUE);
+			auto& enemyStatus = m_pEnemyArray[i]->GetAllStatus();
+			float HPberdif = static_cast<float>(enemyStatus.HP) / m_pEnemyArray[i]->GetHPMAX();
+			auto HPber = 350 * HPberdif;
 
-		DrawFormatString(1450, 36, GetColor(255, 255, 255), "Lv.%d　　%s", enemyStatus.LV,m_pEnemy->GetName().c_str());
-		DrawBox(1450, 140, 1450 + HPber, 180, GetColor(0, 255, 0), TRUE);
-		DrawBox(1450, 140, 1800, 180, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(1680, 140, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_enemyHPMAX);
+			DrawFormatString(1920 - (520 * addNum) + 50, 36, GetColor(255, 255, 255), "Lv.%d　　%s", enemyStatus.LV, m_pEnemyArray[i]->GetName().c_str());
+			DrawBox(1920 - (520 * addNum) + 50, 140, (1920 - (520 * addNum) + 50) + HPber, 180, GetColor(0, 255, 0), TRUE);
+			DrawBox(1918 - (520 * addNum) + 50, 138, (1920 - (520 * addNum) + 50) + 352, 182, GetColor(255, 255, 255), FALSE);
+			DrawFormatString(1920 - (520 * addNum) + 300, 150, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_pEnemyArray[i]->GetHPMAX());
+		}
 	}
 
 	switch (m_battleState)
 	{
 	case PlayScene::Start:
 	{
-		DrawFormatString(650, 800, white, "%sが現れた。", m_pEnemy->GetName().c_str());
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			DrawFormatString(650, 800 + 60 * i, white, "%sが現れた。", m_pEnemyArray[i]->GetName().c_str());
+		}
+		
 		if (m_waitTimer < 60)
 		{
 			int gaussianScreen = MakeScreen(1920, 1080);
@@ -327,15 +372,14 @@ void PlayScene::BattleEventDraw()
 		break;
 	case PlayScene::Comparison:
 		break;
-	case PlayScene::AttackProcess:
-		DrawFormatString(650, 800, white, "エネミーへ%dのこうげき", Player::GetAllStatus().ATK);
-		break;
-	case PlayScene::DamageProcess:
-		break;
 	case PlayScene::Victory:
-		DrawFormatString(650, 800, white, "%sをたおした", m_pEnemy->GetName().c_str());
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			DrawFormatString(650, 800 + 60 * i, white, "%sをたおした", m_pEnemyArray[i]->GetName().c_str());
+		}
 		break;
 	case PlayScene::Defeat:
+		DrawFormatString(650, 800, white, "キツキ　イチカは倒れた");
 		break;
 	case PlayScene::Continue:
 		break;
@@ -415,8 +459,8 @@ void PlayScene::CommandEvent()
 		if (m_commandIndex == 1) { m_arrowPosY = 890; m_colorFlag[1] = false; }
 		if (m_commandIndex == 0) { m_arrowPosY = 975; m_colorFlag[0] = false; }
 
-		if (Input::IsPress(ENTER) && m_commandIndex == 1) { m_commandIndex = 2; }				// たたかうコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 0) { Player::SetBattleFlag(false); }		// にげるコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 1) { m_commandIndex = 2; }		// たたかうコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 0) { m_battleState = Escape; }		// にげるコマンドを選択
 
 		m_commandName[0] = "にげる";
 		m_commandName[1] = "たたかう";

@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #include "Field.h"
 #include <DxLib.h>
+#include "AssetManager.h"
 
 Field* Field::m_field = nullptr;
 
@@ -11,9 +12,9 @@ Field* Field::m_field = nullptr;
 //-----------------------------------------------------------------------------
 Field::Field()
 {
-	m_fieldHandle = MV1LoadModel("data/model/pool/Stadium.mv1");
-	m_wallHandle = MV1LoadModel("data/model/pool/Wall.mv1");
-	int GraphHandle = LoadGraph("data/model/pool/MapTile.png");
+	m_fieldHandle = AssetManager::UseModel(AssetManager::Field);
+	m_wallHandle = AssetManager::UseModel(AssetManager::Wall);
+	int GraphHandle = AssetManager::UseImage(AssetManager::MapTile);
 	MV1SetTextureGraphHandle(m_fieldHandle, 0, GraphHandle, TRUE);
 	MV1SetTextureGraphHandle(m_wallHandle, 0, GraphHandle, TRUE);
 	MV1SetScale(m_fieldHandle, VGet(5.0f, 1.0f, 6.0f));

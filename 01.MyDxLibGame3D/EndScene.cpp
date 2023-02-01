@@ -30,7 +30,6 @@ TAG_SCENE EndScene::Update()
 	{
 		return TAG_SCENE::TAG_TITLE;
 	}
-	Player::Update();
 	return TAG_SCENE::TAG_NONE;
 }
 
@@ -41,5 +40,4 @@ void EndScene::Draw()
 {
 	//printfDx("EndScene\n");
 	Field::DrawCall();
-	Player::DrawCall();
 }

@@ -17,7 +17,6 @@
 SceneManager::SceneManager()
 	: m_nowScene(nullptr)
 {
-	Player::CreateInstance();
 	Field::CreateInstance();
 	Input::CreateInstance();
 	SetFontSize(64);
@@ -29,7 +28,6 @@ SceneManager::SceneManager()
 SceneManager::~SceneManager()
 {
 	ClearScene();
-	Player::DeleteInstance();
 	Field::DeleteInstance();
 	Input::DeleteInstance();
 }

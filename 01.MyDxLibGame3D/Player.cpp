@@ -5,9 +5,7 @@
 #include <math.h>
 #include "Input.h"
 
-Player* Player::m_player = nullptr;
 const float r = -60.0f;					// プレイヤーとカメラの距離
-
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
@@ -21,11 +19,11 @@ Player::Player()
 	, m_rotateNow(false)
 {
 	// モデルにテクスチャをセット
-	m_modelHandle = (MV1LoadModel("data/player/Player.mv1"));
-	int GraphHandle = LoadGraph("data/player/playertex.png");
-	int GraphHandle1 = LoadGraph("data/player/playertex1.png");
-	int GraphHandle2 = LoadGraph("data/player/playertex2.png");
-	int GraphHandle3 = LoadGraph("data/player/playertex3.png");
+	m_modelHandle = AssetManager::UseModel(AssetManager::Player);
+	int GraphHandle = AssetManager::UseImage(AssetManager::PlayerTexture1);
+	int GraphHandle1 = AssetManager::UseImage(AssetManager::PlayerTexture2);
+	int GraphHandle2 = AssetManager::UseImage(AssetManager::PlayerTexture3);
+	int GraphHandle3 = AssetManager::UseImage(AssetManager::PlayerTexture4);
 	MV1SetTextureGraphHandle(m_modelHandle, 0, GraphHandle, TRUE);
 	MV1SetTextureGraphHandle(m_modelHandle, 1, GraphHandle2, TRUE);
 	MV1SetTextureGraphHandle(m_modelHandle, 2, GraphHandle, TRUE);
@@ -35,13 +33,6 @@ Player::Player()
 
 	// モデルの大きさをセット
 	MV1SetScale(m_modelHandle, VGet(0.2f, 0.2f, 0.2f));
-	
-	// アニメーションを保存
-	m_animHandle[0] = MV1LoadModel("data/player/animIdle.mv1");
-	m_animHandle[1] = MV1LoadModel("data/player/animWalk.mv1");
-	m_animHandle[2] = MV1LoadModel("data/player/animAttack.mv1");
-	m_animHandle[3] = MV1LoadModel("data/player/animDamage.mv1");
-	m_animHandle[4] = MV1LoadModel("data/player/animDeath.mv1");
 
 	// アニメーションの初期化
 	MV1DetachAnim(m_modelHandle, 0);
@@ -75,33 +66,19 @@ Player::~Player()
 }
 
 //-----------------------------------------------------------------------------
-// @brief  生成処理.
-//-----------------------------------------------------------------------------
-void Player::CreateInstance()
-{
-	if (m_player == nullptr)
-	{
-		m_player = new Player;
-	}
-}
-
-//-----------------------------------------------------------------------------
-// @brief  解放処理.
-//-----------------------------------------------------------------------------
-void Player::DeleteInstance()
-{
-	if (m_player != nullptr)
-	{
-		delete m_player;
-		m_player = nullptr;
-	}
-}
-
-//-----------------------------------------------------------------------------
 // @brief  初期化処理.
 //-----------------------------------------------------------------------------
 void Player::Init()
 {
+	// ステータスの初期化
+	m_status.LV = 1;
+	m_status.HP = 12;
+	m_status.ATK = 6;
+	m_status.AGL = 6;
+	m_status.EXP = 0;
+	m_hpMax = m_status.HP;
+	m_expMAX = 2;
+
 	auto vec = VGet(0, 0, 0);
 	m_position = vec;
 	m_rotate = vec;
@@ -114,16 +91,6 @@ void Player::Init()
 	m_beforeAnimType = Idle;
 	m_animTime = 0.0f;
 	m_animTotalTime = MV1GetAnimTotalTime(m_animHandle[m_animType], 0);
-}
-
-void Player::InitCall()
-{
-	m_player->Init();
-}
-
-void Player::UpdateCall()
-{
-	m_player->Update();
 }
 
 //-----------------------------------------------------------------------------
@@ -147,11 +114,6 @@ void Player::Update()
 
 	// ３Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);
-}
-
-void Player::DrawCall()
-{
-	m_player->Draw();
 }
 
 //-----------------------------------------------------------------------------
@@ -351,16 +313,16 @@ void Player::Camera()
 //-----------------------------------------------------------------------------
 void Player::LevelManager()
 {
-	if (m_player->m_status.EXP >= m_player->m_expMAX)
+	if (m_status.EXP >= m_expMAX)
 	{
-		m_player->m_status.EXP = 0;
-		auto addMaxEXP = m_player->m_expMAX * 2;
-		m_player->m_expMAX = m_player->m_expMAX + addMaxEXP;
-		m_player->m_status.LV++;
-		m_player->m_status.HP = 2 + m_player->m_hpMax;
-		m_player->m_status.ATK++;
-		m_player->m_status.AGL++;
-		m_player->m_hpMax += 2;
+		m_status.EXP = 0;
+		auto addMaxEXP = m_expMAX * 2;
+		m_expMAX = m_expMAX + addMaxEXP;
+		m_status.LV++;
+		m_status.HP = 2 + m_hpMax;
+		m_status.ATK++;
+		m_status.AGL++;
+		m_hpMax += 2;
 	}
 }
 

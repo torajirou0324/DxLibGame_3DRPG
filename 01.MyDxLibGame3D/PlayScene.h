@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 #include "SceneBase.h"
-#include "Character.h"
+#include "Enemy.h"
+#include "Player.h"
 
 class PlayScene : public Scene
 {
@@ -35,12 +36,13 @@ private:
 		Start,				// 開始処理.
 		Command,			// コマンド選択処理.
 		Comparison,			// 比較処理.（素早さ）
+		MoveMent,			// 行い.
 		AttackProcess,		// 攻撃処理.
-		DamageProcess,		// 被ダメ処理.
 		SpecialMoveProcess,	// 特殊技処理.
 		PersonalEffects,	// もちもの使用処理.
 		Victory,			// 勝利処理.
 		Defeat,				// 敗北処理.
+		Escape,				// 逃げる処理.
 		Continue			// ターン継続処理.
 	};
 
@@ -57,9 +59,13 @@ private:
 	int m_waitTimer;		// 待機時間保存用変数
 
 	bool m_textFlag;
+	bool m_battleFlag;
+	bool m_enemyDeadFlag;
 	std::vector<bool> m_colorFlag;
 	std::vector<std::string> m_commandName;
 	std::vector<Character*> m_pCharacter;
+	std::vector<Enemy*> m_pEnemyArray;
+	Player* m_pPlayer;
 
 	BattleState m_battleState;// バトルイベントの状態管理.
 };

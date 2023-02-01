@@ -22,6 +22,25 @@ Enemy::~Enemy()
 }
 
 //-----------------------------------------------------------------------------
+// @brief  初期化処理.
+//-----------------------------------------------------------------------------
+void Enemy::Init(std::string name, int level)
+{
+    m_name = name;
+
+    m_status.LV = level;
+    m_status.HP = 10 + 2 * level;
+    m_status.ATK = 1 * level;
+    m_status.AGL = 2 + 1 * level;
+    m_status.EXP = level;
+
+    m_hpMax = m_status.HP;
+    m_isDeath = false;
+    // ３Dモデルのポジション設定
+    MV1SetPosition(m_modelHandle, m_position);
+}
+
+//-----------------------------------------------------------------------------
 // @brief  更新処理.
 //-----------------------------------------------------------------------------
 void Enemy::Update()

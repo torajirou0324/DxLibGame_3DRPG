@@ -10,7 +10,6 @@ public:
     Deamon();
     ~Deamon();
 
-    void Init(std::string name, int level);     // ‰Šú‰»ˆ—.
     void Update()override;                      // XVˆ—.
     void Draw()override;                        // •`‰æˆ—.
 

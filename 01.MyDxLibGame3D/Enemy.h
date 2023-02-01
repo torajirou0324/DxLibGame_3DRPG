@@ -12,22 +12,9 @@ public:
     Enemy();        // コンストラクタ.
     ~Enemy();       // デストラクタ.
 
+    void Init(std::string name, int level);     // 初期化処理.
     void Update();  // 更新処理.
     void Draw();    // 描画処理.
-
-
-
-    void Damage(int atk)    // エネミー被ダメ処理
-    {
-        int HP = m_status.HP;
-        HP = HP - atk;
-        if (HP < 0)
-        {
-            HP = 0;
-        }
-        m_status.HP = HP;
-    }
-
 
 private:
 };

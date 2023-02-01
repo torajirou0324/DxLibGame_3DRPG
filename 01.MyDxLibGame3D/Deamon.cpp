@@ -8,7 +8,7 @@
 //-----------------------------------------------------------------------------
 Deamon::Deamon()
 {
-    m_modelHandle = MV1LoadModel("data/enemy/Deamon.mv1");
+    m_modelHandle = AssetManager::UseModel(AssetManager::Deamon);
     // 向きに合わせてモデル回転
 
     // ３Dモデルのポジション設定
@@ -16,9 +16,9 @@ Deamon::Deamon()
     // モデルの大きさをセット
     MV1SetScale(m_modelHandle, VGet(0.2f, 0.2f, 0.2f));
 
-    int GraphHandle1 = LoadGraph("data/enemy/Demon1.png");
-    int GraphHandle2 = LoadGraph("data/enemy/Demon2.png");
-    int GraphHandle3 = LoadGraph("data/enemy/Demon3.png");
+    int GraphHandle1 = AssetManager::UseImage(AssetManager::DeamonTexture1);
+    int GraphHandle2 = AssetManager::UseImage(AssetManager::DeamonTexture2);
+    int GraphHandle3 = AssetManager::UseImage(AssetManager::DeamonTexture3);
     MV1SetTextureGraphHandle(m_modelHandle, 0, GraphHandle1, TRUE);
     MV1SetTextureGraphHandle(m_modelHandle, 1, GraphHandle2, TRUE);
     MV1SetTextureGraphHandle(m_modelHandle, 2, GraphHandle3, TRUE);
@@ -36,23 +36,6 @@ Deamon::Deamon()
 Deamon::~Deamon()
 {
     MV1DeleteModel(m_modelHandle);
-}
-
-//-----------------------------------------------------------------------------
-// @brief  初期化処理.
-//-----------------------------------------------------------------------------
-void Deamon::Init(std::string name, int level)
-{
-    m_name = name;
-
-    m_status.LV = level;
-    m_status.HP = 10 + 2 * level;
-    m_status.ATK = 3 + 1 * level;
-    m_status.AGL = 2 + 1 * level;
-    m_status.EXP = level;
-
-    // ３Dモデルのポジション設定
-    MV1SetPosition(m_modelHandle, m_position);
 }
 
 //-----------------------------------------------------------------------------

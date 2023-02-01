@@ -70,6 +70,9 @@
     <ClCompile Include="Deamon.cpp">
       <Filter>ソース ファイル\GameObject\cpp</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>ソース ファイル\system\cpp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PlayScene.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="Deamon.h">
       <Filter>ソース ファイル\GameObject\h</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>ソース ファイル\system\h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
