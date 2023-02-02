@@ -58,12 +58,6 @@ PlayScene::~PlayScene()
 		m_pEnemyArray[i] = nullptr;
 	}
 	m_pEnemyArray.clear();
-	DeleteGraph(m_blackWindow);
-	DeleteGraph(m_statusWindow);
-	for (int i = 0; i < 2; i++)
-	{
-		DeleteGraph(m_arrowHandle[i]);
-	}
 	delete m_pPlayer;
 }
 
@@ -157,6 +151,7 @@ void PlayScene::BattleEvent()
 		{
 			m_battleState = Command;
 			m_waitTimer = 0;
+			m_commandIndex = 0;
 			m_pCharacter.push_back(m_pPlayer);
 			for (int i = 0; i < m_pEnemyArray.size(); i++)
 			{
@@ -180,11 +175,75 @@ void PlayScene::BattleEvent()
 
 		for (int i = 0; i < m_pCharacter.size(); i++)
 		{
+			for (int j = 0; j < m_pCharacter.size(); j++)
+			{
+				if (i == j)
+				{
 
+				}
+				else
+				{
+					if (m_pCharacter[i]->GetAllStatus().AGL > m_pCharacter[j]->GetAllStatus().AGL)
+					{
+						if (i < j)
+						{
+
+						}
+						else
+						{
+							auto tmp = m_pCharacter[i];
+							m_pCharacter[i] = m_pCharacter[j];
+							m_pCharacter[j] = tmp;
+						}
+					}
+				}
+			}
 		}
 
+		m_battleState = MoveMent;
 		break;
 	case PlayScene::MoveMent:
+
+		m_enemyDeadFlag = false;
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			if (m_pCharacter[i]->GetAllStatus().HP <= 0)
+			{
+				m_pCharacter[i]->Dead();
+				if (m_pCharacter[i]->GetCharaName() == UnHuman)
+				{
+					int EXP = m_pCharacter[i]->GetAllStatus().EXP;
+					m_pPlayer->EXPAdd(EXP);
+				}
+			}
+
+			if (!m_pCharacter[i]->GetDeathFlag())
+			{
+				m_pCharacter[i]->Attack();
+				if (m_pCharacter[i]->GetCharaName() == UnHuman)
+				{
+					m_enemyDeadFlag = true;
+				}
+			}
+			else
+			{
+				if (m_pCharacter[i]->GetCharaName() == Human)
+				{
+					m_battleState = Defeat;
+					break;
+				}
+			}
+		}
+
+		if (m_enemyDeadFlag)
+		{
+			m_battleState = Continue;
+		}
+		else
+		{
+			m_battleState = Victory;
+		}
+
 		break;
 	case PlayScene::AttackProcess:
 		m_arrowPosX = 1240;

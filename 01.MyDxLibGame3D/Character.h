@@ -100,6 +100,7 @@ public:
     }
     const std::string& GetName() const { return m_name; }
     const Status& GetAllStatus() const { return m_status; }
+    const CharacterName& GetCharaName() const { return m_CharaName; }
     const int& GetHPMAX() { return m_hpMax; }
 protected:
     int m_animHandle[5];	    // アニメーションのモデルハンドル.
@@ -119,6 +120,7 @@ protected:
     Anim m_animType;            // 現在のアニメーション保存用
     Anim m_beforeAnimType;      // 1つ前のアニメーション保存用
 
+    CharacterName m_CharaName;  // キャラクターが人か人外か判定用
 private:
     Character* m_pAttackObject; // 攻撃する相手格納用変数
 };

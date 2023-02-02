@@ -29,7 +29,7 @@ App::App()
 	AssetManager::LoadImage(AssetManager::CommandWindowWhite, "data/comand/commandWindowWhite.png");
 	AssetManager::LoadImage(AssetManager::CommandWindowBlack, "data/comand/commandWindowBlack.png");
 	AssetManager::LoadImage(AssetManager::StatusWindow, "data/comand/StatusWindow.png");
-	AssetManager::LoadImage(AssetManager::MapTile, "data/model/pool/MapTile.png");
+	AssetManager::LoadImage(AssetManager::MapTile, "data/staticObje/MapTile.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture1, "data/player/playertex.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture2, "data/player/playertex1.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture3, "data/player/playertex2.png");

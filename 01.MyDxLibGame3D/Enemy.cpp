@@ -18,7 +18,6 @@ Enemy::Enemy()
 //-----------------------------------------------------------------------------
 Enemy::~Enemy()
 {
-    MV1DeleteModel(m_modelHandle);
 }
 
 //-----------------------------------------------------------------------------
@@ -35,7 +34,7 @@ void Enemy::Init(std::string name, int level)
     m_status.EXP = level;
 
     m_hpMax = m_status.HP;
-    m_isDeath = false;
+    m_isDeathFlag = false;
     // ３Dモデルのポジション設定
     MV1SetPosition(m_modelHandle, m_position);
 }

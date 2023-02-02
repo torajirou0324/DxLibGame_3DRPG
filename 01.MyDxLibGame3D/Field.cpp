@@ -20,7 +20,6 @@ Field::Field()
 	MV1SetScale(m_fieldHandle, VGet(5.0f, 1.0f, 6.0f));
 	MV1SetScale(m_wallHandle, VGet(200.0f, 70.0f, 10.0f));
 	MV1SetMaterialDifColor(m_fieldHandle, 0, GetColorF(0.5f, 0.3f, 1.0f, 1.0f));
-	//MV1SetMaterialDifColor(m_wallHandle, 0, GetColorF(0.5f, 0.3f, 1.0f, 1.0f));
 }
 
 //-----------------------------------------------------------------------------
@@ -28,7 +27,6 @@ Field::Field()
 //-----------------------------------------------------------------------------
 Field::~Field()
 {
-	MV1DeleteModel(m_fieldHandle);
 }
 
 //-----------------------------------------------------------------------------
