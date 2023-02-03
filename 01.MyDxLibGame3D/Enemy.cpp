@@ -26,6 +26,7 @@ Enemy::~Enemy()
 void Enemy::Init(std::string name, int level)
 {
     m_name = name;
+    m_CharaName = UnHuman;
 
     m_status.LV = level;
     m_status.HP = 10 + 2 * level;

@@ -1,7 +1,7 @@
 ﻿  PlayScene.cpp
-C:\Users\student\Desktop\Dxlib_h\DxLib.h(3811,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
 C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(384,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(389,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(405,74): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(443,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(448,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(464,74): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(552,93): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
   MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

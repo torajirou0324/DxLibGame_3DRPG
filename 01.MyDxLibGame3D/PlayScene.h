@@ -28,7 +28,8 @@ private:
 		Round1,		// 1バトル目.
 		Round2,		// 2バトル目.
 		Round3,		// 3バトル目.
-		Boss		// ボス戦.
+		Boss,		// ボス戦.
+		End
 	};
 
 	enum BattleState		// バトルイベントの状態管理.
@@ -55,8 +56,9 @@ private:
 	int m_arrowMoveNum;		// コマンド選択矢印の微動させる用変数.
 	int m_intervalNum;
 	int m_commandIndex;		// コマンド選択遷移の判定用変数.
+	int m_enemyLevelMax;	// エンカウントする敵の最大レベル保存用.
 
-	int m_waitTimer;		// 待機時間保存用変数
+	int m_waitTimer;		// 待機時間保存用変数.
 
 	bool m_textFlag;
 	bool m_battleFlag;
@@ -65,7 +67,9 @@ private:
 	std::vector<std::string> m_commandName;
 	std::vector<Character*> m_pCharacter;
 	std::vector<Enemy*> m_pEnemyArray;
+	Character* m_pCharacterAttackNow;		// 攻撃中のキャラクター
 	Player* m_pPlayer;
 
-	BattleState m_battleState;// バトルイベントの状態管理.
+	NormalState m_normalState;				// ノーマルイベントの状態管理.
+	BattleState m_battleState;				// バトルイベントの状態管理.
 };

@@ -15,12 +15,14 @@ PlayScene::PlayScene()
 	, m_arrowPosY(0)
 	, m_arrowMoveNum(0)
 	, m_intervalNum(0)
+	, m_enemyLevelMax(2)
 	, m_textFlag(false)
 	, m_battleFlag(false)
 	, m_enemyDeadFlag(false)
 	, m_commandIndex(0)
 	, m_waitTimer(0)
 {
+	m_normalState = Round1;
 	m_battleState = Start;
 
 	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
@@ -42,7 +44,9 @@ PlayScene::PlayScene()
 	
 	m_battleState = Start;
 
+	m_pCharacterAttackNow = nullptr;
 	m_pPlayer = new Player;
+	m_pPlayer->Init();
 }
 
 //-----------------------------------------------------------------------------
@@ -115,6 +119,7 @@ void PlayScene::Draw()
 
 void PlayScene::NormalEvent()
 {
+	// 敵の要素を削除
 	for (int i = 0; i < m_pEnemyArray.size(); i++)
 	{
 		delete m_pEnemyArray[i];
@@ -122,14 +127,50 @@ void PlayScene::NormalEvent()
 	}
 	m_pEnemyArray.clear();
 	m_battleState = Start;
-	int appare = GetRand(2) + 1;
-	for (int i = 0; i < appare; i++)
+
+	// 敵を生成
+	switch (m_normalState)
 	{
-		int level = GetRand(2) + 1;
+	case PlayScene::Round1:
+		for (int i = 0; i < m_normalState + 1; i++)
+		{
+			int level = GetRand(m_enemyLevelMax) + 1;
+			auto obj = new Deamon;
+			obj->Init("デーモン", level);
+			obj->SetAttackObjectAddress(m_pPlayer);
+			m_pEnemyArray.push_back(obj);
+		}
+		break;
+	case PlayScene::Round2:
+		for (int i = 0; i < m_normalState + 1; i++)
+		{
+			int level = GetRand(m_enemyLevelMax) + 1;
+			auto obj = new Deamon;
+			obj->Init("デーモン", level);
+			obj->SetAttackObjectAddress(m_pPlayer);
+			m_pEnemyArray.push_back(obj);
+		}
+		break;
+	case PlayScene::Round3:
+		for (int i = 0; i < m_normalState + 1; i++)
+		{
+			int level = GetRand(m_enemyLevelMax) + 1;
+			auto obj = new Deamon;
+			obj->Init("デーモン", level);
+			obj->SetAttackObjectAddress(m_pPlayer);
+			m_pEnemyArray.push_back(obj);
+		}
+		break;
+	case PlayScene::Boss:
+	{
 		auto obj = new Deamon;
-		obj->Init("センターパート", level);
+		obj->Init("デーモン", 15);
 		obj->SetAttackObjectAddress(m_pPlayer);
 		m_pEnemyArray.push_back(obj);
+	}
+		break;
+	default:
+		break;
 	}
 
 	m_battleFlag = true;
@@ -207,19 +248,32 @@ void PlayScene::BattleEvent()
 		m_enemyDeadFlag = false;
 		for (int i = 0; i < m_pCharacter.size(); i++)
 		{
-			if (m_pCharacter[i]->GetAllStatus().HP <= 0)
-			{
-				m_pCharacter[i]->Dead();
-				if (m_pCharacter[i]->GetCharaName() == UnHuman)
-				{
-					int EXP = m_pCharacter[i]->GetAllStatus().EXP;
-					m_pPlayer->EXPAdd(EXP);
-				}
-			}
-
-			if (!m_pCharacter[i]->GetDeathFlag())
+			if (!m_pCharacter[i]->GetActionFlag() && !m_pCharacter[i]->GetDeathFlag())	// 行動済みかどうか判定
 			{
 				m_pCharacter[i]->Attack();
+				m_pCharacter[i]->Action();			// 攻撃したことを知らせる
+				m_pCharacterAttackNow = m_pCharacter[i];
+				break;
+			}
+			else
+			{
+				m_pCharacter[i]->Action();
+			}
+		}
+
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			if (!m_pCharacter[i]->GetDeathFlag())				// 死んでいるかどうか
+			{
+				if (m_pCharacter[i]->GetAllStatus().HP <= 0)
+				{
+					m_pCharacter[i]->Dead();
+					if (m_pCharacter[i]->GetCharaName() == UnHuman)
+					{
+						int EXP = m_pCharacter[i]->GetAllStatus().EXP;
+						m_pPlayer->EXPAdd(EXP);
+					}
+				}
 				if (m_pCharacter[i]->GetCharaName() == UnHuman)
 				{
 					m_enemyDeadFlag = true;
@@ -235,13 +289,16 @@ void PlayScene::BattleEvent()
 			}
 		}
 
-		if (m_enemyDeadFlag)
+		if (m_battleState != Defeat)
 		{
-			m_battleState = Continue;
-		}
-		else
-		{
-			m_battleState = Victory;
+			if (m_enemyDeadFlag)
+			{
+				m_battleState = AttackProcess;
+			}
+			else
+			{
+				m_battleState = Victory;
+			}
 		}
 
 		break;
@@ -249,49 +306,14 @@ void PlayScene::BattleEvent()
 		m_arrowPosX = 1240;
 		m_arrowPosY = 950;
 		m_textFlag = true;
+		m_waitTimer++;
 
-		m_enemyDeadFlag = true;
-		{
-			int playerAtk = m_pPlayer->GetAllStatus().ATK;
-			// プレイヤーからエネミーへ攻撃
-			for (int i = 0; i < m_pEnemyArray.size(); i++)
-			{
-				m_pEnemyArray[i]->Damage(playerAtk);
-				if (!m_pEnemyArray[i]->GetDeathFlag())
-				{
-					if (m_pEnemyArray[i]->GetAllStatus().HP <= 0)
-					{
-						m_pEnemyArray[i]->Dead();
-						int exp = m_pEnemyArray[i]->GetAllStatus().EXP;
-						m_pPlayer->EXPAdd(exp);
-						m_enemyDeadFlag = true;
-					}
-					else
-					{
-						m_enemyDeadFlag = false;
-					}
-				}
-			}
-		}
-		// 敵を全滅させたか判定
-		if (m_enemyDeadFlag)
-		{
-			m_battleState = Victory;
-		}
-		else
+		if (m_waitTimer > 120)
 		{
 			m_battleState = Continue;
+			m_waitTimer = 0;
 		}
 
-		// 生きているエネミーからプレイヤーへ攻撃
-		// プレイヤーとエネミーの素早さ判定
-		for (int i = 0; i < m_pEnemyArray.size(); i++)
-		{
-			if (!m_pEnemyArray[i]->GetDeathFlag() && !m_pPlayer->GetDeathFlag())
-			{
-				m_pEnemyArray[i]->Attack();
-			}
-		}
 		break;
 	case PlayScene::Victory:		// 勝利処理
 		m_textFlag = true;
@@ -301,7 +323,18 @@ void PlayScene::BattleEvent()
 		if (Input::IsPress(ENTER))
 		{
 			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
 			m_pCharacter.clear();
+			int EventNum = m_normalState;
+			EventNum++;
+			if (EventNum > Boss)
+			{
+				EventNum = Boss;
+			}
+			m_normalState = static_cast<NormalState>(EventNum);
 		}
 		break;
 	case PlayScene::Defeat:			// 敗北処理
@@ -311,25 +344,51 @@ void PlayScene::BattleEvent()
 		if (Input::IsPress(ENTER))
 		{
 			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
 			m_pCharacter.clear();
 		}
 		break;
-	case PlayScene::Escape:
+	case PlayScene::Escape:			// 逃げる処理
 		m_textFlag = true;
 		m_arrowPosX = 1240;
 		m_arrowPosY = 950;
 		if (Input::IsPress(ENTER))
 		{
 			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
 			m_pCharacter.clear();
+			if (m_normalState == Boss)
+			{
+				m_enemyLevelMax++;
+			}
+			m_normalState = Round1;
 		}
 		break;
 	case PlayScene::Continue:		// ターン継続処理
 		m_battleState = Command;
 		m_commandIndex = 0;
+
 		for (int i = 0; i < m_pCharacter.size(); i++)
 		{
-			m_pCharacter[i]->ActionInit();
+			if (!m_pCharacter[i]->GetActionFlag())
+			{
+				m_battleState = MoveMent;
+				break;
+			}
+		}
+
+		if (m_battleState == Command)
+		{
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
 		}
 		break;
 	default:
@@ -382,13 +441,13 @@ void PlayScene::BattleEventDraw()
 		auto ber = 350 * berdif;
 		DrawFormatString(50, 786, GetColor(255, 255, 255), "Lv.%d　　　キツキ　イチカ", playerStatus.LV);
 		DrawBox(50, 870, 50 + ber, 910, GetColor(0, 255, 0), TRUE);
-		DrawBox(48, 870, 402, 910, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(280, 875, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_pPlayer->GetHPMAX());
+		DrawBox(48, 868, 402, 912, GetColor(255, 255, 255), FALSE);
+		DrawFormatString(300, 883, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_pPlayer->GetHPMAX());
 		berdif = static_cast<float>(playerStatus.EXP) / m_pPlayer->GetEXPMAX();
 		ber = 350 * berdif;
 		DrawBox(50, 920, 50 + ber, 960, GetColor(0, 255, 255), TRUE);
-		DrawBox(50, 920, 400, 960, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(280, 925, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, m_pPlayer->GetEXPMAX());
+		DrawBox(48, 918, 402, 962, GetColor(255, 255, 255), FALSE);
+		DrawFormatString(300, 927, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, m_pPlayer->GetEXPMAX());
 	}
 
 	// エネミーのステータス表示用の黒枠
@@ -431,6 +490,10 @@ void PlayScene::BattleEventDraw()
 		break;
 	case PlayScene::Comparison:
 		break;
+	case PlayScene::AttackProcess:
+		DrawLine(1100, 0, 1500, 1080, 10 * (120 - m_waitTimer));
+		DrawFormatString(650, 800, white, "Lv%d:%sがこうげき",m_pCharacterAttackNow->GetAllStatus().LV, m_pCharacterAttackNow->GetName().c_str());
+		break;
 	case PlayScene::Victory:
 		for (int i = 0; i < m_pEnemyArray.size(); i++)
 		{
@@ -456,6 +519,7 @@ void PlayScene::CommandEvent()
 	for (int i = 0; i < 4; i++)
 	{
 		m_colorFlag[i] = true;
+		m_commandName[i] = "";
 	}
 
 	// コマンド：もちものの選択後処理
@@ -479,9 +543,33 @@ void PlayScene::CommandEvent()
 	}
 
 	// コマンド：こうげきの選択後処理
-	if (m_commandIndex == 6)
+	if (m_commandIndex > 5 && m_commandIndex < 10)
 	{
-		m_battleState = Comparison;
+		if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
+		if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
+
+		if (m_commandIndex < 6) { m_commandIndex = 6; }
+		if (m_commandIndex > 6 + m_pEnemyArray.size()) { m_commandIndex = 6 + m_pEnemyArray.size(); }
+
+		// →の座標移動処理
+		if (m_commandIndex == 6) { m_arrowPosY = 975; m_colorFlag[0] = false; }
+		if (m_commandIndex == 7) { m_arrowPosY = 890; m_colorFlag[1] = false; }
+		if (m_commandIndex == 8) { m_arrowPosY = 805; m_colorFlag[2] = false; }
+		if (m_commandIndex == 9) { m_arrowPosY = 720; m_colorFlag[3] = false; }
+
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			if (m_commandIndex == 6 + i)
+			{
+				if (Input::IsPress(ENTER) && !m_pEnemyArray[i]->GetDeathFlag())
+				{
+					m_pPlayer->SetAttackObjectAddress(m_pEnemyArray[i]);
+					m_battleState = Comparison;
+				}
+			}
+
+			m_commandName[i] = m_pEnemyArray[i]->GetName();
+		}
 	}
 
 	// もどる・こうげき・もちもの・へんかわざの選択処理

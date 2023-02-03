@@ -63,11 +63,14 @@ Player::~Player()
 //-----------------------------------------------------------------------------
 void Player::Init()
 {
+	m_name = "キツキ　イチカ";
+	m_CharaName = Human;
+
 	// ステータスの初期化
 	m_status.LV = 1;
-	m_status.HP = 12;
+	m_status.HP = 15;
 	m_status.ATK = 6;
-	m_status.AGL = 6;
+	m_status.AGL = 5;
 	m_status.EXP = 0;
 	m_hpMax = m_status.HP;
 	m_expMAX = 2;
@@ -309,13 +312,13 @@ void Player::LevelManager()
 	if (m_status.EXP >= m_expMAX)
 	{
 		m_status.EXP = 0;
-		auto addMaxEXP = m_expMAX * 2;
+		auto addMaxEXP = m_expMAX;
 		m_expMAX = m_expMAX + addMaxEXP;
 		m_status.LV++;
-		m_status.HP = 2 + m_hpMax;
+		m_status.HP = 3 + m_hpMax;
 		m_status.ATK++;
 		m_status.AGL++;
-		m_hpMax += 2;
+		m_hpMax = m_status.HP;
 	}
 }
 
