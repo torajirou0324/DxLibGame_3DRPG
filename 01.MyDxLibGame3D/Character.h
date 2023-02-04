@@ -15,6 +15,12 @@ enum CharacterName
     UnHuman,    // 人外（敵）
 };
 
+enum MoveCommand    // 戦闘するときの行動モーション
+{
+    Atk,        // 攻撃する
+    charge,     // ためる（次のターン攻撃力2倍）
+};
+
 // アニメーション管理列挙体
 enum Anim
 {
@@ -38,6 +44,7 @@ public:
         , m_name("")
         , m_position(VGet(0.0f,0.0f,0.0f))
         , m_status()
+        , m_basicStatus()
         , m_animType(Idle)
         , m_beforeAnimType(Idle)
         , m_pAttackObject(nullptr)
@@ -57,6 +64,12 @@ public:
     void Attack()           // エネミーからプレイヤーへ攻撃用処理
     {
         int ATK = m_status.ATK;
+        int DEF = m_pAttackObject->GetAllStatus().DEF;
+        ATK = ATK - DEF;
+        if (ATK < 1)
+        {
+            ATK = 1;
+        }
         m_pAttackObject->Damage(ATK);
     }
 
@@ -114,12 +127,16 @@ protected:
     bool m_enActionFlag;        // 行動が終わったか
 
     std::string m_name;         // キャラクターの名前
+
     VECTOR m_position;          // キャラクターの座標
-    Status m_status;            // キャラクターのステータス
+
+    Status m_status;            // キャラクターのステータス（戦闘時変化用）
+    Status m_basicStatus;       // キャラクターステータス（基礎ステータス）
 
     Anim m_animType;            // 現在のアニメーション保存用
     Anim m_beforeAnimType;      // 1つ前のアニメーション保存用
 
+    MoveCommand m_moveSelection;// 行動がどうか決める
     CharacterName m_CharaName;  // キャラクターが人か人外か判定用
 private:
     Character* m_pAttackObject; // 攻撃する相手格納用変数

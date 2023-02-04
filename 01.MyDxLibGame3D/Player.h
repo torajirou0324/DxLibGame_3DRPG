@@ -17,7 +17,18 @@ public:
 	void Rotate();			// 回転処理.
 	void Animation();		// アニメーション処理.
 	void LevelManager();	// レベルとステータス管理処理.
-	void Camera();			// 追従カメラ更新処理.
+
+	void HPHeal()
+	{
+		int HP = m_status.HP;
+		HP = HP + (3 * m_status.LV);
+		if (m_hpMax < HP)
+		{
+			HP = m_hpMax;
+		}
+		m_status.HP = HP;
+		Action();
+	}
 
 	void EXPAdd(int exp)	// 経験値取得＋レベルアップ処理呼び
 	{

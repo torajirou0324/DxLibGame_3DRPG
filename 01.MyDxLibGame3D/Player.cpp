@@ -18,21 +18,8 @@ Player::Player()
 	, m_cameraViewPoint(VGet(0.0f,0.0f,0.0f))
 	, m_rotateNow(false)
 {
-	// モデルにテクスチャをセット
+	// モデルをロード
 	m_modelHandle = AssetManager::UseModel(AssetManager::Player);
-	int GraphHandle = AssetManager::UseImage(AssetManager::PlayerTexture1);
-	int GraphHandle1 = AssetManager::UseImage(AssetManager::PlayerTexture2);
-	int GraphHandle2 = AssetManager::UseImage(AssetManager::PlayerTexture3);
-	int GraphHandle3 = AssetManager::UseImage(AssetManager::PlayerTexture4);
-	MV1SetTextureGraphHandle(m_modelHandle, 0, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_modelHandle, 1, GraphHandle2, TRUE);
-	MV1SetTextureGraphHandle(m_modelHandle, 2, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_modelHandle, 3, GraphHandle2, TRUE);
-	MV1SetTextureGraphHandle(m_modelHandle, 4, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_modelHandle, 5, GraphHandle1, TRUE);
-
-	// モデルの大きさをセット
-	MV1SetScale(m_modelHandle, VGet(0.2f, 0.2f, 0.2f));
 
 	// アニメーションの初期化
 	MV1DetachAnim(m_modelHandle, 0);
@@ -45,6 +32,7 @@ Player::Player()
 	m_status.LV = 1;
 	m_status.HP = 12;
 	m_status.ATK = 6;
+	m_status.DEF = 0;
 	m_status.AGL = 6;
 	m_status.EXP = 0;
 	m_hpMax = m_status.HP;
@@ -70,10 +58,11 @@ void Player::Init()
 	m_status.LV = 1;
 	m_status.HP = 15;
 	m_status.ATK = 6;
+	m_status.DEF = 0;
 	m_status.AGL = 5;
 	m_status.EXP = 0;
 	m_hpMax = m_status.HP;
-	m_expMAX = 2;
+	m_expMAX = 1;
 
 	auto vec = VGet(0, 0, 0);
 	m_position = vec;
@@ -97,7 +86,6 @@ void Player::Update()
 	Rotate();			// 回転
 	Animation();		// アニメーション
 	Input();			// 入力
-	Camera();			// 追従カメラ
 
 	m_position = VAdd(m_position, m_velocity);
 
@@ -117,7 +105,7 @@ void Player::Update()
 //-----------------------------------------------------------------------------
 void Player::Draw()
 {
-	//printfDx("posX:%3f posY:%3f posZ:%3f\n", m_position.x, m_position.y, m_position.z);
+	printfDx("posX:%3f posY:%3f posZ:%3f\n", m_position.x, m_position.y, m_position.z);
 	// プレイヤー描画.
 	MV1DrawModel(m_modelHandle);
 }
@@ -288,23 +276,6 @@ void Player::Animation()
 }
 
 //-----------------------------------------------------------------------------
-// @brief  カメラ処理.
-//-----------------------------------------------------------------------------
-void Player::Camera()
-{
-	m_cameraViewPoint = m_position;
-
-	m_cameraPosition.x = m_cameraViewPoint.x + sinf(m_rotate.y) * r;
-	m_cameraPosition.z = m_cameraViewPoint.z + cosf(m_rotate.y) * r;
-
-	// カメラの注視点をセット
-	m_cameraViewPoint.y = m_cameraViewPoint.y + 15.0f;
-	m_cameraPosition.y = m_cameraViewPoint.y + 20.0f;
-
-	SetCameraPositionAndTarget_UpVecY(m_cameraPosition, m_cameraViewPoint);
-}
-
-//-----------------------------------------------------------------------------
 // @brief  レベル＋ステータス管理処理.
 //-----------------------------------------------------------------------------
 void Player::LevelManager()
@@ -312,13 +283,14 @@ void Player::LevelManager()
 	if (m_status.EXP >= m_expMAX)
 	{
 		m_status.EXP = 0;
-		auto addMaxEXP = m_expMAX;
-		m_expMAX = m_expMAX + addMaxEXP;
+		/*auto addMaxEXP = m_expMAX;*/
+		m_expMAX += 3;
 		m_status.LV++;
-		m_status.HP = 3 + m_hpMax;
-		m_status.ATK++;
-		m_status.AGL++;
-		m_hpMax = m_status.HP;
+		m_hpMax = 3 + m_hpMax;
+		m_status.HP = m_hpMax;
+		m_status.ATK += 2;
+		m_status.DEF++;
+		m_status.AGL += 2;
 	}
 }
 

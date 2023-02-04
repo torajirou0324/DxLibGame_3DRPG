@@ -13,13 +13,15 @@ Field* Field::m_field = nullptr;
 Field::Field()
 {
 	m_fieldHandle = AssetManager::UseModel(AssetManager::Field);
-	m_wallHandle = AssetManager::UseModel(AssetManager::Wall);
+	m_wallHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::Field));
+	m_blackBox = MV1DuplicateModel(AssetManager::UseModel(AssetManager::Field));
 	int GraphHandle = AssetManager::UseImage(AssetManager::MapTile);
 	MV1SetTextureGraphHandle(m_fieldHandle, 0, GraphHandle, TRUE);
 	MV1SetTextureGraphHandle(m_wallHandle, 0, GraphHandle, TRUE);
-	MV1SetScale(m_fieldHandle, VGet(5.0f, 1.0f, 6.0f));
-	MV1SetScale(m_wallHandle, VGet(200.0f, 70.0f, 10.0f));
-	MV1SetMaterialDifColor(m_fieldHandle, 0, GetColorF(0.5f, 0.3f, 1.0f, 1.0f));
+	MV1SetScale(m_fieldHandle, VGet(100.0f, 1.0f, 100.0f));
+	MV1SetScale(m_wallHandle, VGet(100.0f, 100.0f, 100.0f));
+	MV1SetScale(m_blackBox, VGet(100.0f, 100.0f, 100.0f));
+	MV1SetMaterialDifColor(m_blackBox, 0, GetColorF(0.0f, 0.0f, 0.0f, 1.0f));
 }
 
 //-----------------------------------------------------------------------------
@@ -71,43 +73,45 @@ void Field::Draw()
 		// 6 7 8
 		// 上記通り描画したい
 
-		// 0
-		MV1SetPosition(m_fieldHandle, VGet(-775.0f, 0.0f, 600.0f));
-		MV1DrawModel(m_fieldHandle);
+		// 真ん中の前方向の壁
+		MV1SetPosition(m_wallHandle, VGet(100.0f, 50.0f, 300.0f));
+		MV1DrawModel(m_wallHandle);
+		MV1SetPosition(m_wallHandle, VGet(-100.0f, 50.0f, 300.0f));
+		MV1DrawModel(m_wallHandle);
+		MV1SetPosition(m_blackBox, VGet(0.0f, 50.0f, 300.0f));
+		MV1DrawModel(m_blackBox);
 
-		// 1
-		MV1SetPosition(m_fieldHandle, VGet(0.0f, 0.0f, 600.0f));
-		MV1DrawModel(m_fieldHandle);
-		MV1SetPosition(m_wallHandle, VGet(0.0f, 10.0f, 600.0f));
+		// 真ん中の前方向左右の壁
+		MV1SetPosition(m_wallHandle, VGet(100.0f, 50.0f, 200.0f));
+		MV1DrawModel(m_wallHandle);
+		MV1SetPosition(m_wallHandle, VGet(-100.0f, 50.0f, 200.0f));
 		MV1DrawModel(m_wallHandle);
 
-		// 2
-		MV1SetPosition(m_fieldHandle, VGet(775.0f, 0.0f, 600.0f));
+		// 真ん中の前方向の床
+		MV1SetPosition(m_fieldHandle, VGet(0.0f, 0.0f, 200.0f));
+		MV1DrawModel(m_fieldHandle);
+		MV1SetPosition(m_fieldHandle, VGet(0.0f, 0.0f, 100.0f));
 		MV1DrawModel(m_fieldHandle);
 
-		// 3
-		MV1SetPosition(m_fieldHandle, VGet(-775.0f, 0.0f, 0.0f));
-		MV1DrawModel(m_fieldHandle);
+		// 前方向左の壁
+		MV1SetPosition(m_wallHandle, VGet(-100.0f, 50.0f, 100.0f));
+		MV1DrawModel(m_wallHandle);
+		MV1SetPosition(m_wallHandle, VGet(-100.0f, 50.0f, 0.0f));
+		MV1DrawModel(m_wallHandle);
 
-		// 4
+		// 前方向右の壁
+		MV1SetPosition(m_wallHandle, VGet(100.0f, 50.0f, 100.0f));
+		MV1DrawModel(m_wallHandle);
+		MV1SetPosition(m_wallHandle, VGet(100.0f, 50.0f, 0.0f));
+		MV1DrawModel(m_wallHandle);
+
+		// 真ん中の床 4
 		MV1SetPosition(m_fieldHandle, VGet(0.0f, 0.0f, 0.0f));
 		MV1DrawModel(m_fieldHandle);
 
-		// 5
-		MV1SetPosition(m_fieldHandle, VGet(775.0f, 0.0f, 0.0f));
-		MV1DrawModel(m_fieldHandle);
-
-		// 6
-		MV1SetPosition(m_fieldHandle, VGet(-775.0f, 0.0f, -600.0f));
-		MV1DrawModel(m_fieldHandle);
-
-		// 7
-		MV1SetPosition(m_fieldHandle, VGet(0.0f, 0.0f, -600.0f));
-		MV1DrawModel(m_fieldHandle);
-
-		// 8
-		MV1SetPosition(m_fieldHandle, VGet(775.0f, 0.0f, -600.0f));
-		MV1DrawModel(m_fieldHandle);
+		// 真ん中後ろの壁 7
+		MV1SetPosition(m_wallHandle, VGet(0.0f, 50.0f, -100.0f));
+		MV1DrawModel(m_wallHandle);
 	}
 }
 

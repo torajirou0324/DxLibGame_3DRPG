@@ -18,8 +18,9 @@ public:
 	void Draw() override;			// 描画処理.
 
 private:
-	void NormalEvent();
+	void NormalEvent();		// ノーマルイベント.
 	void BattleEvent();		// 戦闘イベント.
+	void NormalEventDraw();	// ノーマルイベント描画処理.
 	void BattleEventDraw(); // 戦闘イベント描画処理.
 	void CommandEvent();	// コマンド選択処理.
 
@@ -57,12 +58,17 @@ private:
 	int m_intervalNum;
 	int m_commandIndex;		// コマンド選択遷移の判定用変数.
 	int m_enemyLevelMax;	// エンカウントする敵の最大レベル保存用.
+	int m_enemyLevelMin;	// エンカウントする敵の最小レベル保存用.
+	int gaussianScreen;		// 画面ぼかし用画像格納用ハンドル.
 
 	int m_waitTimer;		// 待機時間保存用変数.
 
 	bool m_textFlag;
+	bool m_selectFlag;
+	bool m_movieFlag;
 	bool m_battleFlag;
 	bool m_enemyDeadFlag;
+	bool m_healFlag;		// 一時的な回復判定用.
 	std::vector<bool> m_colorFlag;
 	std::vector<std::string> m_commandName;
 	std::vector<Character*> m_pCharacter;
@@ -72,4 +78,6 @@ private:
 
 	NormalState m_normalState;				// ノーマルイベントの状態管理.
 	BattleState m_battleState;				// バトルイベントの状態管理.
+
+	VECTOR m_cameraPos;
 };

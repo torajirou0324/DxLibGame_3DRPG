@@ -30,8 +30,9 @@ void Enemy::Init(std::string name, int level)
 
     m_status.LV = level;
     m_status.HP = 10 + 2 * level;
-    m_status.ATK = 1 * level;
-    m_status.AGL = 2 + 1 * level;
+    m_status.ATK = 2 + level;
+    m_status.DEF = level;
+    m_status.AGL = 2 + 2 * level;
     m_status.EXP = level;
 
     m_hpMax = m_status.HP;

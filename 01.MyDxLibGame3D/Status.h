@@ -8,6 +8,7 @@ struct Status
     int LV;     // ƒŒƒxƒ‹
     int HP;     // ‘Ì—Í
     int ATK;    // UŒ‚—Í
+    int DEF;    // –hŒä—Í
     int AGL;    // ‘f‘‚³
     int EXP;    // ŒoŒ±’l
 };

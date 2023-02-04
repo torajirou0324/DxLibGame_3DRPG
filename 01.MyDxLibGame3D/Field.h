@@ -9,6 +9,7 @@ private:
 	static Field* m_field;
 	int m_fieldHandle;
 	int m_wallHandle;
+	int m_blackBox;
 
 	Field();
 	~Field();
