@@ -18,12 +18,6 @@ public:
 	void Draw() override;			// 描画処理.
 
 private:
-	void NormalEvent();		// ノーマルイベント.
-	void BattleEvent();		// 戦闘イベント.
-	void NormalEventDraw();	// ノーマルイベント描画処理.
-	void BattleEventDraw(); // 戦闘イベント描画処理.
-	void CommandEvent();	// コマンド選択処理.
-
 	enum NormalState		// ノーマルイベントの状態管理.
 	{
 		Round1,		// 1バトル目.
@@ -47,6 +41,13 @@ private:
 		Escape,				// 逃げる処理.
 		Continue			// ターン継続処理.
 	};
+
+	void EnemyCreate(NormalState num);		// 敵生成処理.
+	void NormalEvent();		// ノーマルイベント.
+	void BattleEvent();		// 戦闘イベント.
+	void NormalEventDraw();	// ノーマルイベント描画処理.
+	void BattleEventDraw(); // 戦闘イベント描画処理.
+	void CommandEvent();	// コマンド選択処理.
 
 	int m_blackWindow;		// 行動後の結果文字描画用の黒枠.
 	int m_commandWindow[2];	// コマンド選択時の黒枠と白枠.

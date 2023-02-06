@@ -52,6 +52,13 @@ public:
 	// ゲッター
 	const int& GetEXPMAX() { return m_expMAX; }
 private:
+	// 二つのベクトルの角度が同じか.
+	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
+	// nowVecからdirVecの最短の回転方向を調べる(Y軸).
+	float CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& dirVec);
+	// nowVecからaimVecに向かってdegreeVelocityの速度でY軸回転する.
+	VECTOR RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity);
+
 	int m_expMAX;			// プレイヤーのレベルアップに必要な経験値量.
 
 	bool m_rotateNow;		// 回転中か判定用.
@@ -60,15 +67,4 @@ private:
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
-
-	VECTOR m_cameraPosition;// カメラの位置座標.
-	VECTOR m_cameraViewPoint;	// 追従カメラ注視座標.
-
-	// 二つのベクトルの角度が同じか.
-	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
-	// nowVecからdirVecの最短の回転方向を調べる(Y軸).
-	float CalcRotationDirectionYAxis(const VECTOR& nowVec, const VECTOR& dirVec);
-	// nowVecからaimVecに向かってdegreeVelocityの速度でY軸回転する.
-	VECTOR RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity);
-
 };

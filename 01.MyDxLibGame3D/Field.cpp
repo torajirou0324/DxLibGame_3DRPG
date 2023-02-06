@@ -115,6 +115,34 @@ void Field::Draw()
 	}
 }
 
+void Field::BattleUpdate()
+{
+}
+
+void Field::BattleDraw()
+{
+	for (int vertical = 0; vertical < 3; vertical++)
+	{
+		for (int side = 0; side < 3; side++)
+		{
+			VECTOR position = VGet(100.0f * (side - 1) , 0.0f, 100.0f * (1 - vertical));
+			MV1SetPosition(m_fieldHandle, position);
+			MV1DrawModel(m_fieldHandle);
+		}
+	}
+
+	for (int vertical = 0; vertical < 3; vertical++)
+	{
+		MV1SetPosition(m_wallHandle, VGet(-100.0f * (vertical -1), 50.0f, 200.0f));
+		MV1DrawModel(m_wallHandle);
+	}
+
+	MV1SetPosition(m_wallHandle, VGet(-200.0f, 50.0f, 100.0f));
+	MV1DrawModel(m_wallHandle);
+	MV1SetPosition(m_wallHandle, VGet(200.0f, 50.0f, 100.0f));
+	MV1DrawModel(m_wallHandle);
+}
+
 //-----------------------------------------------------------------------------
 // @brief  XVˆ—ŒÄ‚Ñ—pŠÖ”.
 //-----------------------------------------------------------------------------
@@ -129,4 +157,13 @@ void Field::UpdateCall()
 void Field::DrawCall()
 {
 	m_field->Draw();
+}
+
+void Field::BattleUpdateCall()
+{
+}
+
+void Field::BattleDrawCall()
+{
+	m_field->BattleDraw();
 }

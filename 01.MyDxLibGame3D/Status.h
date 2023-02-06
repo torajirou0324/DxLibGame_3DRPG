@@ -7,6 +7,7 @@ struct Status
 {
     int LV;     // ƒŒƒxƒ‹
     int HP;     // ‘Ì—Í
+    int MP;     // –‚–@—Í
     int ATK;    // UŒ‚—Í
     int DEF;    // –hŒä—Í
     int AGL;    // ‘f‘‚³

@@ -41,6 +41,7 @@ public:
         , m_animTotalTime(0.0f)
         , m_isDeathFlag(false)
         , m_enActionFlag(false)
+        , m_attackNow(false)
         , m_name("")
         , m_position(VGet(0.0f,0.0f,0.0f))
         , m_status()
@@ -70,6 +71,8 @@ public:
         {
             ATK = 1;
         }
+        m_animType = Anim::Attack;  // 攻撃アニメーション開始
+        m_attackNow = true;
         m_pAttackObject->Damage(ATK);
     }
 
@@ -82,11 +85,14 @@ public:
             HP = 0;
         }
         m_status.HP = HP;
+
+        m_animType = Anim::Damage;  // 被ダメアニメーション開始
     }
 
     void Dead()             // 死ぬときに呼ぶ(両対応)
     {
         m_isDeathFlag = true;
+        m_animType = Anim::Death;
     }
 
     void ActionInit()       // 行動可能に
@@ -103,13 +109,17 @@ public:
     void SetAttackObjectAddress(Character* _AttackObject) { m_pAttackObject = _AttackObject; }
 
     // ゲッター
-    const bool GetDeathFlag()       // 死んでいるかどうか
+    const bool &GetDeathFlag()          // 死んでいるかどうか
     {
         return m_isDeathFlag;
     }
-    const bool GetActionFlag()      // 行動したか
+    const bool &GetActionFlag()         // 行動したか
     {
         return m_enActionFlag;
+    }
+    const bool& GetAttackNowFlag()      // 攻撃中かどうか
+    {
+        return m_attackNow;
     }
     const std::string& GetName() const { return m_name; }
     const Status& GetAllStatus() const { return m_status; }
@@ -125,6 +135,7 @@ protected:
 
     bool m_isDeathFlag;         // 死んだかどうか
     bool m_enActionFlag;        // 行動が終わったか
+    bool m_attackNow;           // 攻撃中かどうか
 
     std::string m_name;         // キャラクターの名前
 

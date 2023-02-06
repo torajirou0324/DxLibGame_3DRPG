@@ -16,6 +16,8 @@ private:
 
 	void Update();	// 更新処理.
 	void Draw();	// 描画処理.
+	void BattleUpdate();
+	void BattleDraw();
 public:
 	Field(const Field&) = delete;				// コピーコンストラクタを delete 指定.
 	Field& operator=(const Field&) = delete;	// コピー代入演算子も delete 指定.
@@ -27,4 +29,7 @@ public:
 
 	static void UpdateCall();		// 更新処理呼び用関数.
 	static void DrawCall();			// 描画処理呼び用関数.
+
+	static void BattleUpdateCall();		// 
+	static void BattleDrawCall();		// 
 };

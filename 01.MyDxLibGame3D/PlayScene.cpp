@@ -26,10 +26,13 @@ PlayScene::PlayScene()
 	, m_commandIndex(1)
 	, m_waitTimer(0)
 {
+
 	m_normalState = Round1;
 	m_battleState = Start;
 	gaussianScreen = MakeScreen(1920, 1080);
+	// カメラのポジションセット
 	m_cameraPos = VGet(0.0f, 60.0f, -50.0f);
+	SetCameraPositionAndTarget_UpVecY(m_cameraPos, VGet(0.0f, 20.0f, 20.0f));
 
 	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
 	m_commandWindow[0] = AssetManager::UseImage(AssetManager::CommandWindowWhite);
@@ -53,6 +56,12 @@ PlayScene::PlayScene()
 	m_pCharacterAttackNow = nullptr;
 	m_pPlayer = new Player;
 	m_pPlayer->Init();
+
+	auto obj = new Deamon;
+	obj->Init("デーモン", 1, VGet(0.0f, 4.5f, 20.0f));
+	obj->SetAttackObjectAddress(m_pPlayer);
+	m_pEnemyArray.push_back(obj);
+	m_battleFlag = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -82,11 +91,11 @@ TAG_SCENE PlayScene::Update()
 	}
 	else
 	{
+		//if (Input::IsPress(ENTER))
+		//{
+		//	return TAG_SCENE::TAG_END;
+		//}
 		NormalEvent();
-		if (Input::IsPress(ENTER))
-		{
-			return TAG_SCENE::TAG_END;
-		}
 	}
 
 	m_intervalNum++;
@@ -100,7 +109,7 @@ TAG_SCENE PlayScene::Update()
 		}
 	}
 
-	if (m_pPlayer->GetDeathFlag())
+	if (m_battleFlag == false && m_pPlayer->GetDeathFlag())
 	{
 		return TAG_SCENE::TAG_TITLE;
 	}
@@ -114,10 +123,18 @@ void PlayScene::Draw()
 {
 	// デバッグ用文字列＋変数値描画
 	printfDx("PlayScene\n");
-	Field::DrawCall();
 
 	if (m_battleFlag)
 	{
+		if (m_normalState == Round2)
+		{
+			m_normalState = Round2;
+		}
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			m_pEnemyArray[i]->Draw();
+		}
+		m_pPlayer->Draw();
 		BattleEventDraw();
 	}
 	else
@@ -126,6 +143,46 @@ void PlayScene::Draw()
 	}
 }
 
+//-----------------------------------------------------------------------------
+// @brief  敵の生成処理.
+//-----------------------------------------------------------------------------
+void PlayScene::EnemyCreate(NormalState num)
+{
+	VECTOR enemySetPosition = VGet(0.0f, 4.5f, 10.0f);	// セットするエネミーのポジション
+
+	// 敵を生成
+	for (int i = 0; i < num + 1; i++)
+	{
+		int level = 0;	// 敵のレベル格納用
+		// 敵のレベルを乱数で生成
+		if (num == Round1)
+		{
+			level = GetRand(m_enemyLevelMax - 1) + m_enemyLevelMin;
+		}	// 弱いのがでやすい
+		if (num == Round2)
+		{
+			level = GetRand(m_enemyLevelMax) + m_enemyLevelMin; enemySetPosition.x = 20.0f + (-40.0f * i);
+		}	// 敵の位置調整+同程度がでやすい
+		if (num == Round3)
+		{
+			level = GetRand(m_enemyLevelMax + 1) + m_enemyLevelMin; enemySetPosition.x = 30.0f + (-30.0f * i);
+		}// 敵の位置調整+強いのがでやすい
+		if (num == Boss)
+		{
+			level = 15; enemySetPosition.x = 30.0f + (-30.0f * i);
+		}
+
+		// 敵を生成
+		if (i < Boss)
+		{
+			auto obj = new Deamon;
+			obj->Init(obj->GetName(), level, enemySetPosition);
+			obj->SetAttackObjectAddress(m_pPlayer);
+			m_pEnemyArray.push_back(obj);
+		}
+	}
+	m_battleFlag = true;	// 戦闘開始
+}
 
 //-----------------------------------------------------------------------------
 // @brief  ノーマルイベントの処理.
@@ -135,19 +192,7 @@ void PlayScene::NormalEvent()
 	// ムービー作り
 	m_pPlayer->Update();
 
-	if (CheckHitKey(UP))
-	{
-		m_cameraPos.z++;
-	}
-	if (CheckHitKey(DOWN))
-	{
-		m_cameraPos.z--;
-	}
-	// カメラのポジションセット
-	SetCameraPositionAndTarget_UpVecY(m_cameraPos, VGet(0.0f, 20.0f, 20.0f));
-
-
-	if (m_selectFlag)
+	if (Input::IsPress(ENTER))
 	{
 		// 敵の要素を削除
 		for (int i = 0; i < m_pEnemyArray.size(); i++)
@@ -157,58 +202,9 @@ void PlayScene::NormalEvent()
 		}
 		m_pEnemyArray.clear();
 		m_battleState = Start;
-
-		// 敵を生成
-		switch (m_normalState)
-		{
-		case PlayScene::Round1:							// 三面あるうちの最初
-			for (int i = 0; i < m_normalState + 1; i++)
-			{
-				int level = GetRand(m_enemyLevelMax - 1) + m_enemyLevelMin;	// 敵のレベルを乱数で生成(低いレベルがでやすい)
-				auto obj = new Deamon;
-				obj->Init("デーモン", level);
-				obj->SetAttackObjectAddress(m_pPlayer);
-				m_pEnemyArray.push_back(obj);
-			}
-			break;
-		case PlayScene::Round2:									// 三面あるうちの二番目
-			for (int i = 0; i < m_normalState + 1; i++)
-			{
-				int level = GetRand(m_enemyLevelMax) + (m_enemyLevelMax - Round2);	// 敵のレベルを乱数で生成(中間のレベルがでやすい)
-				auto obj = new Deamon;
-				obj->Init("デーモン", level);
-				obj->SetAttackObjectAddress(m_pPlayer);
-				m_pEnemyArray.push_back(obj);
-			}
-			break;
-		case PlayScene::Round3:									// 三面あるうちの最後
-			for (int i = 0; i < m_normalState + 1; i++)
-			{
-				int level = GetRand(m_enemyLevelMax) + m_enemyLevelMin + 1;		// 敵のレベルを乱数で生成(少し強いやつがでやすい)
-				auto obj = new Deamon;
-				obj->Init("デーモン", level);
-				obj->SetAttackObjectAddress(m_pPlayer);
-				m_pEnemyArray.push_back(obj);
-			}
-			break;
-		case PlayScene::Boss:							// 三面クリアしたのちのボスフロア
-		{
-			for (int i = 0; i < m_normalState; i++)
-			{
-				auto obj = new Deamon;
-				obj->Init("ボス", 15);
-				obj->SetAttackObjectAddress(m_pPlayer);
-				m_pEnemyArray.push_back(obj);
-			}
-
-		}
-		break;
-		default:
-			break;
-		}
-
-		m_battleFlag = true;
+		EnemyCreate(m_normalState);
 	}
+
 }
 
 //-----------------------------------------------------------------------------
@@ -216,6 +212,12 @@ void PlayScene::NormalEvent()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEvent()
 {
+	for (int i = 0; i < m_pCharacter.size(); i++)
+	{
+		m_pCharacter[i]->Update();
+	}
+
+
 	switch (m_battleState)
 	{
 	case PlayScene::Start:			// 戦闘開始処理
@@ -227,7 +229,7 @@ void PlayScene::BattleEvent()
 		{
 			m_battleState = Command;
 			m_waitTimer = 0;
-			m_commandIndex = 0;
+			m_commandIndex = 1;
 			m_pCharacter.push_back(m_pPlayer);
 			for (int i = 0; i < m_pEnemyArray.size(); i++)
 			{
@@ -313,31 +315,32 @@ void PlayScene::BattleEvent()
 							m_healFlag = true;
 						}
 					}
+					if (m_pCharacter[i]->GetCharaName() == Human)		// プレイヤーが死んでいたら即ループから抜ける
+					{
+						m_battleState = Defeat;
+						break;
+					}
 				}
 				else if (m_pCharacter[i]->GetCharaName() == UnHuman)// 敵が1人でも生きているか確認
 				{
 					m_enemyDeadFlag = true;
 				}
 			}
-			else
-			{
-				if (m_pCharacter[i]->GetCharaName() == Human)		// プレイヤーが死んでいたら即ループから抜ける
-				{
-					break;
-				}
-			}
 		}
 
-		m_battleState = AttackProcess;
+		if (m_battleState != Defeat)
+		{
+			m_battleState = AttackProcess;
+		}
+
 
 		break;
 	case PlayScene::AttackProcess:
 		m_arrowPosX = 1240;
 		m_arrowPosY = 950;
 		m_textFlag = true;
-		m_waitTimer++;
 
-		if (m_waitTimer > 90)
+		if (!m_pCharacterAttackNow->GetAttackNowFlag())
 		{
 			if (m_enemyDeadFlag)
 			{
@@ -347,8 +350,6 @@ void PlayScene::BattleEvent()
 			{
 				m_battleState = Victory;
 			}
-			
-			m_waitTimer = 0;
 		}
 
 		break;
@@ -403,7 +404,15 @@ void PlayScene::BattleEvent()
 			if (m_normalState == Boss)
 			{
 				m_enemyLevelMax++;
+				if (m_enemyLevelMax > 13)
+				{
+					m_enemyLevelMax = 13;
+				}
 				m_enemyLevelMin++;
+				if (m_enemyLevelMin > 13)
+				{
+					m_enemyLevelMin = 13;
+				}
 			}
 			m_normalState = Round1;
 		}
@@ -443,6 +452,7 @@ void PlayScene::BattleEvent()
 void PlayScene::NormalEventDraw()
 {
 	printfDx("camPos x:%d y:%d z:%d\n", m_cameraPos.x, m_cameraPos.y, m_cameraPos.z);
+	Field::DrawCall();
 	m_pPlayer->Draw();
 }
 
@@ -451,6 +461,8 @@ void PlayScene::NormalEventDraw()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEventDraw()
 {
+	Field::BattleDrawCall();
+
 	auto white = GetColor(255, 255, 255);	// 白
 	auto black = GetColor(0, 0, 0);			// 黒
 
@@ -540,7 +552,7 @@ void PlayScene::BattleEventDraw()
 	case PlayScene::Comparison:
 		break;
 	case PlayScene::AttackProcess:
-		DrawLine(1100, 0, 1500, 1080, 10 * (120 - m_waitTimer));
+		//DrawLine(1100, 0, 1500, 1080, 10 * (120 - m_waitTimer));
 		DrawFormatString(650, 800, white, "Lv%d:%sがこうげき",m_pCharacterAttackNow->GetAllStatus().LV, m_pCharacterAttackNow->GetName().c_str());
 		break;
 	case PlayScene::Victory:
@@ -574,36 +586,6 @@ void PlayScene::CommandEvent()
 		m_commandName[i] = "";
 	}
 
-	// コマンド：もちものの選択後処理
-	//if (m_commandIndex > 9 && m_commandIndex < 12)
-	//{
-	//	if (Input::IsPress(UP)) { m_commandIndex++; }		// 上方向ボタンを押した処理
-	//	if (Input::IsPress(DOWN)) { m_commandIndex--; }		// 下方向ボタンを押した処理
-
-	//	if (m_commandIndex < 10) { m_commandIndex = 10; }
-	//	if (m_commandIndex > 11) { m_commandIndex = 11; }
-
-	//	if (m_commandIndex == 11) { m_arrowPosY = 890; m_colorFlag[1] = false; }
-	//	if (m_commandIndex == 10) { m_arrowPosY = 975; m_colorFlag[0] = false; }
-
-	//	if (Input::IsPress(ENTER) && m_commandIndex == 11 && m_healFlag)		// 回復コマンドを選択
-	//	{
-
-	//	}
-	//	if (Input::IsPress(ENTER) && m_commandIndex == 10) { m_commandIndex = 5; return; }	// もどるコマンドを選択
-
-	//	m_commandName[0] = "もどる";
-	//	if (m_healFlag)
-	//	{
-	//		m_commandName[1] = "かいふく○";
-	//	}
-	//	else
-	//	{
-	//		m_commandName[1] = "かいふく";
-	//	}
-	//	
-	//}
-
 	// コマンド：こうげきのこうげき目標選択処理
 	if (m_commandIndex > 5 && m_commandIndex < 10)
 	{
@@ -613,12 +595,9 @@ void PlayScene::CommandEvent()
 		if (m_commandIndex < 6) { m_commandIndex = 6; }
 		if (m_commandIndex > 6 + m_pEnemyArray.size()) { m_commandIndex = 6 + m_pEnemyArray.size(); }
 
-
-
 		for (int i = 0; i < 4; i++)
 		{
 			auto num = i - 1;
-
 			if (m_commandIndex == 6 + i)
 			{
 				// →の座標移動処理
@@ -659,26 +638,26 @@ void PlayScene::CommandEvent()
 		if (m_commandIndex == 4) { m_arrowPosY = 805; m_colorFlag[2] = false; }
 		if (m_commandIndex == 5) { m_arrowPosY = 720; m_colorFlag[3] = false; }
 
-		if (Input::IsPress(ENTER) && m_commandIndex == 2) { m_commandIndex = 1; return; }		// もどるコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 3) { m_commandIndex = 6; }				// こうげきコマンドを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 4) { m_commandIndex = 7; }				// とくしゅを選択
-		if (Input::IsPress(ENTER) && m_commandIndex == 5 && m_healFlag)	// かいふくを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 5) { m_commandIndex = 9; }				// こうげきコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 4) { m_commandIndex = 9; }				// とくしゅを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 3 && m_healFlag)	// かいふくを選択
 		{
 			m_pPlayer->HPHeal();
 			m_healFlag = false;
 			m_battleState = Comparison;
 		}
+		if (Input::IsPress(ENTER) && m_commandIndex == 2) { m_commandIndex = 1; return; }		// もどるコマンドを選択
 
 		m_commandName[0] = "もどる";
-		m_commandName[1] = "こうげき";
 		m_commandName[2] = "とくしゅ";
+		m_commandName[3] = "こうげき";
 		if (m_healFlag)
 		{
-			m_commandName[3] = "かいふく○";
+			m_commandName[1] = "かいふく○";
 		}
 		else
 		{
-			m_commandName[3] = "かいふく";
+			m_commandName[1] = "かいふく";
 		}
 	}
 	// たたかう・にげるかの選択処理
@@ -690,10 +669,11 @@ void PlayScene::CommandEvent()
 		if (m_commandIndex == 1) { m_arrowPosY = 890; m_colorFlag[1] = false; }
 		if (m_commandIndex == 0) { m_arrowPosY = 975; m_colorFlag[0] = false; }
 
-		if (Input::IsPress(ENTER) && m_commandIndex == 1) { m_commandIndex = 2; }		// たたかうコマンドを選択
+		if (Input::IsPress(ENTER) && m_commandIndex == 1) { m_commandIndex = 5; }		// たたかうコマンドを選択
 		if (Input::IsPress(ENTER) && m_commandIndex == 0) { m_battleState = Escape; }	// にげるコマンドを選択
 
 		m_commandName[0] = "にげる";
 		m_commandName[1] = "たたかう";
+		m_commandName[2] = "ステータス";
 	}
 }

@@ -14,8 +14,6 @@ Player::Player()
 	, m_velocity(VGet(0.0f,0.0f,0.0f))
 	, m_dir(VGet(0, 0, 1))
 	, m_aimDir(VGet(0, 0, 0))
-	, m_cameraPosition(VGet(0.0f, 0.0f, 0.0f))
-	, m_cameraViewPoint(VGet(0.0f,0.0f,0.0f))
 	, m_rotateNow(false)
 {
 	// モデルをロード
@@ -70,7 +68,6 @@ void Player::Init()
 	m_velocity = vec;
 	m_dir = VGet(0, 0, 1);
 	m_aimDir = vec;
-	m_cameraViewPoint = vec;
 	m_rotateNow = false;
 	m_animType = Idle;
 	m_beforeAnimType = Idle;
@@ -85,7 +82,7 @@ void Player::Update()
 {
 	Rotate();			// 回転
 	Animation();		// アニメーション
-	Input();			// 入力
+	/*Input();*/			// 入力
 
 	m_position = VAdd(m_position, m_velocity);
 
@@ -106,6 +103,7 @@ void Player::Update()
 void Player::Draw()
 {
 	printfDx("posX:%3f posY:%3f posZ:%3f\n", m_position.x, m_position.y, m_position.z);
+	printfDx("%3f", m_animTime);
 	// プレイヤー描画.
 	MV1DrawModel(m_modelHandle);
 }
@@ -253,9 +251,18 @@ void Player::Rotate()
 void Player::Animation()
 {
 	// アニメーション繰り返し処理
-	if (m_animTotalTime < m_animTime)
+	if (m_animTotalTime < m_animTime && m_animType == Anim::Attack || m_animTotalTime < m_animTime && m_animType == Anim::Damage)
+	{
+		m_animType = Anim::Idle;
+		m_attackNow = false;
+	}
+	else if (m_animTotalTime < m_animTime)
 	{
 		m_animTime = 0.0f;
+		if (m_animType == Anim::Death)
+		{
+			m_animTime = m_animTotalTime;
+		}
 	}
 
 	// アニメーション切り替え処理

@@ -23,7 +23,7 @@ Enemy::~Enemy()
 //-----------------------------------------------------------------------------
 // @brief  初期化処理.
 //-----------------------------------------------------------------------------
-void Enemy::Init(std::string name, int level)
+void Enemy::Init(std::string name, int level, VECTOR position)
 {
     m_name = name;
     m_CharaName = UnHuman;
@@ -37,6 +37,8 @@ void Enemy::Init(std::string name, int level)
 
     m_hpMax = m_status.HP;
     m_isDeathFlag = false;
+
+    m_position = position;
     // ３Dモデルのポジション設定
     MV1SetPosition(m_modelHandle, m_position);
 }
@@ -46,7 +48,6 @@ void Enemy::Init(std::string name, int level)
 //-----------------------------------------------------------------------------
 void Enemy::Update()
 {
-    
 }
 
 //-----------------------------------------------------------------------------
@@ -55,4 +56,41 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 
+}
+
+//-----------------------------------------------------------------------------
+// @brief  アニメーション処理.
+//-----------------------------------------------------------------------------
+void Enemy::Animation()
+{
+	// アニメーション繰り返し処理
+	if (m_animTotalTime < m_animTime && m_animType == Anim::Attack || m_animTotalTime < m_animTime && m_animType == Anim::Damage)
+	{
+		m_animType = Anim::Idle;
+		m_attackNow = false;
+	}
+	else if (m_animTotalTime < m_animTime)
+	{
+		m_animTime = 0.0f;
+		if (m_animType == Anim::Death)
+		{
+			m_animTime = m_animTotalTime;
+		}
+	}
+
+	// アニメーション切り替え処理
+	if (m_animType != m_beforeAnimType)
+	{
+		MV1DetachAnim(m_modelHandle, 0);
+		auto attachIndex = MV1AttachAnim(m_modelHandle, 0, m_animHandle[m_animType]);
+		m_animTotalTime = MV1GetAnimTotalTime(m_animHandle[m_animType], attachIndex);
+		m_animTime = 0.0f;
+		m_beforeAnimType = m_animType;
+	}
+
+	// 現在のアニメーションフレームをモデルにアタッチする
+	MV1SetAttachAnimTime(m_modelHandle, 0, m_animTime);
+
+	// アニメーションフレーム加算
+	m_animTime += 0.3f;
 }
