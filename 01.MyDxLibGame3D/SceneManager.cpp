@@ -37,7 +37,7 @@ SceneManager::~SceneManager()
 //-----------------------------------------------------------------------------
 void SceneManager::GameLoop()
 {
-	while (ProcessMessage() == 0 && Input::IsPressed(ESCAPE) == 0)
+	while (ProcessMessage() == 0 && Input::IsPressed(TYPE::ESCAPE) == 0)
 	{
 		Input::Update();
 		auto tag = m_nowScene->Update();

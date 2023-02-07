@@ -1,30 +1,3 @@
-﻿  App.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  AssetManager.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  Deamon.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  DebugDrawGrid.cpp
-  EndScene.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  Enemy.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  Field.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  Input.cpp
-  main.cpp
-  Player.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  PlayScene.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(505,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(510,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(526,74): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(596,93): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
-  SceneManager.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  TitleScene.cpp
-C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  コードを生成中...
-  LINK : 前回のインクリメンタル リンクで C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
-  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxlibGame\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
+﻿  BattleMoveMentEnd.cpp
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

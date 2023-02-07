@@ -11,12 +11,6 @@
     <Filter Include="ソース ファイル\system">
       <UniqueIdentifier>{7f70c276-79a3-4aab-8c7e-24b75604b681}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Scene\cpp">
-      <UniqueIdentifier>{326262a4-37a2-4afc-80ac-65eb77cac112}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Scene\h">
-      <UniqueIdentifier>{8c847755-49df-41b0-8ffc-d3c78eedf975}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\system\cpp">
       <UniqueIdentifier>{0178c3e3-bc6e-462a-86d7-252039ee27e9}</UniqueIdentifier>
     </Filter>
@@ -86,13 +80,13 @@
     <Filter Include="ソース ファイル\Scene\Game\Battle\Continue">
       <UniqueIdentifier>{2f08df2f-1691-43f2-966d-e5382ecb5137}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\GameObject\ArrowSymbol">
+      <UniqueIdentifier>{52e3eb74-64a4-4220-8d1b-ec7e5da828c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>ソース ファイル\Scene\cpp</Filter>
     </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>ソース ファイル\system\cpp</Filter>
@@ -142,14 +136,26 @@
     <ClCompile Include="BattleMoveMentEnd.cpp">
       <Filter>ソース ファイル\Scene\Game\Battle\MoveMentEnd</Filter>
     </ClCompile>
+    <ClCompile Include="BattleEscape.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Escape</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleVictory.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Victory</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleDefeat.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Defeat</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleContinue.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Continue</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrowSymbol.cpp">
+      <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SceneBase.h">
-      <Filter>ソース ファイル\Scene\h</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>ソース ファイル\Scene\h</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>ソース ファイル\system\h</Filter>
     </ClInclude>
@@ -206,6 +212,27 @@
     </ClInclude>
     <ClInclude Include="BattleMoveMentEnd.h">
       <Filter>ソース ファイル\Scene\Game\Battle\MoveMentEnd</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEscape.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Escape</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleVictory.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Victory</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleDefeat.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Defeat</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleContinue.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Continue</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneBase.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrowSymbol.h">
+      <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

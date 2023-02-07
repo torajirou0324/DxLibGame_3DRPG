@@ -1,28 +1,48 @@
+//-----------------------------------------------------------------------------
+// @brief  全キャラ行動完了待機処理クラス.
+//-----------------------------------------------------------------------------
 #include "BattleMoveMentEnd.h"
-#include "Input.h"
+#include "PlayScene.h"
 
+//-----------------------------------------------------------------------------
+// @brief  コンストラクタ.
+//-----------------------------------------------------------------------------
 BattleMoveMentEnd::BattleMoveMentEnd()
 {
 }
 
+//-----------------------------------------------------------------------------
+// @brief  デストラクタ.
+//-----------------------------------------------------------------------------
 BattleMoveMentEnd::~BattleMoveMentEnd()
 {
 }
 
-void BattleMoveMentEnd::Init()
+//-----------------------------------------------------------------------------
+// @brief  初期化処理.
+//-----------------------------------------------------------------------------
+void BattleMoveMentEnd::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
 {
+    m_pCharacter = character;
+    m_pCharacterAttackNow = attackNowCharacter;
+    m_pPlayScene = playScene;
 }
 
+//-----------------------------------------------------------------------------
+// @brief  更新処理.
+//-----------------------------------------------------------------------------
 TAG_BattleState BattleMoveMentEnd::Update()
 {
-    if (Input::IsPress(ENTER))
+    if (!m_pCharacterAttackNow->GetAttackNowFlag())
     {
-        return TAG_BattleState::Escape;
+        return TAG_BattleState::Continue;
     }
-
-    return TAG_BattleState::MoveMentEnd;
+    return TAG_BattleState::None;
 }
 
+//-----------------------------------------------------------------------------
+// @brief  描画処理.
+//-----------------------------------------------------------------------------
 void BattleMoveMentEnd::Draw()
 {
     printfDx("全キャラ行動完了待機処理");

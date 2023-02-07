@@ -161,11 +161,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="ArrowSymbol.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="BattleCommand.cpp" />
     <ClCompile Include="BattleComparison.cpp" />
+    <ClCompile Include="BattleContinue.cpp" />
+    <ClCompile Include="BattleDefeat.cpp" />
+    <ClCompile Include="BattleEscape.cpp" />
     <ClCompile Include="BattleMoveMentEnd.cpp" />
     <ClCompile Include="BattleStart.cpp" />
+    <ClCompile Include="BattleVictory.cpp" />
     <ClCompile Include="Deamon.cpp" />
     <ClCompile Include="DebugDrawGrid.cpp" />
     <ClCompile Include="EndScene.cpp" />
@@ -181,12 +186,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="ArrowSymbol.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="BattleCommand.h" />
     <ClInclude Include="BattleComparison.h" />
+    <ClInclude Include="BattleContinue.h" />
+    <ClInclude Include="BattleDefeat.h" />
+    <ClInclude Include="BattleEscape.h" />
     <ClInclude Include="BattleMoveMentEnd.h" />
     <ClInclude Include="BattleStart.h" />
     <ClInclude Include="BattleStateMachine.h" />
+    <ClInclude Include="BattleVictory.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Deamon.h" />
     <ClInclude Include="DebugDrawGrid.h">

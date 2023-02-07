@@ -1,0 +1,274 @@
+// ここUpdate↓	
+
+switch (m_battleState)
+	{
+	case PlayScene::Start:			// 戦闘開始処理
+		m_waitTimer++;
+		m_textFlag = true;
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		if (Input::IsPress(ENTER))
+		{
+			m_battleState = Command;
+			m_waitTimer = 0;
+			m_commandIndex = 1;
+			m_pCharacter.push_back(m_pPlayer);
+			for (int i = 0; i < m_pEnemyArray.size(); i++)
+			{
+				m_pCharacter.push_back(m_pEnemyArray[i]);
+			}
+		}
+		break;
+	case PlayScene::Command:		// コマンド選択処理
+		m_arrowPosX = 1370;
+		m_textFlag = false;
+		if (m_pPlayer->GetDeathFlag())
+		{
+			m_battleState = Defeat;
+		}
+		CommandEvent();
+		break;
+	case PlayScene::Comparison:		// 素早さ比較処理
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		m_textFlag = true;
+
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			for (int j = 0; j < m_pCharacter.size(); j++)
+			{
+				if (i == j)
+				{
+
+				}
+				else
+				{
+					if (m_pCharacter[i]->GetAllStatus().AGL > m_pCharacter[j]->GetAllStatus().AGL)
+					{
+						if (i < j)
+						{
+
+						}
+						else
+						{
+							auto tmp = m_pCharacter[i];
+							m_pCharacter[i] = m_pCharacter[j];
+							m_pCharacter[j] = tmp;
+						}
+					}
+				}
+			}
+		}
+
+		m_battleState = MoveMent;
+		break;
+	case PlayScene::MoveMent:
+
+		m_enemyDeadFlag = false;
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			if (!m_pCharacter[i]->GetActionFlag() && !m_pCharacter[i]->GetDeathFlag())	// 行動済みかどうか判定
+			{
+				m_pCharacter[i]->Attack();
+				m_pCharacter[i]->Action();			// 攻撃したことを知らせる
+				m_pCharacterAttackNow = m_pCharacter[i];
+				break;
+			}
+			else
+			{
+				m_pCharacter[i]->Action();
+			}
+		}
+
+		for (int i = 0; i < m_pCharacter.size(); i++)
+		{
+			if (!m_pCharacter[i]->GetDeathFlag())					// 死んでいるかどうか
+			{
+				if (m_pCharacter[i]->GetAllStatus().HP <= 0)		// HPが0をきっていないか
+				{
+					m_pCharacter[i]->Dead();
+					if (m_pCharacter[i]->GetCharaName() == UnHuman)	// 死んだのは自分か敵か
+					{
+						int EXP = m_pCharacter[i]->GetAllStatus().EXP;
+						m_pPlayer->EXPAdd(EXP);						// 敵の場合は自分に経験値を加算
+						int Rnd = GetRand(3);
+						if (Rnd == 0 && !m_healFlag)
+						{
+							m_healFlag = true;
+						}
+					}
+					if (m_pCharacter[i]->GetCharaName() == Human)		// プレイヤーが死んでいたら即ループから抜ける
+					{
+						m_battleState = Defeat;
+						break;
+					}
+				}
+				else if (m_pCharacter[i]->GetCharaName() == UnHuman)// 敵が1人でも生きているか確認
+				{
+					m_enemyDeadFlag = true;
+				}
+			}
+		}
+
+		if (m_battleState != Defeat)
+		{
+			m_battleState = AttackProcess;
+		}
+
+
+		break;
+	case PlayScene::AttackProcess:
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		m_textFlag = true;
+
+		if (!m_pCharacterAttackNow->GetAttackNowFlag())
+		{
+			if (m_enemyDeadFlag)
+			{
+				m_battleState = Continue;
+			}
+			else
+			{
+				m_battleState = Victory;
+			}
+		}
+
+		break;
+	case PlayScene::Victory:		// 勝利処理
+		m_textFlag = true;
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+
+		if (Input::IsPress(ENTER))
+		{
+			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
+			m_pCharacter.clear();
+			int EventNum = m_normalState;
+			EventNum++;
+			if (EventNum > Boss)
+			{
+				EventNum = Boss;
+			}
+			m_normalState = static_cast<NormalState>(EventNum);
+		}
+		break;
+	case PlayScene::Defeat:			// 敗北処理
+		m_textFlag = true;
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		if (Input::IsPress(ENTER))
+		{
+			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
+			m_pCharacter.clear();
+		}
+		break;
+	case PlayScene::Escape:			// 逃げる処理
+		m_textFlag = true;
+		m_arrowPosX = 1240;
+		m_arrowPosY = 950;
+		if (Input::IsPress(ENTER))
+		{
+			m_battleFlag = false;
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				m_pCharacter[i]->ActionInit();
+			}
+			m_pCharacter.clear();
+			if (m_normalState == Boss)
+			{
+				m_enemyLevelMax++;
+				if (m_enemyLevelMax > 13)
+				{
+					m_enemyLevelMax = 13;
+				}
+				m_enemyLevelMin++;
+				if (m_enemyLevelMin > 13)
+				{
+					m_enemyLevelMin = 13;
+				}
+			}
+			m_normalState = Round1;
+		}
+		break;
+	case PlayScene::Continue:		// ターン継続処理
+		m_battleState = Command;
+		m_commandIndex = 1;
+
+		for (int i = 0; i < m_pCharacter.size(); i++)	// 全員の行動が終わるまでループさせる
+		{
+			if (!m_pCharacter[i]->GetActionFlag())
+			{
+				m_battleState = MoveMent;
+				break;
+			}
+		}
+
+		if (m_battleState == Command)		// 全員の行動が終わったら再度コマンド選択処理へ
+		{
+			for (int i = 0; i < m_pCharacter.size(); i++)
+			{
+				if (!m_pCharacter[i]->GetDeathFlag())
+				{
+					m_pCharacter[i]->ActionInit();
+				}
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+ここからDraw↓
+
+switch (m_battleState)
+	{
+	case PlayScene::Start:
+	{
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			DrawFormatString(650, 800 + 60 * i, white, "%sが現れた。", m_pEnemyArray[i]->GetName().c_str());
+		}
+		
+		if (m_waitTimer < 60)
+		{
+			GetDrawScreenGraph(0, 0, 1920, 1080, gaussianScreen);
+			GraphFilter(gaussianScreen, DX_GRAPH_FILTER_GAUSS, 16, 1400);
+			DrawGraph(0, 0, gaussianScreen, TRUE);
+		}
+	}
+		break;
+	case PlayScene::Command:
+		DrawFormatString(650, 800, white, "コマンド選択中...");
+		break;
+	case PlayScene::Comparison:
+		break;
+	case PlayScene::AttackProcess:
+		//DrawLine(1100, 0, 1500, 1080, 10 * (120 - m_waitTimer));
+		DrawFormatString(650, 800, white, "Lv%d:%sがこうげき",m_pCharacterAttackNow->GetAllStatus().LV, m_pCharacterAttackNow->GetName().c_str());
+		break;
+	case PlayScene::Victory:
+		for (int i = 0; i < m_pEnemyArray.size(); i++)
+		{
+			DrawFormatString(650, 800 + 60 * i, white, "%sをたおした", m_pEnemyArray[i]->GetName().c_str());
+		}
+		break;
+	case PlayScene::Defeat:
+		DrawFormatString(650, 800, white, "キツキ　イチカはたおれた");
+		break;
+	case PlayScene::Escape:			// 逃げる処理
+		DrawFormatString(650, 800, white, "戦闘からにげた");
+		break;
+	case PlayScene::Continue:
+		break;
+	default:
+		break;
+	}
