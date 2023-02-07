@@ -162,6 +162,10 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="BattleCommand.cpp" />
+    <ClCompile Include="BattleComparison.cpp" />
+    <ClCompile Include="BattleMoveMentEnd.cpp" />
+    <ClCompile Include="BattleStart.cpp" />
     <ClCompile Include="Deamon.cpp" />
     <ClCompile Include="DebugDrawGrid.cpp" />
     <ClCompile Include="EndScene.cpp" />
@@ -169,6 +173,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="BattleMoveMentStart.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
@@ -177,6 +182,11 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="BattleCommand.h" />
+    <ClInclude Include="BattleComparison.h" />
+    <ClInclude Include="BattleMoveMentEnd.h" />
+    <ClInclude Include="BattleStart.h" />
+    <ClInclude Include="BattleStateMachine.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Deamon.h" />
     <ClInclude Include="DebugDrawGrid.h">
@@ -190,6 +200,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Input.h" />
+    <ClInclude Include="BattleMoveMentStart.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SceneBase.h" />
