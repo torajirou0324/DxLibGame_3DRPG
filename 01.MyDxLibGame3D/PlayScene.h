@@ -9,6 +9,15 @@
 #include "Enemy.h"
 #include "Player.h"
 
+enum NormalState		// ノーマルイベントの状態管理.
+{
+	Round1,		// 1バトル目.
+	Round2,		// 2バトル目.
+	Round3,		// 3バトル目.
+	Boss,		// ボス戦.
+	End
+};
+
 class PlayScene : public Scene
 {
 public:
@@ -20,15 +29,13 @@ public:
 
 	// 現在攻撃しているキャラクターをバトルステートマシンクラスから受け取る用
 	void SetAttackObjectAddress(Character* _AttackObject) { m_pCharacterAttackNow = _AttackObject; }
+	// バトルフラグをセットする
+	void SetBattleFlag(const bool& _flag) { m_battleFlag = _flag; }
+	// ノーマルステートをセットする
+	void SetNomalState(const NormalState& _normalState) { m_normalState = _normalState; }
+	// ノーマルステートをゲットする
+	const NormalState& GetNomalState() const { return m_normalState; }
 private:
-	enum NormalState		// ノーマルイベントの状態管理.
-	{
-		Round1,		// 1バトル目.
-		Round2,		// 2バトル目.
-		Round3,		// 3バトル目.
-		Boss,		// ボス戦.
-		End
-	};
 
 	void BattleStateSwitching(const TAG_BattleState battleState);
 

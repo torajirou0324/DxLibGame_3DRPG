@@ -21,7 +21,8 @@ TAG_BattleState BattleEscape::Update()
 {
     if (Input::IsPress(ENTER))
     {
-        return TAG_BattleState::Victory;
+        m_pPlayScene->SetBattleFlag(false);
+        m_pPlayScene->SetNomalState(NormalState::Round1);
     }
 
     return TAG_BattleState::None;

@@ -42,7 +42,7 @@ PlayScene::PlayScene()
 	m_pPlayer->Init();
 
 	auto obj = new Deamon;
-	obj->Init("デーモン", 1, VGet(0.0f, 4.5f, 20.0f));
+	obj->Init("デーモン1", 1, VGet(0.0f, 4.5f, 20.0f));
 	obj->SetAttackObjectAddress(m_pPlayer);
 	m_pEnemyArray.push_back(obj);
 	m_pCharacter.push_back(m_pPlayer);
@@ -232,13 +232,14 @@ void PlayScene::NormalEvent()
 		}
 		m_pEnemyArray.clear();
 		m_pCharacter.clear();
-		BattleStateSwitching(TAG_BattleState::Start);
-		EnemyCreate(m_normalState);
 		m_pCharacter.push_back(m_pPlayer);
+		// 敵生成
+		EnemyCreate(m_normalState);
 		for (auto& it:m_pEnemyArray)
 		{
 			m_pCharacter.push_back(it);
 		}
+		BattleStateSwitching(TAG_BattleState::Start);
 	}
 
 }

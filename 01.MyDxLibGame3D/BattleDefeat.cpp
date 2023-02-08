@@ -21,7 +21,11 @@ TAG_BattleState BattleDefeat::Update()
 {
     if (Input::IsPress(ENTER))
     {
-        return TAG_BattleState::Continue;
+        m_pPlayScene->SetBattleFlag(false);
+        for (auto it : m_pCharacter)
+        {
+            it->ActionInit();
+        }
     }
 
     return TAG_BattleState::None;

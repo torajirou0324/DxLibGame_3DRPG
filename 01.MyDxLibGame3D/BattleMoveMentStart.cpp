@@ -68,7 +68,7 @@ TAG_BattleState BattleMoveMentStart::Update()
                 }
                 player->EXPAdd(EXP);
             }
-            else
+            else if(m_pCharacter[i]->GetCharaName() == CharacterName::UnHuman)
             {
                 // “G‚ª1l‚Å‚à¶‚«‚Ä‚¢‚é‚½‚ßfalse‚ğ‘ã“ü
                 m_enemyAllDeadFlag = false;
