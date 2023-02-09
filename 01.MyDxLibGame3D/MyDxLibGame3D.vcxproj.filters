@@ -234,5 +234,17 @@
     <ClInclude Include="ArrowSymbol.h">
       <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCommand.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandInvoker.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlaySceneStorage.h">
+      <Filter>ソース ファイル\Scene\Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

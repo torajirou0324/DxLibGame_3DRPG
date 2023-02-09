@@ -198,6 +198,7 @@
     <ClInclude Include="BattleStateMachine.h" />
     <ClInclude Include="BattleVictory.h" />
     <ClInclude Include="Character.h" />
+    <ClInclude Include="Command.h" />
     <ClInclude Include="Deamon.h" />
     <ClInclude Include="DebugDrawGrid.h">
       <SubType>
@@ -211,10 +212,13 @@
     </ClInclude>
     <ClInclude Include="Input.h" />
     <ClInclude Include="BattleMoveMentStart.h" />
+    <ClInclude Include="CommandInvoker.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="PlaySceneStorage.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SimpleCommand.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>

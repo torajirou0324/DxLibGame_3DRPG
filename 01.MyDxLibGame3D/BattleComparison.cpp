@@ -21,11 +21,8 @@ BattleComparison::~BattleComparison()
 //-----------------------------------------------------------------------------
 // @brief  ‰Šú‰»ˆ—.
 //-----------------------------------------------------------------------------
-void BattleComparison::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleComparison::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
 }
 
 //-----------------------------------------------------------------------------

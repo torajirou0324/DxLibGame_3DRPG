@@ -21,20 +21,12 @@
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 PlayScene::PlayScene()
-	: m_arrowPosX(0)
-	, m_arrowPosY(0)
-	, m_arrowMoveNum(0)
-	, m_intervalNum(0)
-	, m_enemyLevelMax(2)
+	: m_enemyLevelMax(2)
 	, m_enemyLevelMin(1)
-	, m_textFlag(false)
 	, m_selectFlag(false)
 	, m_movieFlag(false)
 	, m_battleFlag(false)
-	, m_enemyDeadFlag(false)
-	, m_healFlag(false)
 	, m_commandIndex(1)
-	, m_waitTimer(0)
 {
 	// 自機と敵の生成
 	m_pCharacterAttackNow = nullptr;
@@ -49,9 +41,9 @@ PlayScene::PlayScene()
 	m_pCharacter.push_back(obj);
 
 	// バトルステートの初期化
-	m_pBattleState = nullptr;
-	m_pBattleStateArray[TAG_BattleState::Start] = new BattleStart;
-	m_pBattleStateArray[TAG_BattleState::Command] = new BattleCommand;
+	m_battleState = TAG_BattleState::Start;
+	m_pBattleStateArray[TAG_BattleState::Start] = new BattleStart(this);
+	m_pBattleStateArray[TAG_BattleState::CommandProcess] = new BattleCommand(this);
 	m_pBattleStateArray[TAG_BattleState::Comparison] = new BattleComparison;
 	m_pBattleStateArray[TAG_BattleState::MoveMentStart] = new BattleMoveMentStart;
 	m_pBattleStateArray[TAG_BattleState::MoveMentEnd] = new BattleMoveMentEnd;
@@ -59,8 +51,6 @@ PlayScene::PlayScene()
 	m_pBattleStateArray[TAG_BattleState::Victory] = new BattleVictory;
 	m_pBattleStateArray[TAG_BattleState::Defeat] = new BattleDefeat;
 	m_pBattleStateArray[TAG_BattleState::Continue] = new BattleContinue;
-	BattleStateSwitching(TAG_BattleState::Start);
-
 
 	m_normalState = Round1;
 	
@@ -69,21 +59,7 @@ PlayScene::PlayScene()
 	SetCameraPositionAndTarget_UpVecY(m_cameraPos, VGet(0.0f, 20.0f, 20.0f));
 
 	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
-	m_commandWindow[0] = AssetManager::UseImage(AssetManager::CommandWindowWhite);
-	m_commandWindow[1] = AssetManager::UseImage(AssetManager::CommandWindowBlack);
 	m_statusWindow = AssetManager::UseImage(AssetManager::StatusWindow);
-	m_arrowHandle[0] = AssetManager::UseImage(AssetManager::RightArrow);
-	m_arrowHandle[1] = AssetManager::UseImage(AssetManager::DownArrow);
-
-	for (int i = 0; i < 4; i++)
-	{
-		m_colorFlag.push_back(true);
-	}
-
-	m_commandName.push_back("にげる");
-	m_commandName.push_back("たたかう");
-	m_commandName.push_back("");
-	m_commandName.push_back("");
 
 	m_battleFlag = true;
 }
@@ -93,18 +69,15 @@ PlayScene::PlayScene()
 //-----------------------------------------------------------------------------
 PlayScene::~PlayScene()
 {
-	m_commandName.clear();
-	m_colorFlag.clear();
-	for (int i = 0; i < TAG_BattleState::None; i++)
+	for (const auto& it:m_pBattleStateArray)
 	{
-		if (m_pBattleStateArray[i] != nullptr)
+		if (it.second != nullptr)
 		{
-			delete m_pBattleStateArray[i];
-			m_pBattleStateArray[i] = nullptr;
+			delete it.second;
 		}
 
 	}
-
+	m_pBattleStateArray.clear();
 	for (int i = 0; i < m_pEnemyArray.size(); i++)
 	{
 		if (m_pEnemyArray[i] != nullptr)
@@ -157,19 +130,6 @@ void PlayScene::Draw()
 	else
 	{
 		NormalEventDraw();
-	}
-}
-
-void PlayScene::BattleStateSwitching(const TAG_BattleState battleState)
-{
-	for (int i = 0; i < TAG_BattleState::None; i++)
-	{
-		if (i == battleState)
-		{
-			m_pBattleState = m_pBattleStateArray[battleState];
-			m_pBattleState->Init(m_pCharacter, m_pCharacterAttackNow, this);
-			break;
-		}
 	}
 }
 
@@ -239,7 +199,8 @@ void PlayScene::NormalEvent()
 		{
 			m_pCharacter.push_back(it);
 		}
-		BattleStateSwitching(TAG_BattleState::Start);
+		m_battleState = TAG_BattleState::Start;
+
 	}
 
 }
@@ -254,11 +215,11 @@ void PlayScene::BattleEvent()
 		m_pCharacter[i]->Update();
 	}
 
-	auto tag = m_pBattleState->Update();
+	auto tag = m_pBattleStateArray[m_battleState]->Update();
 
 	if (tag != TAG_BattleState::None)
 	{
-		BattleStateSwitching(tag);
+		m_battleState = tag;
 	}
 }
 
@@ -318,5 +279,5 @@ void PlayScene::BattleEventDraw()
 			DrawFormatString(1920 - (520 * addNum) + 300, 150, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_pEnemyArray[i]->GetHPMAX());
 		}
 	}
-	m_pBattleState->Draw();
+	m_pBattleStateArray[m_battleState]->Draw();
 }

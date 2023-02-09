@@ -10,11 +10,8 @@ BattleEscape::~BattleEscape()
 {
 }
 
-void BattleEscape::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleEscape::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
 }
 
 TAG_BattleState BattleEscape::Update()

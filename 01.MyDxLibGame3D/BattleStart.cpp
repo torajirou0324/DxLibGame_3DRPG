@@ -10,11 +10,10 @@ const int m_waitMaxTime = 40;		// 画面待機時間.
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleStart::BattleStart()
+BattleStart::BattleStart(class PlayScene* _playScene)
     : m_waitTimer(0)
-    , m_arrowMoveNum(0)		// コマンド選択矢印の微動させる用変数.
-    , m_intervalNum(0)
 {
+    m_pPlaySceneStorage = _playScene;
     gaussianScreen = MakeScreen(1920, 1080);
 }
 
@@ -29,11 +28,8 @@ BattleStart::~BattleStart()
 //-----------------------------------------------------------------------------
 // @brief  初期化処理.
 //-----------------------------------------------------------------------------
-void BattleStart::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleStart::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
     m_waitTimer = 0;
 }
 
@@ -44,19 +40,9 @@ TAG_BattleState BattleStart::Update()
 {
     m_waitTimer++;
 
-    m_intervalNum++;
-    if (m_intervalNum > 7)
-    {
-        m_intervalNum = 0;
-        m_arrowMoveNum++;
-        if (m_arrowMoveNum > 20)
-        {
-            m_arrowMoveNum = 0;
-        }
-    }
     if (Input::IsPress(ENTER))
     {
-        return TAG_BattleState::Command;
+        return TAG_BattleState::CommandProcess;
     }
 
     return TAG_BattleState::None;
@@ -80,5 +66,5 @@ void BattleStart::Draw()
         DrawGraph(0, 0, gaussianScreen, TRUE);
     }
 
-    DrawArrowVertical(1240, 950 + m_arrowMoveNum);      // 矢印の表示
+    DrawArrowVertical(1240, 950);      // 矢印の表示
 }

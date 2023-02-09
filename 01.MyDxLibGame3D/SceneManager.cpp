@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Field.h"
 #include "Input.h"
+#include "ArrowSymbol.h"
 #include "DebugDrawGrid.h"
 
 //-----------------------------------------------------------------------------
@@ -40,6 +41,7 @@ void SceneManager::GameLoop()
 	while (ProcessMessage() == 0 && Input::IsPressed(TYPE::ESCAPE) == 0)
 	{
 		Input::Update();
+		ArrowUpdate();
 		auto tag = m_nowScene->Update();
 
 #ifdef _DEBUG

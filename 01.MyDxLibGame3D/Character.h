@@ -62,6 +62,8 @@ public:
     virtual void Update() = 0;
     virtual void Draw() = 0;
 
+    virtual void Move() = 0;
+
     void Attack()           // エネミーからプレイヤーへ攻撃用処理
     {
         int ATK = m_status.ATK;

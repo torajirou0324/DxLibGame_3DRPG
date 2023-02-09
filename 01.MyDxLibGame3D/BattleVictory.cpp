@@ -10,11 +10,8 @@ BattleVictory::~BattleVictory()
 {
 }
 
-void BattleVictory::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleVictory::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
 }
 
 TAG_BattleState BattleVictory::Update()

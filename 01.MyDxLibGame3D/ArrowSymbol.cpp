@@ -5,12 +5,15 @@
 #include "ArrowSymbol.h"
 #include "AssetManager.h"
 
+int m_arrowMoveNum(0);		// コマンド選択矢印の微動させる用変数.
+int m_intervalNum(0);
+
 //-----------------------------------------------------------------------------
 // @brief  縦向きの矢印描画処理.
 //-----------------------------------------------------------------------------
 void DrawArrowVertical(int posX, int posY)
 {
-	DrawGraph(posX, posY, AssetManager::UseImage(AssetManager::DownArrow), TRUE);
+	DrawGraph(posX, posY + m_arrowMoveNum, AssetManager::UseImage(AssetManager::DownArrow), TRUE);
 }
 
 //-----------------------------------------------------------------------------
@@ -18,9 +21,19 @@ void DrawArrowVertical(int posX, int posY)
 //-----------------------------------------------------------------------------
 void DrawArrowSide(int posX, int posY)
 {
-    DrawGraph(posX, posY, AssetManager::UseImage(AssetManager::RightArrow), TRUE);
+    DrawGraph(posX + m_arrowMoveNum, posY, AssetManager::UseImage(AssetManager::RightArrow), TRUE);
 }
 
 void ArrowUpdate()
 {
+    if (m_intervalNum > 7)
+    {
+        m_intervalNum = 0;
+        m_arrowMoveNum++;
+        if (m_arrowMoveNum > 20)
+        {
+            m_arrowMoveNum = 0;
+        }
+    }
+    m_intervalNum++;
 }

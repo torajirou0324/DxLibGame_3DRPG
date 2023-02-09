@@ -16,7 +16,13 @@ public:
 	void Input();			// 入力処理.
 	void Rotate();			// 回転処理.
 	void Animation();		// アニメーション処理.
+	void Move();			// 行動処理.
 	void LevelManager();	// レベルとステータス管理処理.
+
+	void SetMoveSelect(MoveCommand _command)
+	{
+		m_moveSelection = _command;
+	}
 
 	void HPHeal()
 	{

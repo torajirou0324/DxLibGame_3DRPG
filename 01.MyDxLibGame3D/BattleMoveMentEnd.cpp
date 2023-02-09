@@ -21,11 +21,8 @@ BattleMoveMentEnd::~BattleMoveMentEnd()
 //-----------------------------------------------------------------------------
 // @brief  ‰Šú‰»ˆ—.
 //-----------------------------------------------------------------------------
-void BattleMoveMentEnd::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleMoveMentEnd::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
 }
 
 //-----------------------------------------------------------------------------

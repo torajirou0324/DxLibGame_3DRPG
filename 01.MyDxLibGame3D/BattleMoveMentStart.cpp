@@ -24,11 +24,8 @@ BattleMoveMentStart::~BattleMoveMentStart()
 //-----------------------------------------------------------------------------
 // @brief  ‰Šú‰»ˆ—.
 //-----------------------------------------------------------------------------
-void BattleMoveMentStart::Init(std::vector<Character*>& character, Character*& attackNowCharacter, PlayScene* playScene)
+void BattleMoveMentStart::Init()
 {
-    m_pCharacter = character;
-    m_pCharacterAttackNow = attackNowCharacter;
-    m_pPlayScene = playScene;
     m_enemyAllDeadFlag = true;
     m_playerDeadFlag = false;
 }
