@@ -4,26 +4,35 @@
 class SimpleCommand : public Command
 {
 public:
-    explicit SimpleCommand(std::function<void(MoveCommand)> _function, std::string _str, MoveCommand _moveCommand)
-        : m_pFunction(_function)
-        , m_commandName(_str)
-        , m_moveCommand(_moveCommand)
+    SimpleCommand(Player* _player, SKILL _skill)
+        : m_orignPlayer(_player)
+        , m_skill(_skill)
     {
     }
+    ~SimpleCommand() override {}
 
-    void Execute() const override {
+    void Execute() override 
+    {
         if (Input::IsPress(ENTER))
         {
-            this->m_pFunction(m_moveCommand);
+            m_orignPlayer->SetUseSkill(m_skill);
         }
+        m_display = true;
     }
 
     void Draw(int posY) const override
     {
-
+        if (m_display)
+        {
+            DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
+            DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "%s", m_skill.SkillName.c_str());
+            return;
+        }
+        DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
+        DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "%s", m_skill.SkillName.c_str());
     }
 private:
-    std::function<void(MoveCommand)> m_pFunction;
-    std::string m_commandName;
-    MoveCommand m_moveCommand;
+    Player* m_orignPlayer;
+    SKILL m_skill;
+
 };

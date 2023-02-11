@@ -4,7 +4,7 @@
 class BattleVictory : public BattleStateMachine
 {
 public:
-	BattleVictory();					// コンストラクタ.
+	BattleVictory(class PlayScene* _playScene);					// コンストラクタ.
 	~BattleVictory() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

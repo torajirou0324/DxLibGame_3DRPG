@@ -44,13 +44,13 @@ PlayScene::PlayScene()
 	m_battleState = TAG_BattleState::Start;
 	m_pBattleStateArray[TAG_BattleState::Start] = new BattleStart(this);
 	m_pBattleStateArray[TAG_BattleState::CommandProcess] = new BattleCommand(this);
-	m_pBattleStateArray[TAG_BattleState::Comparison] = new BattleComparison;
-	m_pBattleStateArray[TAG_BattleState::MoveMentStart] = new BattleMoveMentStart;
-	m_pBattleStateArray[TAG_BattleState::MoveMentEnd] = new BattleMoveMentEnd;
-	m_pBattleStateArray[TAG_BattleState::BattleEscapeProcess] = new BattleEscape;
-	m_pBattleStateArray[TAG_BattleState::Victory] = new BattleVictory;
-	m_pBattleStateArray[TAG_BattleState::Defeat] = new BattleDefeat;
-	m_pBattleStateArray[TAG_BattleState::Continue] = new BattleContinue;
+	m_pBattleStateArray[TAG_BattleState::Comparison] = new BattleComparison(this);
+	m_pBattleStateArray[TAG_BattleState::MoveMentStart] = new BattleMoveMentStart(this);
+	m_pBattleStateArray[TAG_BattleState::MoveMentEnd] = new BattleMoveMentEnd(this);
+	m_pBattleStateArray[TAG_BattleState::BattleEscapeProcess] = new BattleEscape(this);
+	m_pBattleStateArray[TAG_BattleState::Victory] = new BattleVictory(this);
+	m_pBattleStateArray[TAG_BattleState::Defeat] = new BattleDefeat(this);
+	m_pBattleStateArray[TAG_BattleState::Continue] = new BattleContinue(this);
 
 	m_normalState = Round1;
 	

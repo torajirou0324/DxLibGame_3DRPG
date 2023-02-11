@@ -2,8 +2,9 @@
 #include "Input.h"
 #include "PlayScene.h"
 
-BattleDefeat::BattleDefeat()
+BattleDefeat::BattleDefeat(class PlayScene* _playScene)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 BattleDefeat::~BattleDefeat()
@@ -18,8 +19,9 @@ TAG_BattleState BattleDefeat::Update()
 {
     if (Input::IsPress(ENTER))
     {
-        m_pPlayScene->SetBattleFlag(false);
-        for (auto it : m_pCharacter)
+        m_pPlaySceneStorage->SetBattleFlag(false);
+        auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+        for (auto it : CharacterALL)
         {
             it->ActionInit();
         }

@@ -1,3 +1,6 @@
-﻿  ArrowSymbol.cpp
+﻿  Player.cpp
 C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  SceneManager.cpp
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  コードを生成中...
   MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

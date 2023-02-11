@@ -19,6 +19,7 @@ public:
                 m_pCommandArray[i] = nullptr;
             }
         }
+        m_pCommandArray.clear();
     }
 
     void SetOnCommand(Command* _command)
@@ -28,11 +29,33 @@ public:
 
     void Update()
     {
-        for (int i = 0; i < m_pCommandArray.size(); i++)
+        if (m_dicide)
         {
-            m_pCommandArray[i]->Execute();
+            m_pCommandArray[m_commandNum]->m_display = false;
+            m_pCommandArray[m_commandNum]->Execute();
         }
-        m_dicide = false;
+
+
+        if (Input::IsPress(ENTER))
+        {
+            m_dicide = true;
+        }
+        if (Input::IsPress(BACK))
+        {
+            m_dicide = false;
+        }
+        if (Input::IsPress(UP))
+        {
+            m_commandNum++;
+        }
+        if (Input::IsPress(DOWN))
+        {
+            m_commandNum--;
+        }
+        if (m_commandNum < 0) { m_commandNum = 0; }
+        if (m_commandNum > 3) { m_commandNum = 3; }
+
+        m_display = true;
     }
 
     void Draw(int posY)
@@ -41,22 +64,29 @@ public:
         {
             for (int i = 0; i < m_pCommandArray.size(); i++)
             {
-                m_pCommandArray[i]->Draw(975);
+                m_pCommandArray[i]->Draw(975 - (80 * i));
             }
             return;
         }
         else
         {
-            DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
-            DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "%s", m_commandName.c_str());
-            return;
+            if (m_display)
+            {
+                DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
+                DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "%s", m_commandName.c_str());
+                return;
+            }
+            DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
+            DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "%s", m_commandName.c_str());
         }
-        DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
-        DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "%s", m_commandName.c_str());
     }
 
-    bool m_dicide = false;
-    std::string m_commandName;
+    const bool& GetDicideFlag() { return m_dicide; }
+
+    bool m_display = false;
 private:
     std::vector<Command*> m_pCommandArray;
+    std::string m_commandName;
+    bool m_dicide = false;
+    int m_commandNum = 0;
 };

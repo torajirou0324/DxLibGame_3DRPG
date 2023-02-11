@@ -243,8 +243,8 @@
     <ClInclude Include="CommandInvoker.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="PlaySceneStorage.h">
-      <Filter>ソース ファイル\Scene\Game</Filter>
+    <ClInclude Include="Skill.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

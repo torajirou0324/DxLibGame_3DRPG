@@ -7,8 +7,9 @@
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleContinue::BattleContinue()
+BattleContinue::BattleContinue(class PlayScene* _playScene)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 //-----------------------------------------------------------------------------
@@ -30,21 +31,22 @@ void BattleContinue::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleContinue::Update()
 {
+    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
     // 全員のアクションが終わるまで行動実行処理へ戻る
-    for (int i = 0; i < m_pCharacter.size(); i++)
+    for (int i = 0; i < CharacterALL.size(); i++)
     {
-        if (!m_pCharacter[i]->GetActionFlag())
+        if (!CharacterALL[i]->GetActionFlag())
         {
             return TAG_BattleState::MoveMentStart;
         }
     }
 
     // 全ての行動処理が完了しており敵も生きているためコマンド処理へ戻る前に行動フラグをfalseに戻す
-    for (int i = 0; i < m_pCharacter.size(); i++)
+    for (int i = 0; i < CharacterALL.size(); i++)
     {
-        m_pCharacter[i]->ActionInit();
+        CharacterALL[i]->ActionInit();
     }
-    return TAG_BattleState::Command;
+    return TAG_BattleState::CommandProcess;
 }
 
 //-----------------------------------------------------------------------------

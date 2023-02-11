@@ -8,10 +8,11 @@
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleMoveMentStart::BattleMoveMentStart()
+BattleMoveMentStart::BattleMoveMentStart(class PlayScene* _playScene)
     : m_enemyAllDeadFlag(false)
     , m_playerDeadFlag(false)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 //-----------------------------------------------------------------------------
@@ -35,29 +36,30 @@ void BattleMoveMentStart::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleMoveMentStart::Update()
 {
-    for (int i = 0; i < m_pCharacter.size(); i++)
+    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    for (int i = 0; i < CharacterALL.size(); i++)
     {
         // 行動が終わっていないかつ、死んでいないとき行動する
-        if (!m_pCharacter[i]->GetActionFlag() && !m_pCharacter[i]->GetDeathFlag())
+        if (!CharacterALL[i]->GetActionFlag() && !CharacterALL[i]->GetDeathFlag())
         {
-            m_pCharacter[i]->Action();
-            m_pCharacter[i]->Attack();
-            m_pPlayScene->SetAttackObjectAddress(m_pCharacter[i]);    // 現在行動しているキャラクターを代入する
+            CharacterALL[i]->Action();
+            CharacterALL[i]->Attack();
+            m_pPlaySceneStorage->SetAttackObjectAddress(CharacterALL[i]);    // 現在行動しているキャラクターを代入する
             break;
         }
     }
 
-    for (int i = 0; i < m_pCharacter.size(); i++)
+    for (int i = 0; i < CharacterALL.size(); i++)
     {
-        if (!m_pCharacter[i]->GetDeathFlag())
+        if (!CharacterALL[i]->GetDeathFlag())
         {
             // 敵が現在死んでいないか
-            if (m_pCharacter[i]->GetAllStatus().HP <= 0 && m_pCharacter[i]->GetCharaName() == CharacterName::UnHuman)
+            if (CharacterALL[i]->GetAllStatus().HP <= 0 && !CharacterALL[i]->GetDiscrimination())
             {
                 // 死んでいたら死亡フラグを立て、プレイヤーに自身の付与予定経験値を加算する
-                m_pCharacter[i]->Dead();
-                int EXP = m_pCharacter[i]->GetAllStatus().EXP;
-                auto player = dynamic_cast<Player*>(m_pCharacter[0]);
+                CharacterALL[i]->Dead();
+                int EXP = CharacterALL[i]->GetAllStatus().EXP;
+                auto player = dynamic_cast<Player*>(CharacterALL[0]);
                 // キャストが失敗したら抜ける
                 if (player == nullptr)
                 {
@@ -65,26 +67,26 @@ TAG_BattleState BattleMoveMentStart::Update()
                 }
                 player->EXPAdd(EXP);
             }
-            else if(m_pCharacter[i]->GetCharaName() == CharacterName::UnHuman)
+            else if(!CharacterALL[i]->GetDiscrimination())
             {
                 // 敵が1人でも生きているためfalseを代入
                 m_enemyAllDeadFlag = false;
             }
             // プレイヤーが死んでいないか
-            if (m_pCharacter[i]->GetAllStatus().HP <= 0 && m_pCharacter[i]->GetCharaName() == CharacterName::Human)
+            if (CharacterALL[i]->GetAllStatus().HP <= 0 && CharacterALL[i]->GetDiscrimination())
             {
                 // 死んでいるためフラグを立てる
-                m_pCharacter[i]->Dead();
+                CharacterALL[i]->Dead();
             }
         }
         else
         {
-            m_pCharacter[i]->Action();
+            CharacterALL[i]->Action();
         }
     }
 
     // プレイヤーが現在死んでいないか
-    if (m_pCharacter[0]->GetDeathFlag())
+    if (CharacterALL[0]->GetDeathFlag())
     {
         // 死んでいるため敗北処理へ
         return TAG_BattleState::Defeat;

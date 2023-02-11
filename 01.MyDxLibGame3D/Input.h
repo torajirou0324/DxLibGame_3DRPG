@@ -12,6 +12,7 @@ enum TYPE
     LEFT,
     RIGHT,
     ENTER,
+    BACK,
     END
 };
 

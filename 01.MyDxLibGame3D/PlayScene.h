@@ -36,6 +36,8 @@ public:
 	// ノーマルステートをゲットする
 	const NormalState& GetNomalState() const { return m_normalState; }
 
+	std::vector<Character*> GetCharacterArrayAddress() { return m_pCharacter; }
+	Character* GetAttackNowCharacter() { return m_pCharacterAttackNow; }
 	Player* GetPlayerAddress() { return m_pPlayer; }
 private:
 

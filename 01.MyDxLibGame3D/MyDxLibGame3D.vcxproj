@@ -215,10 +215,10 @@
     <ClInclude Include="CommandInvoker.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="PlaySceneStorage.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SimpleCommand.h" />
+    <ClInclude Include="Skill.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>

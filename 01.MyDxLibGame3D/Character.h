@@ -7,19 +7,7 @@
 #include <DxLib.h>
 #include "AssetManager.h"
 #include "Status.h"
-
-// プレイヤーか敵かを判定する用列挙体
-enum CharacterName
-{
-    Human,      // 人（プレイヤー）
-    UnHuman,    // 人外（敵）
-};
-
-enum MoveCommand    // 戦闘するときの行動モーション
-{
-    Atk,        // 攻撃する
-    charge,     // ためる（次のターン攻撃力2倍）
-};
+#include "Skill.h"
 
 // アニメーション管理列挙体
 enum Anim
@@ -125,8 +113,8 @@ public:
     }
     const std::string& GetName() const { return m_name; }
     const Status& GetAllStatus() const { return m_status; }
-    const CharacterName& GetCharaName() const { return m_CharaName; }
-    const int& GetHPMAX() { return m_hpMax; }
+    const int& GetHPMAX() const { return m_hpMax; }
+    const bool& GetDiscrimination() const { return m_isPlayerFlag; }
 protected:
     int m_animHandle[5];	    // アニメーションのモデルハンドル.
     int m_modelHandle;          // キャラクター自身のモデルハンドル
@@ -135,22 +123,20 @@ protected:
     float m_animTime;           // アニメーションの経過時間
     float m_animTotalTime;      // アニメーションの総再生時間
 
+    bool m_isPlayerFlag;        // プレイヤーかどうか
     bool m_isDeathFlag;         // 死んだかどうか
     bool m_enActionFlag;        // 行動が終わったか
     bool m_attackNow;           // 攻撃中かどうか
 
     std::string m_name;         // キャラクターの名前
-
     VECTOR m_position;          // キャラクターの座標
 
     Status m_status;            // キャラクターのステータス（戦闘時変化用）
     Status m_basicStatus;       // キャラクターステータス（基礎ステータス）
+    SKILL m_skillStorage[4];       // 技格納用の配列
 
     Anim m_animType;            // 現在のアニメーション保存用
     Anim m_beforeAnimType;      // 1つ前のアニメーション保存用
-
-    MoveCommand m_moveSelection;// 行動がどうか決める
-    CharacterName m_CharaName;  // キャラクターが人か人外か判定用
 private:
     Character* m_pAttackObject; // 攻撃する相手格納用変数
 };

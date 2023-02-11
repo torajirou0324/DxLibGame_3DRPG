@@ -12,7 +12,7 @@ public:
 
     void Update();                      // XVˆ—.
     void Draw()override;                        // •`‰æˆ—.
-
+    void Move() override;
 private:
 
 };

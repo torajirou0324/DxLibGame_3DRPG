@@ -16,6 +16,15 @@ Player::Player()
 	, m_aimDir(VGet(0, 0, 0))
 	, m_rotateNow(false)
 {
+	// プレイヤーです
+	m_isPlayerFlag = true;
+
+	for (int i = 0; i < 4; i++)
+	{
+		//m_skillStorage[i] = Skill[i];
+	}
+
+
 	// モデルをロード
 	m_modelHandle = AssetManager::UseModel(AssetManager::Player);
 
@@ -50,7 +59,6 @@ Player::~Player()
 void Player::Init()
 {
 	m_name = "キツキ　イチカ";
-	m_CharaName = Human;
 
 	// ステータスの初期化
 	m_status.LV = 1;
@@ -284,10 +292,6 @@ void Player::Animation()
 
 void Player::Move()
 {
-	if (m_moveSelection == MoveCommand::Atk)
-	{
-		Attack();
-	}
 
 	Action();
 }

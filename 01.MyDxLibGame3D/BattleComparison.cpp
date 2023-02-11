@@ -7,8 +7,9 @@
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleComparison::BattleComparison()
+BattleComparison::BattleComparison(class PlayScene* _playScene)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 //-----------------------------------------------------------------------------
@@ -30,9 +31,10 @@ void BattleComparison::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleComparison::Update()
 {
-    for (int i = 0; i < m_pCharacter.size(); i++)
+    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    for (int i = 0; i < CharacterALL.size(); i++)
     {
-        for (int j = 0; j < m_pCharacter.size(); j++)
+        for (int j = 0; j < CharacterALL.size(); j++)
         {
             if (i == j)
             {
@@ -40,7 +42,7 @@ TAG_BattleState BattleComparison::Update()
             }
             else
             {
-                if (m_pCharacter[i]->GetAllStatus().AGL > m_pCharacter[j]->GetAllStatus().AGL)
+                if (CharacterALL[i]->GetAllStatus().AGL > CharacterALL[j]->GetAllStatus().AGL)
                 {
                     if (i < j)
                     {
@@ -48,9 +50,9 @@ TAG_BattleState BattleComparison::Update()
                     }
                     else
                     {
-                        auto tmp = m_pCharacter[i];
-                        m_pCharacter[i] = m_pCharacter[j];
-                        m_pCharacter[j] = tmp;
+                        auto tmp = CharacterALL[i];
+                        CharacterALL[i] = CharacterALL[j];
+                        CharacterALL[j] = tmp;
                     }
                 }
             }

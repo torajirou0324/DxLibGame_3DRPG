@@ -19,21 +19,9 @@ public:
 	void Move();			// 行動処理.
 	void LevelManager();	// レベルとステータス管理処理.
 
-	void SetMoveSelect(MoveCommand _command)
+	void SetUseSkill(SKILL _skillCommand)
 	{
-		m_moveSelection = _command;
-	}
-
-	void HPHeal()
-	{
-		int HP = m_status.HP;
-		HP = HP + (3 * m_status.LV);
-		if (m_hpMax < HP)
-		{
-			HP = m_hpMax;
-		}
-		m_status.HP = HP;
-		Action();
+		m_useSkill = _skillCommand;
 	}
 
 	void EXPAdd(int exp)	// 経験値取得＋レベルアップ処理呼び
@@ -53,10 +41,9 @@ public:
 		}
 	}
 
-	// セッター
-	void SetAnimType(const Anim& _animType) { m_animType = _animType; }
 	// ゲッター
 	const int& GetEXPMAX() { return m_expMAX; }
+	const SKILL* GetSKILL() { return m_skillStorage; }
 private:
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
@@ -73,4 +60,6 @@ private:
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
+
+	SKILL m_useSkill;		// 使用する技格納用.
 };

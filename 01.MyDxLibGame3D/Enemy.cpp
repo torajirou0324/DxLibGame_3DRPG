@@ -10,7 +10,8 @@
 //-----------------------------------------------------------------------------
 Enemy::Enemy()
 {
-
+	// ÉvÉåÉCÉÑÅ[Ç∂Ç·Ç»Ç¢Ç≈Ç∑
+	m_isPlayerFlag = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -26,7 +27,6 @@ Enemy::~Enemy()
 void Enemy::Init(std::string name, int level, VECTOR position)
 {
     m_name = name;
-    m_CharaName = UnHuman;
 
     m_status.LV = level;
     m_status.HP = 10 + 2 * level;
@@ -56,6 +56,10 @@ void Enemy::Update()
 void Enemy::Draw()
 {
 
+}
+
+void Enemy::Move()
+{
 }
 
 //-----------------------------------------------------------------------------

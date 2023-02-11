@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <functional>
 #include <DxLib.h>
 #include "Player.h"
 #include "Input.h"
@@ -8,9 +7,8 @@
 
 enum TAG_Command
 {
-    AttackCommand,
     IntelligenceCommand,
-    OnThingsCommand,
+    AttackCommand,
     Return,
 };
 
@@ -19,6 +17,8 @@ class Command
 public:
     virtual ~Command() {
     }
-    virtual void Execute() const = 0;
+    virtual void Execute() = 0;
     virtual void Draw(int posY) const = 0;
+
+    bool m_display = false;
 };

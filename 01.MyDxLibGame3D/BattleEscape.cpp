@@ -2,8 +2,9 @@
 #include "Input.h"
 #include "PlayScene.h"
 
-BattleEscape::BattleEscape()
+BattleEscape::BattleEscape(class PlayScene* _playScene)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 BattleEscape::~BattleEscape()
@@ -18,8 +19,8 @@ TAG_BattleState BattleEscape::Update()
 {
     if (Input::IsPress(ENTER))
     {
-        m_pPlayScene->SetBattleFlag(false);
-        m_pPlayScene->SetNomalState(NormalState::Round1);
+        m_pPlaySceneStorage->SetBattleFlag(false);
+        m_pPlaySceneStorage->SetNomalState(NormalState::Round1);
     }
 
     return TAG_BattleState::None;

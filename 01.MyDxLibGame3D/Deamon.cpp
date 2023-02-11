@@ -62,3 +62,7 @@ void Deamon::Draw()
 {
     MV1DrawModel(m_modelHandle);
 }
+
+void Deamon::Move()
+{
+}

@@ -7,7 +7,7 @@
 class BattleMoveMentEnd : public BattleStateMachine
 {
 public:
-	BattleMoveMentEnd();					// コンストラクタ.
+	BattleMoveMentEnd(class PlayScene* _playScene);					// コンストラクタ.
 	~BattleMoveMentEnd() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

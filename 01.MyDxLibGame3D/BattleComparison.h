@@ -7,7 +7,7 @@
 class BattleComparison : public BattleStateMachine
 {
 public:
-	BattleComparison();						// コンストラクタ.
+	BattleComparison(class PlayScene* _playScene);						// コンストラクタ.
 	~BattleComparison() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

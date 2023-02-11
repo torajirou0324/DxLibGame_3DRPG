@@ -7,7 +7,7 @@
 class BattleMoveMentStart : public BattleStateMachine
 {
 public:
-	BattleMoveMentStart();						// コンストラクタ.
+	BattleMoveMentStart(class PlayScene* _playScene);						// コンストラクタ.
 	~BattleMoveMentStart() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

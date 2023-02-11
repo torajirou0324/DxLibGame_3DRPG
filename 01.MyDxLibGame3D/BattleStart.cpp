@@ -55,9 +55,10 @@ void BattleStart::Draw()
 {
     printfDx("ƒoƒgƒ‹ŠJnˆ—");
 
-    for (int i = 1; i < m_pCharacter.size(); i++)       // “G‚ªŒ»‚ê‚½‚±‚Æ‚ğ‰æ–Ê‚Å“`‚¦‚é
+    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    for (int i = 1; i < CharacterALL.size(); i++)       // “G‚ªŒ»‚ê‚½‚±‚Æ‚ğ‰æ–Ê‚Å“`‚¦‚é
     {
-        DrawFormatString(650, 740 + 60 * i, GetColor(255, 255, 255), "%s‚ªŒ»‚ê‚½", m_pCharacter[i]->GetName().c_str());
+        DrawFormatString(650, 740 + 60 * i, GetColor(255, 255, 255), "%s‚ªŒ»‚ê‚½", CharacterALL[i]->GetName().c_str());
     }
     if (m_waitTimer < m_waitMaxTime)                    // ‰æ–Ê‚Ú‚©‚µ
     {

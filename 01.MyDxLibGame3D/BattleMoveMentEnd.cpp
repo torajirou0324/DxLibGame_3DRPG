@@ -7,8 +7,9 @@
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleMoveMentEnd::BattleMoveMentEnd()
+BattleMoveMentEnd::BattleMoveMentEnd(class PlayScene* _playScene)
 {
+    m_pPlaySceneStorage = _playScene;
 }
 
 //-----------------------------------------------------------------------------
@@ -30,7 +31,7 @@ void BattleMoveMentEnd::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleMoveMentEnd::Update()
 {
-    if (!m_pCharacterAttackNow->GetAttackNowFlag())
+    if (!m_pPlaySceneStorage->GetAttackNowCharacter()->GetAttackNowFlag())
     {
         return TAG_BattleState::Continue;
     }

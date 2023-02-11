@@ -4,7 +4,7 @@
 class BattleEscape : public BattleStateMachine
 {
 public:
-	BattleEscape();						// コンストラクタ.
+	BattleEscape(class PlayScene* _playScene);						// コンストラクタ.
 	~BattleEscape() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

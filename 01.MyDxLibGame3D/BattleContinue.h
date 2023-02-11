@@ -7,7 +7,7 @@
 class BattleContinue : public BattleStateMachine
 {
 public:
-	BattleContinue();					// コンストラクタ.
+	BattleContinue(class PlayScene* _playScene);					// コンストラクタ.
 	~BattleContinue() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.

@@ -118,5 +118,15 @@ void Input::Update()
             input->keynum[ENTER].pressCount = min(--input->keynum[ENTER].pressCount, 0);
         }
     }
-    // 
+    // BACK
+    {
+        if (CheckHitKey(KEY_INPUT_BACK))
+        {
+            input->keynum[BACK].pressCount = max(++input->keynum[BACK].pressCount, 1);
+        }
+        else
+        {
+            input->keynum[BACK].pressCount = min(--input->keynum[BACK].pressCount, 0);
+        }
+    }
 }
