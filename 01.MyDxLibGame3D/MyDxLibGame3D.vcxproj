@@ -168,6 +168,7 @@
     <ClCompile Include="BattleContinue.cpp" />
     <ClCompile Include="BattleDefeat.cpp" />
     <ClCompile Include="BattleEscape.cpp" />
+    <ClCompile Include="BattleEventManager.cpp" />
     <ClCompile Include="BattleMoveMentEnd.cpp" />
     <ClCompile Include="BattleStart.cpp" />
     <ClCompile Include="BattleVictory.cpp" />
@@ -193,6 +194,10 @@
     <ClInclude Include="BattleContinue.h" />
     <ClInclude Include="BattleDefeat.h" />
     <ClInclude Include="BattleEscape.h" />
+    <ClInclude Include="BattleEventManager.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BattleMoveMentEnd.h" />
     <ClInclude Include="BattleStart.h" />
     <ClInclude Include="BattleStateMachine.h" />

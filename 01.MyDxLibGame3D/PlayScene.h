@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 #include "SceneBase.h"
-#include "BattleStateMachine.h"
 #include "Enemy.h"
 #include "Player.h"
+#include "BattleEventManager.h"
 
 enum NormalState		// ノーマルイベントの状態管理.
 {
@@ -61,8 +61,7 @@ private:
 	Character* m_pCharacterAttackNow;		// 攻撃中のキャラクター
 	Player* m_pPlayer;
 
-	TAG_BattleState m_battleState;													// 現在のバトル状態
-	std::unordered_map<TAG_BattleState, BattleStateMachine*> m_pBattleStateArray;	// バトルの状態クラスを全て格納した配列
+	BattleEventManager* m_pBattleManager;	// バトル管理クラスポインタ.
 
 	NormalState m_normalState;				// ノーマルイベントの状態管理.
 

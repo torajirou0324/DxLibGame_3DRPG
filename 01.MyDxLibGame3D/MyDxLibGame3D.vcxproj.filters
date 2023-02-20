@@ -154,6 +154,9 @@
     <ClCompile Include="ArrowSymbol.cpp">
       <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
     </ClCompile>
+    <ClCompile Include="BattleEventManager.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -245,6 +248,9 @@
     </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleEventManager.h">
+      <Filter>ソース ファイル\Scene\Game\Battle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
