@@ -6,16 +6,6 @@
 #include "Deamon.h"
 #include "Field.h"
 #include "Input.h"
-// バトルイベント用クラスヘッダー
-#include "BattleStart.h"
-#include "BattleCommand.h"
-#include "BattleComparison.h"
-#include "BattleMoveMentStart.h"
-#include "BattleMoveMentEnd.h"
-#include "BattleEscape.h"
-#include "BattleVictory.h"
-#include "BattleDefeat.h"
-#include "BattleContinue.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -27,6 +17,7 @@ PlayScene::PlayScene()
 	, m_movieFlag(false)
 	, m_battleFlag(false)
 	, m_commandIndex(1)
+	, m_pBattleManager(nullptr)
 {
 	// 自機と敵の生成
 	m_pCharacterAttackNow = nullptr;
@@ -41,16 +32,7 @@ PlayScene::PlayScene()
 	m_pCharacter.push_back(obj);
 
 	// バトルステートの初期化
-	m_battleState = TAG_BattleState::Start;
-	m_pBattleStateArray[TAG_BattleState::Start] = new BattleStart(this);
-	m_pBattleStateArray[TAG_BattleState::CommandProcess] = new BattleCommand(this);
-	m_pBattleStateArray[TAG_BattleState::Comparison] = new BattleComparison(this);
-	m_pBattleStateArray[TAG_BattleState::MoveMentStart] = new BattleMoveMentStart(this);
-	m_pBattleStateArray[TAG_BattleState::MoveMentEnd] = new BattleMoveMentEnd(this);
-	m_pBattleStateArray[TAG_BattleState::BattleEscapeProcess] = new BattleEscape(this);
-	m_pBattleStateArray[TAG_BattleState::Victory] = new BattleVictory(this);
-	m_pBattleStateArray[TAG_BattleState::Defeat] = new BattleDefeat(this);
-	m_pBattleStateArray[TAG_BattleState::Continue] = new BattleContinue(this);
+	m_pBattleManager = new BattleEventManager(this);
 
 	m_normalState = Round1;
 	
@@ -69,15 +51,12 @@ PlayScene::PlayScene()
 //-----------------------------------------------------------------------------
 PlayScene::~PlayScene()
 {
-	for (const auto& it:m_pBattleStateArray)
+	if (m_pBattleManager != nullptr)
 	{
-		if (it.second != nullptr)
-		{
-			delete it.second;
-		}
-
+		delete m_pBattleManager;
+		m_pBattleManager = nullptr;
 	}
-	m_pBattleStateArray.clear();
+
 	for (int i = 0; i < m_pEnemyArray.size(); i++)
 	{
 		if (m_pEnemyArray[i] != nullptr)
@@ -199,7 +178,7 @@ void PlayScene::NormalEvent()
 		{
 			m_pCharacter.push_back(it);
 		}
-		m_battleState = TAG_BattleState::Start;
+		/*m_battleState = TAG_BattleState::Start;*/
 
 	}
 
@@ -215,12 +194,7 @@ void PlayScene::BattleEvent()
 		m_pCharacter[i]->Update();
 	}
 
-	auto tag = m_pBattleStateArray[m_battleState]->Update();
-
-	if (tag != TAG_BattleState::None)
-	{
-		m_battleState = tag;
-	}
+	m_pBattleManager->Update();
 }
 
 //-----------------------------------------------------------------------------
@@ -279,5 +253,5 @@ void PlayScene::BattleEventDraw()
 			DrawFormatString(1920 - (520 * addNum) + 300, 150, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_pEnemyArray[i]->GetHPMAX());
 		}
 	}
-	m_pBattleStateArray[m_battleState]->Draw();
+	m_pBattleManager->Draw();
 }

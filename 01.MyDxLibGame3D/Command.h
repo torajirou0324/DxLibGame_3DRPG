@@ -1,4 +1,5 @@
 #pragma once
+#include <functional>
 #include <string>
 #include <DxLib.h>
 #include "Player.h"

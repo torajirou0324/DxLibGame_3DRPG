@@ -304,7 +304,6 @@ void Player::LevelManager()
 	if (m_status.EXP >= m_expMAX)
 	{
 		m_status.EXP = 0;
-		/*auto addMaxEXP = m_expMAX;*/
 		m_expMAX += 3;
 		m_status.LV++;
 		m_hpMax = 3 + m_hpMax;

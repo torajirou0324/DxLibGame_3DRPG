@@ -24,6 +24,8 @@ BattleCommand::BattleCommand(class PlayScene* _playScene)
 		m_pInvokerArray[0]->SetOnCommand(new SimpleCommand(player, skillarray[i]));
 		m_pInvokerArray[1]->SetOnCommand(new SimpleCommand(player, skillarray[i]));
 	}
+
+	auto func = std::bind(&Player::Move());
 }
 
 //-----------------------------------------------------------------------------

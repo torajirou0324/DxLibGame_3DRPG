@@ -12,10 +12,9 @@ enum AttributeType
 struct SKILL
 {
     std::string SkillName;      // 技名
-    AttributeType SkillType;    // 技の属性
+    AttributeType SkillType;    // 技の特性
     int AffectsSpeed;           // 技特有の素早さ加算減算ボーナス値
     int Power;                  // 物理であれば攻撃威力、魔法であれば魔法威力
-    bool PowerType;             // trueだと物理、falseだと魔法。物理か魔法か判定用フラグ
 };
 
 //SKILL Skill[] =
