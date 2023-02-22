@@ -190,6 +190,7 @@
     <ClInclude Include="ArrowSymbol.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="BattleCommand.h" />
+    <ClInclude Include="BattleCommandManager.h" />
     <ClInclude Include="BattleComparison.h" />
     <ClInclude Include="BattleContinue.h" />
     <ClInclude Include="BattleDefeat.h" />
@@ -217,13 +218,13 @@
     </ClInclude>
     <ClInclude Include="Input.h" />
     <ClInclude Include="BattleMoveMentStart.h" />
-    <ClInclude Include="CommandInvoker.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SimpleCommand.h" />
     <ClInclude Include="Skill.h" />
+    <ClInclude Include="SkillCommand.h" />
     <ClInclude Include="Status.h" />
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>

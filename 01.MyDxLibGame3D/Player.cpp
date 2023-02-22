@@ -19,12 +19,6 @@ Player::Player()
 	// プレイヤーです
 	m_isPlayerFlag = true;
 
-	for (int i = 0; i < 4; i++)
-	{
-		//m_skillStorage[i] = Skill[i];
-	}
-
-
 	// モデルをロード
 	m_modelHandle = AssetManager::UseModel(AssetManager::Player);
 

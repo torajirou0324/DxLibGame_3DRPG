@@ -5,27 +5,38 @@
 #include "Input.h"
 #include "PlayScene.h"
 #include "ArrowSymbol.h"
+#include "SimpleCommand.h"
+#include "SkillCommand.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 BattleCommand::BattleCommand(class PlayScene* _playScene)
-	: m_battleFlag(false)
-	, m_escapeFlag(false)
-	, m_commandState(TAG_Command::AttackCommand)
+	: m_commandState(TAG_CommandState::TAG_isPlay)
 {
 	m_pPlaySceneStorage = _playScene;
 	auto player = m_pPlaySceneStorage->GetPlayerAddress();
 	auto skillarray = player->GetSKILL();
-	m_pInvokerArray.push_back(new CommandInvoker("まほう"));
-	m_pInvokerArray.push_back(new CommandInvoker("こうげき"));
+	std::function<void(SKILL)> skillfunc = std::bind(&Player::SetUseSkill, player, std::placeholders::_1);
+	// コマンド選択の遷移必要数生成
+	for (int i = 0; i < TAG_CommandState::TAG_Max; i++)
+	{
+		m_pCommandManager.push_back(new BattleCommandManager);
+	}
+	// 戦闘にするかしないか選択用クラス生成
+	m_pCommandManager[TAG_CommandState::TAG_isPlay]->SetCommand(new SimpleCommand("にげる", TAG_CommandState::TAG_Escape, TAG_CommandState::TAG_None));
+	m_pCommandManager[TAG_CommandState::TAG_isPlay]->SetCommand(new SimpleCommand("たたかう", TAG_CommandState::TAG_isMoveType, TAG_CommandState::TAG_None));
+	// 行動のタイプ（まほうを使うか純粋にこうげきをするか）
+	m_pCommandManager[TAG_CommandState::TAG_isMoveType]->SetCommand(new SimpleCommand("まほう", TAG_CommandState::TAG_isMagicSkill, TAG_CommandState::TAG_isPlay));
+	m_pCommandManager[TAG_CommandState::TAG_isMoveType]->SetCommand(new SimpleCommand("こうげき",TAG_CommandState::TAG_isAttackSkill, TAG_CommandState::TAG_isPlay));
+	// 攻撃格納用
 	for (int i = 0; i < 4; i++)
 	{
-		m_pInvokerArray[0]->SetOnCommand(new SimpleCommand(player, skillarray[i]));
-		m_pInvokerArray[1]->SetOnCommand(new SimpleCommand(player, skillarray[i]));
+		SKILL skill = skillarray[i];
+		m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->SetCommand(new SkillCommand(skillfunc, skill,TAG_CommandState::TAG_ActionCompleted, TAG_CommandState::TAG_isMoveType));
+		m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->SetCommand(new SkillCommand(skillfunc, skill, TAG_CommandState::TAG_ActionCompleted, TAG_CommandState::TAG_isMoveType));
 	}
-
-	auto func = std::bind(&Player::Move());
+	
 }
 
 //-----------------------------------------------------------------------------
@@ -33,13 +44,12 @@ BattleCommand::BattleCommand(class PlayScene* _playScene)
 //-----------------------------------------------------------------------------
 BattleCommand::~BattleCommand()
 {
-	for (const auto& it : m_pInvokerArray)
+	for (int i = 0; i < TAG_CommandState::TAG_Max; i++)
 	{
-		if (it != nullptr)
-		{
-			delete it;
-		}
+		delete m_pCommandManager[i];
+		m_pCommandManager[i] = nullptr;
 	}
+	m_pCommandManager.clear();
 }
 
 //-----------------------------------------------------------------------------
@@ -47,9 +57,7 @@ BattleCommand::~BattleCommand()
 //-----------------------------------------------------------------------------
 void BattleCommand::Init()
 {
-	m_battleFlag = false;
-	m_escapeFlag = false;
-	m_commandState = TAG_Command::AttackCommand;
+	m_commandState = TAG_CommandState::TAG_isPlay;
 }
 
 //-----------------------------------------------------------------------------
@@ -57,51 +65,22 @@ void BattleCommand::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleCommand::Update()
 {
-	if (m_battleFlag)
+	auto tag = m_pCommandManager[m_commandState]->Update();
+	
+	if (tag != TAG_CommandState::TAG_None)
 	{
-		for (int i = 0; i < m_pInvokerArray.size(); i++)
-		{
-			m_pInvokerArray[i]->m_display = false;
-		}
-
-		m_pInvokerArray[m_commandState]->Update();
-		if (m_pInvokerArray[m_commandState]->GetDicideFlag())
-		{
-			return TAG_BattleState::None;
-		}
-		if (Input::IsPress(UP))
-		{
-			m_commandState = TAG_Command::AttackCommand;
-		}
-		if (Input::IsPress(DOWN))
-		{
-			m_commandState = TAG_Command::IntelligenceCommand;
-		}
-		if (Input::IsPress(BACK))
-		{
-			m_battleFlag = false;
-		}
-		return TAG_BattleState::None;
+		m_commandState = tag;
 	}
 
-
-	if (Input::IsPress(UP))
-	{
-		m_escapeFlag = false;
-	}
-	if (Input::IsPress(DOWN))
-	{
-		m_escapeFlag = true;
-	}
 	// 逃げるコマンドが選択されたためESCAPE処理へ
-	if (m_escapeFlag && Input::IsPress(ENTER))
+	if (tag == TAG_CommandState::TAG_Escape)
 	{
 		return TAG_BattleState::BattleEscapeProcess;
 	}
 	// 戦闘コマンドが選択されたため素早さ比較処理へ
-    if (!m_escapeFlag && Input::IsPress(ENTER))
+    if (tag == TAG_CommandState::TAG_ActionCompleted)
     {
-		m_battleFlag = true;
+		return TAG_BattleState::MoveMentStart;
     }
 
     return TAG_BattleState::None;
@@ -115,34 +94,5 @@ void BattleCommand::Draw()
 	DrawFormatString(650, 800, GetColor(255, 255, 255), "コマンド選択中...");
 
 	SetFontSize(60);
-
-	if (m_battleFlag)
-	{
-		for (int i = 0; i < m_pInvokerArray.size(); i++)
-		{
-			m_pInvokerArray[i]->Draw(975 - (80 * i));
-		}
-	}
-	else
-	{
-		if (m_escapeFlag)
-		{
-			DrawGraph(1400, 975, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
-			DrawFormatString(1480, 975 + 10, GetColor(0, 0, 0), "にげる");
-			DrawGraph(1400, 895, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
-			DrawFormatString(1480, 895 + 10, GetColor(255, 255, 255), "たたかう");
-
-			DrawArrowSide(1370, 990);
-		}
-		else
-		{
-			DrawGraph(1400, 975, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
-			DrawFormatString(1480, 975 + 10, GetColor(255, 255, 255), "にげる");
-			DrawGraph(1400, 895, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
-			DrawFormatString(1480, 895 + 10, GetColor(0, 0, 0), "たたかう");
-
-			DrawArrowSide(1370, 910);
-		}
-	}
-
+	m_pCommandManager[m_commandState]->Draw();
 }

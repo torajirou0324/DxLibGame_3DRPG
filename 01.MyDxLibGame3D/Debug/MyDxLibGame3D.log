@@ -1,29 +1,9 @@
-﻿  BattleCommand.cpp
+﻿  PlayScene.cpp
 C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleComparison.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleContinue.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleDefeat.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleEscape.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleEventManager.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleMoveMentEnd.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleStart.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleVictory.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  BattleMoveMentStart.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  PlayScene.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(240,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(245,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(261,74): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
-  SceneManager.cpp
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(231,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(236,23): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\PlayScene.cpp(252,74): warning C4244: '引数': 'float' から 'int' への変換です。データが失われる可能性があります。
+  Player.cpp
 C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
   コードを生成中...
   MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

@@ -10,7 +10,7 @@
 enum TAG_BattleState	// バトルイベントの状態管理.
 {
 	Start,				// 開始処理.
-	CommandProcess,			// コマンド選択処理.
+	CommandProcess,		// コマンド選択処理.
 	Comparison,			// 比較処理.（素早さ）
 	MoveMentStart,		// 全キャラ行動処理.
 	MoveMentEnd,		// 全キャラ行動完了待機処理.

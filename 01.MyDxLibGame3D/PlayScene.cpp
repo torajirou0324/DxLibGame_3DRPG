@@ -2,6 +2,7 @@
 // @brief  プレイシーンクラス.
 //-----------------------------------------------------------------------------
 #include "PlayScene.h"
+#include <functional>
 #include <DxLib.h>
 #include "Deamon.h"
 #include "Field.h"

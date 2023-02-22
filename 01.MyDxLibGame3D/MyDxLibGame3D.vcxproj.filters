@@ -243,14 +243,17 @@
     <ClInclude Include="SimpleCommand.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CommandInvoker.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="BattleEventManager.h">
       <Filter>ソース ファイル\Scene\Game\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleCommandManager.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SkillCommand.h">
+      <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
