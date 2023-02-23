@@ -34,6 +34,7 @@ PlayScene::PlayScene()
 
 	// バトルステートの初期化
 	m_pBattleManager = new BattleEventManager(this);
+	m_pBattleManager->Init(m_pPlayer, m_pEnemyArray);
 
 	m_normalState = Round1;
 	
@@ -179,8 +180,7 @@ void PlayScene::NormalEvent()
 		{
 			m_pCharacter.push_back(it);
 		}
-		/*m_battleState = TAG_BattleState::Start;*/
-
+		m_pBattleManager->Init(m_pPlayer, m_pEnemyArray);
 	}
 
 }
@@ -221,7 +221,7 @@ void PlayScene::BattleEventDraw()
 	DrawGraph(600, 750, m_blackWindow, TRUE);					// 吹き出しウィンドウの表示
 
 	SetFontSize(30);
-	// プレイヤーのステータス表示用の黒枠
+	// プレイヤーのステータス表示+黒枠
 	{
 		DrawGraph(0, 750, m_statusWindow, TRUE);
 		auto& playerStatus = m_pPlayer->GetAllStatus();
@@ -238,7 +238,7 @@ void PlayScene::BattleEventDraw()
 		DrawFormatString(300, 927, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, m_pPlayer->GetEXPMAX());
 	}
 
-	// エネミーのステータス表示用の黒枠
+	// エネミーのステータス表示+黒枠
 	{
 		for (int i = 0; i < m_pEnemyArray.size(); i++)
 		{
@@ -254,5 +254,6 @@ void PlayScene::BattleEventDraw()
 			DrawFormatString(1920 - (520 * addNum) + 300, 150, GetColor(255, 255, 255), "%d/%d", enemyStatus.HP, m_pEnemyArray[i]->GetHPMAX());
 		}
 	}
+
 	m_pBattleManager->Draw();
 }

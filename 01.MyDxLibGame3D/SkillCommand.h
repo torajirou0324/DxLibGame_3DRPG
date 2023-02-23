@@ -1,45 +1,34 @@
+//-----------------------------------------------------------------------------
+// @brief  バトルイベントの技表示コマンド選択処理クラス.
+//-----------------------------------------------------------------------------
 #pragma once
 #include "Command.h"
 
 class SkillCommand : public Command
 {
 public:
-    SkillCommand(std::function<void(SKILL)> _func, SKILL _skill, TAG_CommandState _nextcommand, TAG_CommandState _backcommand)
+    // コンストラクタ
+    SkillCommand(std::function<void(SKILL)> _func, TAG_CommandState _nextcommand, TAG_CommandState _backcommand)
         : SetPlayerSkill(_func)
-        , m_skill(_skill)
         , m_nextCommandType(_nextcommand)
         , m_backCommandType(_backcommand)
+        , m_skill()
     {
     }
+    // デストラクタ
     ~SkillCommand() override {}
 
-    TAG_CommandState Execute() override
+    // 初期化処理
+    void Init(SKILL _skill) override
     {
-        m_display = true;
-
-        if (Input::IsPress(ENTER))
-        {
-            SetPlayerSkill(m_skill);
-            return m_nextCommandType;
-        }
-        if (Input::IsPress(BACK))
-        {
-            return m_backCommandType;
-        }
-        return TAG_CommandState::TAG_None;
+        m_skill = _skill;
     }
 
-    void Draw(int posY) const override
-    {
-        if (m_display)
-        {
-            DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowWhite), TRUE);
-            DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "%s", m_skill.SkillName.c_str());
-            return;
-        }
-        DrawGraph(1400, posY, AssetManager::UseImage(AssetManager::CommandWindowBlack), TRUE);
-        DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "%s", m_skill.SkillName.c_str());
-    }
+    // 更新処理
+    TAG_CommandState Execute() override;
+
+    // 描画処理
+    void Draw(int posY) const override;
 private:
     std::function<void(SKILL)> SetPlayerSkill;
     SKILL m_skill;

@@ -30,6 +30,7 @@ public:
 	}
 
 	virtual void Init() = 0;
+	virtual void Init(class Player* _player, std::vector<class Enemy*> _enemyArray){}
 	virtual TAG_BattleState Update() = 0;
 	virtual void Draw() = 0;
 

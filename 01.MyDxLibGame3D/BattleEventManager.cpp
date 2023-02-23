@@ -11,6 +11,8 @@
 #include "BattleVictory.h"
 #include "BattleDefeat.h"
 #include "BattleContinue.h"
+#include "PlayScene.h"
+#include "Field.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -45,9 +47,13 @@ BattleEventManager::~BattleEventManager()
 //-----------------------------------------------------------------------------
 // @brief  初期化処理.
 //-----------------------------------------------------------------------------
-void BattleEventManager::Init()
+void BattleEventManager::Init(class Player* _player, std::vector<class Enemy*> _enemyArray)
 {
+	// バトルステートをスタートに初期化
+	m_battleState = TAG_BattleState::Start;
 
+	// バトルコマンドの技と攻撃対象の敵を初期化
+	m_pBattleStateArray[TAG_BattleState::CommandProcess]->Init(_player, _enemyArray);
 }
 
 //-----------------------------------------------------------------------------

@@ -54,13 +54,19 @@ public:
 
     void Attack()           // エネミーからプレイヤーへ攻撃用処理
     {
-        int ATK = m_status.ATK;
-        int DEF = m_pAttackObject->GetAllStatus().DEF;
-        ATK = ATK - DEF;
-        if (ATK < 1)
+        int ATK = 0;
+        if (m_useSkill.SkillType == AttributeType::Physical)
         {
-            ATK = 1;
+            ATK = m_status.ATK * m_useSkill.Power;
+            ATK = static_cast<int>(ATK / 2) - static_cast<int>(m_pAttackObject->GetAllStatus().DEF / 4);
         }
+        if (m_useSkill.SkillType == AttributeType::Special)
+        {
+            ATK = m_status.INT * m_useSkill.Power;
+            ATK = static_cast<int>(ATK / 2) - static_cast<int>(m_pAttackObject->GetAllStatus().RES / 4);
+        }
+
+        m_status.MP = m_status.MP - m_useSkill.MagicPower;
         m_animType = Anim::Attack;  // 攻撃アニメーション開始
         m_attackNow = true;
         m_pAttackObject->Damage(ATK);
@@ -77,6 +83,16 @@ public:
         m_status.HP = HP;
 
         m_animType = Anim::Damage;  // 被ダメアニメーション開始
+    }
+
+    void Heal()
+    {
+        int HP = m_status.HP;
+        HP = m_useSkill.Power * m_status.INT;
+        if (HP > m_hpMax)
+        {
+            HP = m_hpMax;
+        }
     }
 
     void Dead()             // 死ぬときに呼ぶ(両対応)
@@ -116,6 +132,7 @@ public:
     const int& GetHPMAX() const { return m_hpMax; }
     const bool& GetDiscrimination() const { return m_isPlayerFlag; }
 protected:
+
     int m_animHandle[5];	    // アニメーションのモデルハンドル.
     int m_modelHandle;          // キャラクター自身のモデルハンドル
     int m_hpMax;                // キャラクターの最大HP保存用
@@ -133,10 +150,11 @@ protected:
 
     Status m_status;            // キャラクターのステータス（戦闘時変化用）
     Status m_basicStatus;       // キャラクターステータス（基礎ステータス）
-    SKILL m_skillStorage[4];       // 技格納用の配列
+    SKILL m_skillStorage[4];    // 技格納用の配列
+    SKILL m_useSkill;		    // 使用する技格納用.
 
     Anim m_animType;            // 現在のアニメーション保存用
     Anim m_beforeAnimType;      // 1つ前のアニメーション保存用
-private:
+
     Character* m_pAttackObject; // 攻撃する相手格納用変数
 };

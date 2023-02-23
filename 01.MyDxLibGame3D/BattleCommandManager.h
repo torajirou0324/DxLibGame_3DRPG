@@ -7,7 +7,8 @@
 class BattleCommandManager
 {
 public:
-    ~BattleCommandManager() // デストラクタ
+    // デストラクタ
+    ~BattleCommandManager()
     {
         for (int i = 0; i < m_pCommandArray.size(); i++)
         {
@@ -17,12 +18,34 @@ public:
         m_pCommandArray.clear();
     }
 
-    void Init()                 // 初期化処理
+    // 共通の初期化処理
+    void Init()
     {
         index = m_pCommandArray.size() - 1;
     }
 
-    TAG_CommandState Update()   // 更新処理
+    // 技のみの初期化処理
+    void Init(const SKILL* _skillStorage)
+    {
+        for (int i = 0; i < m_pCommandArray.size(); i++)
+        {
+            SKILL skill = _skillStorage[i];
+            m_pCommandArray[i]->Init(skill);
+        }
+    }
+
+    // 攻撃目標のみの初期化処理
+    void Init(std::vector<class Enemy*> _enemyArray)
+    {
+        for (int i = 0; i < _enemyArray.size(); i++)
+        {
+            Enemy* enemy = _enemyArray[i];
+            m_pCommandArray[i]->Init(enemy);
+        }
+    }
+
+    // 更新処理
+    TAG_CommandState Update()
     {
         for (int i = 0; i < m_pCommandArray.size(); i++)
         {
@@ -49,7 +72,8 @@ public:
         return m_pCommandArray[index]->Execute();
     }
 
-    void Draw()     // 描画処理
+    // 描画処理
+    void Draw()
     {
         for (int i = 0; i < m_pCommandArray.size(); i++)
         {
@@ -57,7 +81,8 @@ public:
         }
     }
 
-    void SetCommand(Command* _command)  // 生成されたコマンドを格納する
+    // 生成されたコマンドを格納する
+    void SetCommand(Command* _command)
     {
         m_pCommandArray.push_back(_command);
     }

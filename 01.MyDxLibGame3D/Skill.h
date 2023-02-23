@@ -13,8 +13,9 @@ struct SKILL
 {
     std::string SkillName;      // 技名
     AttributeType SkillType;    // 技の特性
+    int Power;                  // 物理であれば攻撃威力、魔法であれば魔法威力、回復であれば回復力
+    int MagicPower;             // 消費魔力
     int AffectsSpeed;           // 技特有の素早さ加算減算ボーナス値
-    int Power;                  // 物理であれば攻撃威力、魔法であれば魔法威力
 };
 
 //SKILL Skill[] =

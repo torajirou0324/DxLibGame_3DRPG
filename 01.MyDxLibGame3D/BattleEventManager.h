@@ -10,7 +10,7 @@ public:
 	BattleEventManager(class PlayScene* scene);
 	~BattleEventManager();
 
-	void Init();
+	void Init(class Player* _player, std::vector<class Enemy*> _enemyArray);
 	void Update();
 	void Draw();
 

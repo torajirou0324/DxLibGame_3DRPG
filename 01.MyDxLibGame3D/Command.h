@@ -3,8 +3,10 @@
 #include <string>
 #include <DxLib.h>
 #include "Player.h"
+#include "Enemy.h"
 #include "Input.h"
 #include "AssetManager.h"
+#include "ArrowSymbol.h"
 
 enum TAG_CommandState
 {
@@ -12,6 +14,7 @@ enum TAG_CommandState
     TAG_isMoveType,     // 行動のタイプ
     TAG_isAttackSkill,  // 攻撃の技選択
     TAG_isMagicSkill,   // 魔法の技選択
+    TAG_isTargetAttack, // 攻撃目標の選択
     TAG_Max,            // コマンド選択の遷移必要数生成
     TAG_None,           // 遷移変更なし通知用タグ
     TAG_Escape,         // 逃げるとき用
@@ -23,6 +26,9 @@ class Command
 public:
     virtual ~Command() {
     }
+
+    virtual void Init(SKILL _skill){}
+    virtual void Init(Enemy* _enemy){}
     virtual TAG_CommandState Execute() = 0;
     virtual void Draw(int posY) const = 0;
 

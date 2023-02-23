@@ -3,10 +3,12 @@
 //-----------------------------------------------------------------------------
 #include "BattleCommand.h"
 #include "Input.h"
-#include "PlayScene.h"
+#include "Enemy.h"
 #include "ArrowSymbol.h"
 #include "SimpleCommand.h"
 #include "SkillCommand.h"
+#include "TargetCommand.h"
+#include "PlayScene.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -14,10 +16,9 @@
 BattleCommand::BattleCommand(class PlayScene* _playScene)
 	: m_commandState(TAG_CommandState::TAG_isPlay)
 {
-	m_pPlaySceneStorage = _playScene;
-	auto player = m_pPlaySceneStorage->GetPlayerAddress();
-	auto skillarray = player->GetSKILL();
+	auto player = _playScene->GetPlayerAddress();
 	std::function<void(SKILL)> skillfunc = std::bind(&Player::SetUseSkill, player, std::placeholders::_1);
+	std::function<void(Character*)> targetObjectfunc = std::bind(&Player::SetAttackObjectAddress, player, std::placeholders::_1);
 	// コマンド選択の遷移必要数生成
 	for (int i = 0; i < TAG_CommandState::TAG_Max; i++)
 	{
@@ -32,11 +33,10 @@ BattleCommand::BattleCommand(class PlayScene* _playScene)
 	// 攻撃格納用
 	for (int i = 0; i < 4; i++)
 	{
-		SKILL skill = skillarray[i];
-		m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->SetCommand(new SkillCommand(skillfunc, skill,TAG_CommandState::TAG_ActionCompleted, TAG_CommandState::TAG_isMoveType));
-		m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->SetCommand(new SkillCommand(skillfunc, skill, TAG_CommandState::TAG_ActionCompleted, TAG_CommandState::TAG_isMoveType));
+		m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->SetCommand(new SkillCommand(skillfunc,TAG_CommandState::TAG_isTargetAttack, TAG_CommandState::TAG_isMoveType));
+		m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->SetCommand(new SkillCommand(skillfunc, TAG_CommandState::TAG_isTargetAttack, TAG_CommandState::TAG_isMoveType));
+		m_pCommandManager[TAG_CommandState::TAG_isTargetAttack]->SetCommand(new TargetCommand(targetObjectfunc, TAG_CommandState::TAG_ActionCompleted, TAG_CommandState::TAG_isMoveType));
 	}
-	
 }
 
 //-----------------------------------------------------------------------------
@@ -53,11 +53,27 @@ BattleCommand::~BattleCommand()
 }
 
 //-----------------------------------------------------------------------------
-// @brief  初期化処理.
+// @brief  ターン毎の初期化処理.
 //-----------------------------------------------------------------------------
 void BattleCommand::Init()
 {
 	m_commandState = TAG_CommandState::TAG_isPlay;
+	for (int i = 0; i < TAG_CommandState::TAG_Max; i++)
+	{
+		m_pCommandManager[i]->Init();
+	}
+}
+
+//-----------------------------------------------------------------------------
+// @brief  バトル開始時のみ初期化処理.
+//-----------------------------------------------------------------------------
+void BattleCommand::Init(class Player* _player, std::vector<class Enemy*> _enemyArray)
+{
+	auto skill = _player->GetSKILL();
+	m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->Init(skill);
+	m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->Init(skill);
+	m_pCommandManager[TAG_CommandState::TAG_isTargetAttack]->Init(_enemyArray);
+	
 }
 
 //-----------------------------------------------------------------------------

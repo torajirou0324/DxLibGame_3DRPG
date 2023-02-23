@@ -29,15 +29,7 @@ Player::Player()
 	m_animTime = 0.0f;
 	m_beforeAnimType = m_animType;
 
-	// ステータスの初期化
-	m_status.LV = 1;
-	m_status.HP = 12;
-	m_status.ATK = 6;
-	m_status.DEF = 0;
-	m_status.AGL = 6;
-	m_status.EXP = 0;
-	m_hpMax = m_status.HP;
-	m_expMAX = 2;
+
 }
 
 //-----------------------------------------------------------------------------
@@ -286,8 +278,15 @@ void Player::Animation()
 
 void Player::Move()
 {
-
 	Action();
+
+	if (m_useSkill.SkillType == AttributeType::Recovery)
+	{
+		Heal();
+		return;
+	}
+
+	Attack();
 }
 
 //-----------------------------------------------------------------------------

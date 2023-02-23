@@ -42,8 +42,7 @@ TAG_BattleState BattleMoveMentStart::Update()
         // 行動が終わっていないかつ、死んでいないとき行動する
         if (!CharacterALL[i]->GetActionFlag() && !CharacterALL[i]->GetDeathFlag())
         {
-            CharacterALL[i]->Action();
-            CharacterALL[i]->Attack();
+            CharacterALL[i]->Move();
             m_pPlaySceneStorage->SetAttackObjectAddress(CharacterALL[i]);    // 現在行動しているキャラクターを代入する
             break;
         }

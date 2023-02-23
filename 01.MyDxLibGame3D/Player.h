@@ -11,12 +11,12 @@ public:
 	~Player();				// デストラクタ.
 
 	void Init();			// 初期化処理.
-	void Update();			// 更新処理.
-	void Draw();			// 描画処理.
+	void Update() override;	// 更新処理.
+	void Draw() override;	// 描画処理.
 	void Input();			// 入力処理.
 	void Rotate();			// 回転処理.
 	void Animation();		// アニメーション処理.
-	void Move();			// 行動処理.
+	void Move() override;	// 行動処理.
 	void LevelManager();	// レベルとステータス管理処理.
 
 	void SetUseSkill(SKILL _skillCommand)
@@ -60,6 +60,4 @@ private:
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
-
-	SKILL m_useSkill;		// 使用する技格納用.
 };

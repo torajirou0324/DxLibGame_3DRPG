@@ -65,4 +65,5 @@ void Deamon::Draw()
 
 void Deamon::Move()
 {
+    Attack();
 }

@@ -157,6 +157,15 @@
     <ClCompile Include="BattleEventManager.cpp">
       <Filter>ソース ファイル\Scene\Game\Battle</Filter>
     </ClCompile>
+    <ClCompile Include="SimpleCommand.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="SkillCommand.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetCommand.cpp">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -237,12 +246,6 @@
     <ClInclude Include="ArrowSymbol.h">
       <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
     </ClInclude>
-    <ClInclude Include="Command.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="SimpleCommand.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Skill.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
@@ -252,8 +255,17 @@
     <ClInclude Include="BattleCommandManager.h">
       <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCommand.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClInclude>
     <ClInclude Include="SkillCommand.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetCommand.h">
+      <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
