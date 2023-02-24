@@ -30,4 +30,5 @@ void BattleEscape::Draw()
 {
     printfDx("ƒoƒgƒ‹‚©‚ç“¦‚°‚éˆ—");
     DrawFormatString(650, 800, GetColor(255, 255, 255), "í“¬‚©‚ç“¦‚°‚½");
+    DrawArrowVertical(1240, 950);      // –îˆó‚Ì•\¦
 }

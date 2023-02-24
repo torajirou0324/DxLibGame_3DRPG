@@ -37,6 +37,11 @@ public:
     // UŒ‚–Ú•W‚Ì‚İ‚Ì‰Šú‰»ˆ—
     void Init(std::vector<class Enemy*> _enemyArray)
     {
+        for (int i = 0; i < m_pCommandArray.size(); i++)
+        {
+            m_pCommandArray[i]->Init(nullptr);
+        }
+
         for (int i = 0; i < _enemyArray.size(); i++)
         {
             Enemy* enemy = _enemyArray[i];

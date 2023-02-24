@@ -83,6 +83,9 @@
     <Filter Include="ソース ファイル\GameObject\ArrowSymbol">
       <UniqueIdentifier>{52e3eb74-64a4-4220-8d1b-ec7e5da828c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Collider">
+      <UniqueIdentifier>{bb888eed-6128-4c62-8701-cac3fbda0381}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -166,6 +169,9 @@
     <ClCompile Include="TargetCommand.cpp">
       <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
     </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
@@ -246,9 +252,6 @@
     <ClInclude Include="ArrowSymbol.h">
       <Filter>ソース ファイル\GameObject\ArrowSymbol</Filter>
     </ClInclude>
-    <ClInclude Include="Skill.h">
-      <Filter>ソース ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="BattleEventManager.h">
       <Filter>ソース ファイル\Scene\Game\Battle</Filter>
     </ClInclude>
@@ -266,6 +269,12 @@
     </ClInclude>
     <ClInclude Include="TargetCommand.h">
       <Filter>ソース ファイル\Scene\Game\Battle\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Skill.h">
+      <Filter>ソース ファイル\system\h</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ TAG_CommandState TargetCommand::Execute()
     m_display = true;
 
     // 攻撃目標の情報が入っているときでないとセットできない
-    if (Input::IsPress(ENTER) && m_obj != nullptr)
+    if (Input::IsPress(ENTER) && m_obj != nullptr && !m_obj->GetDeathFlag())
     {
         SetAttackObj(m_obj);
         return m_nextCommandType;

@@ -40,7 +40,6 @@ PlayScene::PlayScene()
 	
 	// カメラのポジションセット
 	m_cameraPos = VGet(0.0f, 60.0f, -50.0f);
-	SetCameraPositionAndTarget_UpVecY(m_cameraPos, VGet(0.0f, 20.0f, 20.0f));
 
 	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
 	m_statusWindow = AssetManager::UseImage(AssetManager::StatusWindow);
@@ -190,9 +189,12 @@ void PlayScene::NormalEvent()
 //-----------------------------------------------------------------------------
 void PlayScene::BattleEvent()
 {
-	for (int i = 0; i < m_pCharacter.size(); i++)
+	SetCameraPositionAndTarget_UpVecY(m_cameraPos, VGet(0.0f, 20.0f, 20.0f));
+
+	m_pPlayer->Animation();
+	for (int i = 0; i < m_pEnemyArray.size(); i++)
 	{
-		m_pCharacter[i]->Update();
+		m_pEnemyArray[i]->Update();
 	}
 
 	m_pBattleManager->Update();

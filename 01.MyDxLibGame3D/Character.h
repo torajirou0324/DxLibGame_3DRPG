@@ -57,12 +57,12 @@ public:
         int ATK = 0;
         if (m_useSkill.SkillType == AttributeType::Physical)
         {
-            ATK = m_status.ATK * m_useSkill.Power;
+            ATK = m_status.ATK + m_useSkill.Power;
             ATK = static_cast<int>(ATK / 2) - static_cast<int>(m_pAttackObject->GetAllStatus().DEF / 4);
         }
         if (m_useSkill.SkillType == AttributeType::Special)
         {
-            ATK = m_status.INT * m_useSkill.Power;
+            ATK = m_status.INT + m_useSkill.Power;
             ATK = static_cast<int>(ATK / 2) - static_cast<int>(m_pAttackObject->GetAllStatus().RES / 4);
         }
 
@@ -88,7 +88,7 @@ public:
     void Heal()
     {
         int HP = m_status.HP;
-        HP = m_useSkill.Power * m_status.INT;
+        HP = HP + m_useSkill.Power;
         if (HP > m_hpMax)
         {
             HP = m_hpMax;

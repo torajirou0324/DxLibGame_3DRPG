@@ -31,7 +31,9 @@ void Enemy::Init(std::string name, int level, VECTOR position)
     m_status.LV = level;
     m_status.HP = 10 + 2 * level;
     m_status.ATK = 2 + level;
-    m_status.DEF = level;
+    m_status.DEF = 2 + level;
+	m_status.INT = 2 + level;
+	m_status.RES = 2 + level;
     m_status.AGL = 2 + 2 * level;
     m_status.EXP = level;
 

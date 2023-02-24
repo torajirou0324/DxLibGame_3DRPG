@@ -45,6 +45,7 @@ public:
 	const int& GetEXPMAX() { return m_expMAX; }
 	const SKILL* GetSKILL() { return m_skillStorage; }
 private:
+	void Camera();
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
 	// nowVecからdirVecの最短の回転方向を調べる(Y軸).

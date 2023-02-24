@@ -33,4 +33,7 @@ TAG_BattleState BattleDefeat::Update()
 void BattleDefeat::Draw()
 {
     printfDx("ƒoƒgƒ‹”s–kˆ—");
+    auto player = m_pPlaySceneStorage->GetPlayerAddress();
+    DrawFormatString(650, 800, GetColor(255, 255, 255), "%s‚Í“|‚ê‚½", player->GetName().c_str());
+    DrawArrowVertical(1240, 950);      // –îˆó‚Ì•\Ž¦
 }

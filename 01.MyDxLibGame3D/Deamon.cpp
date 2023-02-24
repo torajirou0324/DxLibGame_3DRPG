@@ -37,6 +37,8 @@ Deamon::Deamon()
     m_status.EXP = 0;
 
     m_name = "ÉfÅ[ÉÇÉì";
+
+    m_useSkill = { "ÇΩÇΩÇ≠", AttributeType::Physical, 10,0,0 };
 }
 
 //-----------------------------------------------------------------------------
@@ -65,5 +67,6 @@ void Deamon::Draw()
 
 void Deamon::Move()
 {
+    Action();
     Attack();
 }

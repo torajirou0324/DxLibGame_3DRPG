@@ -1,8 +1,9 @@
 #pragma once
 #include <string>
 
-enum AttributeType
+enum class AttributeType
 {
+    None,       // 初期化用
     Physical,   // 物理タイプ
     Special,    // 魔法タイプ
     Recovery    // 回復タイプ

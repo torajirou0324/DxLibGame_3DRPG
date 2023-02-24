@@ -3,7 +3,6 @@
 //-----------------------------------------------------------------------------
 #include "BattleStart.h"
 #include "Input.h"
-#include "ArrowSymbol.h"
 #include "PlayScene.h"
 
 const int m_waitMaxTime = 40;		// ‰æ–Ê‘Ò‹@ŽžŠÔ.

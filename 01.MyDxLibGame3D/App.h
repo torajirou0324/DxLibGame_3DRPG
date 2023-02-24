@@ -11,7 +11,6 @@ public:
 	~App();
 
 	void GameLoop();
-
 private:
 	SceneManager* m_sceneManager;
 };

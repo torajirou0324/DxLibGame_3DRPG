@@ -34,7 +34,7 @@ TitleScene::TitleScene()
 	MV1SetTextureGraphHandle(m_playerHandle, 4, GraphHandle, TRUE);
 	MV1SetTextureGraphHandle(m_playerHandle, 5, GraphHandle1, TRUE);
 	// プレイヤーモデルの大きさと座標をセット
-	MV1SetScale(m_playerHandle, VGet(0.2f, 0.2f, 0.2f));
+	MV1SetScale(m_playerHandle, VGet(0.3f, 0.3f, 0.3f));
 	MV1SetPosition(m_playerHandle, VGet(0.0f, 0.0f, 0.0f));
 
 	// 向きに合わせてモデル回転

@@ -45,5 +45,5 @@ void BattleVictory::Draw()
     {
         DrawFormatString(650, 740 + (60 * i), GetColor(255, 255, 255), "%s‚ð“|‚µ‚½", CharacterALL[i]->GetName().c_str());
     }
-
+    DrawArrowVertical(1240, 950);      // –îˆó‚Ì•\Ž¦
 }

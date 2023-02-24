@@ -6,6 +6,7 @@
 #include <string>
 #include <DxLib.h>
 #include "Character.h"
+#include "ArrowSymbol.h"
 
 enum TAG_BattleState	// バトルイベントの状態管理.
 {

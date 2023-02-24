@@ -5,7 +5,7 @@
 #include <math.h>
 #include "Input.h"
 
-const float r = -60.0f;					// プレイヤーとカメラの距離
+const float r = -80.0f;					// プレイヤーとカメラの距離
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
@@ -28,8 +28,6 @@ Player::Player()
 	m_animTotalTime = MV1GetAnimTotalTime(m_animHandle[m_animType], attachIndex);
 	m_animTime = 0.0f;
 	m_beforeAnimType = m_animType;
-
-
 }
 
 //-----------------------------------------------------------------------------
@@ -48,9 +46,11 @@ void Player::Init()
 
 	// ステータスの初期化
 	m_status.LV = 1;
-	m_status.HP = 15;
-	m_status.ATK = 6;
-	m_status.DEF = 0;
+	m_status.HP = 18;
+	m_status.ATK = 5;
+	m_status.DEF = 5;
+	m_status.INT = 5;
+	m_status.RES = 5;
 	m_status.AGL = 5;
 	m_status.EXP = 0;
 	m_hpMax = m_status.HP;
@@ -67,6 +67,19 @@ void Player::Init()
 	m_beforeAnimType = Idle;
 	m_animTime = 0.0f;
 	m_animTotalTime = MV1GetAnimTotalTime(m_animHandle[m_animType], 0);
+
+	// 技のスキルの世界
+	SKILL skillarray[4] = {
+		{"たたく", AttributeType::Physical, 10,0,0},
+		{"フレア",AttributeType::Special,20,3,0},
+		{"ヒール",AttributeType::Recovery,10,2,0},
+		{"",AttributeType::None,0,0,0}
+	};
+
+	for (int i = 0; i < 4; i++)
+	{
+		m_skillStorage[i] = skillarray[i];
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -76,7 +89,8 @@ void Player::Update()
 {
 	Rotate();			// 回転
 	Animation();		// アニメーション
-	/*Input();*/			// 入力
+	Input();			// 入力
+	Camera();
 
 	m_position = VAdd(m_position, m_velocity);
 
@@ -130,7 +144,6 @@ void Player::Input()
 		front.z = cosf(m_rotate.y);
 		inputVector = VAdd(front, inputVector);
 		input = true;
-		//m_position.z += 1;
 	}
 
 	// 下を押していたら下に進む
@@ -140,7 +153,6 @@ void Player::Input()
 		back.z = cosf(m_rotate.y) * -1.0f;
 		inputVector = VAdd(back, inputVector);
 		input = true;
-		//m_position.z -= 1;
 	}
 
 	// 右を押していたら右に進む
@@ -151,7 +163,6 @@ void Player::Input()
 		inputVector = VAdd(right, inputVector);
 		input = true;
 		m_rotate.y += 0.02f;
-		//m_position.x += 1;
 	}
 
 	// 左を押していたら左に進む
@@ -162,7 +173,6 @@ void Player::Input()
 		inputVector = VAdd(left, inputVector);
 		input = true;
 		m_rotate.y -= 0.02f;
-		//m_position.x -= 1;
 	}
 
 	// 入力有（加速）・入力無（減速）
@@ -303,8 +313,20 @@ void Player::LevelManager()
 		m_status.HP = m_hpMax;
 		m_status.ATK += 2;
 		m_status.DEF++;
+		m_status.INT += 2;
+		m_status.RES++;
 		m_status.AGL += 2;
 	}
+}
+
+void Player::Camera()
+{
+	VECTOR cameraPos = VGet(0.0f, 180.0f, 0.0f);
+
+	cameraPos.x = m_position.x + sinf(m_rotate.y) * r;
+	cameraPos.z = m_position.z + cosf(m_rotate.y) * r;
+
+	SetCameraPositionAndTarget_UpVecY(cameraPos, VGet(m_position.x,m_position.y + 40,m_position.z));
 }
 
 //-----------------------------------------------------------------------------

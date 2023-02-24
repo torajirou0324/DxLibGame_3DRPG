@@ -12,7 +12,7 @@ Field* Field::m_field = nullptr;
 //-----------------------------------------------------------------------------
 Field::Field()
 {
-	m_fieldHandle = AssetManager::UseModel(AssetManager::Field);
+	m_fieldHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::Field));
 	m_wallHandle = MV1DuplicateModel(AssetManager::UseModel(AssetManager::Field));
 	m_blackBox = MV1DuplicateModel(AssetManager::UseModel(AssetManager::Field));
 	int GraphHandle = AssetManager::UseImage(AssetManager::MapTile);
@@ -29,6 +29,9 @@ Field::Field()
 //-----------------------------------------------------------------------------
 Field::~Field()
 {
+	MV1DeleteModel(m_fieldHandle);
+	MV1DeleteModel(m_wallHandle);
+	MV1DeleteModel(m_blackBox);
 }
 
 //-----------------------------------------------------------------------------
