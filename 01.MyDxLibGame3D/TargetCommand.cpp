@@ -36,6 +36,10 @@ void TargetCommand::Draw(int posY) const
         {
             DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "%s", m_obj->GetName().c_str());
         }
+        else
+        {
+            DrawFormatString(1480, posY + 10, GetColor(0, 0, 0), "‚Ó‚ß‚¢");
+        }
 
         DrawArrowSide(1360, posY + 15);
         return;
@@ -44,5 +48,9 @@ void TargetCommand::Draw(int posY) const
     if (m_obj != nullptr)
     {
         DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "%s", m_obj->GetName().c_str());
+    }
+    else
+    {
+        DrawFormatString(1480, posY + 10, GetColor(255, 255, 255), "‚Ó‚ß‚¢");
     }
 }

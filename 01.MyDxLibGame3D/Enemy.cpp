@@ -70,17 +70,18 @@ void Enemy::Move()
 void Enemy::Animation()
 {
 	// アニメーション繰り返し処理
-	if (m_animTotalTime < m_animTime && m_animType == Anim::Attack || m_animTotalTime < m_animTime && m_animType == Anim::Damage)
-	{
-		m_animType = Anim::Idle;
-		m_attackNow = false;
-	}
-	else if (m_animTotalTime < m_animTime)
+	if (m_animTotalTime < m_animTime)
 	{
 		m_animTime = 0.0f;
 		if (m_animType == Anim::Death)
 		{
+			m_isDeathFlag = true;
 			m_animTime = m_animTotalTime;
+		}
+		else
+		{
+			m_animType = Anim::Idle;
+			m_attackNow = false;
 		}
 	}
 

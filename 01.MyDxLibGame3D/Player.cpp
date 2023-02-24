@@ -47,6 +47,7 @@ void Player::Init()
 	// ステータスの初期化
 	m_status.LV = 1;
 	m_status.HP = 18;
+	m_status.MP = 3;
 	m_status.ATK = 5;
 	m_status.DEF = 5;
 	m_status.INT = 5;
@@ -54,6 +55,7 @@ void Player::Init()
 	m_status.AGL = 5;
 	m_status.EXP = 0;
 	m_hpMax = m_status.HP;
+	m_mpMAX = m_status.MP;
 	m_expMAX = 1;
 
 	auto vec = VGet(0, 0, 0);
@@ -255,18 +257,16 @@ void Player::Rotate()
 void Player::Animation()
 {
 	// アニメーション繰り返し処理
-	if (m_animTotalTime < m_animTime && m_animType == Anim::Attack || m_animTotalTime < m_animTime && m_animType == Anim::Damage)
-	{
-		m_animType = Anim::Idle;
-		m_attackNow = false;
-	}
-	else if (m_animTotalTime < m_animTime)
+	if (m_animTotalTime < m_animTime)
 	{
 		m_animTime = 0.0f;
 		if (m_animType == Anim::Death)
 		{
+			m_isDeathFlag = true;
 			m_animTime = m_animTotalTime;
 		}
+		m_animType = Anim::Idle;
+		m_attackNow = false;
 	}
 
 	// アニメーション切り替え処理
@@ -306,11 +306,13 @@ void Player::LevelManager()
 {
 	if (m_status.EXP >= m_expMAX)
 	{
-		m_status.EXP = 0;
-		m_expMAX += 3;
 		m_status.LV++;
-		m_hpMax = 3 + m_hpMax;
+		m_status.EXP = 0;
+		m_hpMax += 3;
 		m_status.HP = m_hpMax;
+		m_mpMAX += 3;
+		m_status.MP = m_mpMAX;
+		m_expMAX += 3;
 		m_status.ATK += 2;
 		m_status.DEF++;
 		m_status.INT += 2;

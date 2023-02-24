@@ -82,7 +82,7 @@ public:
     {
         for (int i = 0; i < m_pCommandArray.size(); i++)
         {
-            m_pCommandArray[i]->Draw(975 - (80 * i));
+            m_pCommandArray[i]->Draw(955 - (80 * i));
         }
     }
 

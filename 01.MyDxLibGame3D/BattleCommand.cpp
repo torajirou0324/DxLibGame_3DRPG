@@ -31,7 +31,7 @@ BattleCommand::BattleCommand(class PlayScene* _playScene)
 	m_pCommandManager[TAG_CommandState::TAG_isMoveType]->SetCommand(new SimpleCommand("‚Ü‚Ù‚¤", TAG_CommandState::TAG_isMagicSkill, TAG_CommandState::TAG_isPlay));
 	m_pCommandManager[TAG_CommandState::TAG_isMoveType]->SetCommand(new SimpleCommand("‚±‚¤‚°‚«",TAG_CommandState::TAG_isAttackSkill, TAG_CommandState::TAG_isPlay));
 	// UŒ‚Ši”[—p
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->SetCommand(new SkillCommand(skillfunc,TAG_CommandState::TAG_isTargetAttack, TAG_CommandState::TAG_isMoveType));
 		m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->SetCommand(new SkillCommand(skillfunc, TAG_CommandState::TAG_isTargetAttack, TAG_CommandState::TAG_isMoveType));

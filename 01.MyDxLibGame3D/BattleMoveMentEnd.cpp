@@ -43,5 +43,7 @@ TAG_BattleState BattleMoveMentEnd::Update()
 //-----------------------------------------------------------------------------
 void BattleMoveMentEnd::Draw()
 {
-    printfDx("全キャラ行動完了待機処理");
+    printfDx("全キャラ行動完了待機処理\n");
+    printfDx("%s:%d", m_pPlaySceneStorage->GetAttackNowCharacter()->GetName().c_str(), m_pPlaySceneStorage->GetAttackNowCharacter()->GetAttackNowFlag());
+    
 }

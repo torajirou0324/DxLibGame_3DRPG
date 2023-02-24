@@ -97,7 +97,6 @@ public:
 
     void Dead()             // Ž€‚Ê‚Æ‚«‚ÉŒÄ‚Ô(—¼‘Î‰ž)
     {
-        m_isDeathFlag = true;
         m_animType = Anim::Death;
     }
 

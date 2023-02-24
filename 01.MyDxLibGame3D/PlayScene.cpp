@@ -43,8 +43,6 @@ PlayScene::PlayScene()
 
 	m_blackWindow = AssetManager::UseImage(AssetManager::BlackWindow);
 	m_statusWindow = AssetManager::UseImage(AssetManager::StatusWindow);
-
-	m_battleFlag = true;
 }
 
 //-----------------------------------------------------------------------------
@@ -227,17 +225,24 @@ void PlayScene::BattleEventDraw()
 	{
 		DrawGraph(0, 750, m_statusWindow, TRUE);
 		auto& playerStatus = m_pPlayer->GetAllStatus();
-		float berdif = static_cast<float>(playerStatus.HP) / m_pPlayer->GetHPMAX();
-		auto ber = 350 * berdif;
 		DrawFormatString(50, 786, GetColor(255, 255, 255), "Lv.%d　　　キツキ　イチカ", playerStatus.LV);
+
+		float berdif = static_cast<float>(playerStatus.EXP) / m_pPlayer->GetEXPMAX();
+		auto ber = 270 * berdif;
+		DrawBox(50, 840, 50 + ber, 860, GetColor(0, 255, 255), TRUE);
+		DrawBox(48, 838, 322, 862, GetColor(255, 255, 255), FALSE);
+		
+		berdif = static_cast<float>(playerStatus.HP) / m_pPlayer->GetHPMAX();
+		ber = 350 * berdif;
 		DrawBox(50, 870, 50 + ber, 910, GetColor(0, 255, 0), TRUE);
 		DrawBox(48, 868, 402, 912, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(300, 883, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_pPlayer->GetHPMAX());
-		berdif = static_cast<float>(playerStatus.EXP) / m_pPlayer->GetEXPMAX();
+		DrawFormatString(300, 880, GetColor(255, 255, 255), "%d/%d", playerStatus.HP, m_pPlayer->GetHPMAX());
+
+		berdif = static_cast<float>(playerStatus.MP) / m_pPlayer->GetMPMAX();
 		ber = 350 * berdif;
-		DrawBox(50, 920, 50 + ber, 960, GetColor(0, 255, 255), TRUE);
+		DrawBox(50, 920, 50 + ber, 960, GetColor(0, 100, 200), TRUE);
 		DrawBox(48, 918, 402, 962, GetColor(255, 255, 255), FALSE);
-		DrawFormatString(300, 927, GetColor(255, 255, 255), "%d/%d", playerStatus.EXP, m_pPlayer->GetEXPMAX());
+		DrawFormatString(300, 927, GetColor(255, 255, 255), "%d/%d", playerStatus.MP, m_pPlayer->GetMPMAX());
 	}
 
 	// エネミーのステータス表示+黒枠

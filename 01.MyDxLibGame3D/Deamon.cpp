@@ -62,7 +62,11 @@ void Deamon::Update()
 //-----------------------------------------------------------------------------
 void Deamon::Draw()
 {
-    MV1DrawModel(m_modelHandle);
+    if (!m_isDeathFlag)
+    {
+        MV1DrawModel(m_modelHandle);
+    }
+    printfDx("%s:%3f\n", m_name.c_str(), m_animTime);
 }
 
 void Deamon::Move()

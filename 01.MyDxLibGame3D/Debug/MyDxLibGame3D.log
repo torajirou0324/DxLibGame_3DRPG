@@ -1,3 +1,6 @@
 ﻿  Player.cpp
-C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
-  MyDxLibGame3D.vcxproj -> C:\Users\student\Desktop\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(2655,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(3535,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\Dxlib_h\DxLib.h(3763,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\DxLibGame_3DRPG\01.MyDxLibGame3D\AssetManager.h(8,1): warning C4067: プリプロセッサ ディレクティブの後に余分な文字がありました - 改行が必要です
+  MyDxLibGame3D.vcxproj -> C:\Users\井口翔悟\Desktop\DxLib仕様プロジェクト\DxLibGame_3DRPG\01.MyDxLibGame3D\Debug\MyDxLibGame3D.exe

@@ -42,6 +42,7 @@ public:
 	}
 
 	// ゲッター
+	const int& GetMPMAX() { return m_mpMAX; }
 	const int& GetEXPMAX() { return m_expMAX; }
 	const SKILL* GetSKILL() { return m_skillStorage; }
 private:
@@ -53,6 +54,7 @@ private:
 	// nowVecからaimVecに向かってdegreeVelocityの速度でY軸回転する.
 	VECTOR RotateForAimVecYAxis(const VECTOR& nowVec, const VECTOR& aimVec, float degreeVelocity);
 
+	int m_mpMAX;			// プレイヤーの最大魔法力量.
 	int m_expMAX;			// プレイヤーのレベルアップに必要な経験値量.
 
 	bool m_rotateNow;		// 回転中か判定用.
