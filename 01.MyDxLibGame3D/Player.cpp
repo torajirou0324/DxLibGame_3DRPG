@@ -245,7 +245,7 @@ void Player::Rotate()
 				interPolateDir = m_aimDir;
 				m_rotateNow = false;
 			}
-			// 目標ベクトルに10度だけ近づえた角度
+			// 目標ベクトルに10度だけ近づけた角度
 			m_dir = interPolateDir;
 		}
 	}

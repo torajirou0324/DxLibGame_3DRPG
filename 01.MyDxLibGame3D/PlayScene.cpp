@@ -179,7 +179,6 @@ void PlayScene::NormalEvent()
 		}
 		m_pBattleManager->Init(m_pPlayer, m_pEnemyArray);
 	}
-
 }
 
 //-----------------------------------------------------------------------------

@@ -39,3 +39,17 @@ void Box::Scaling(float _scale)
 {
     Scaling(_scale, _scale, _scale);
 }
+
+Wall::Wall(const VECTOR& _start, const VECTOR& _end, const float& _height)
+{
+    m_start = _start;
+    m_end = _end;
+    m_height = _height;
+
+    // 壁面の表面ベクトルを求める
+    VECTOR nomalizeWallLine = VSub(_end, _start);
+    nomalizeWallLine = VNorm(nomalizeWallLine);
+
+    // 壁面の平面方程式
+    //m_direction = VCross()
+}

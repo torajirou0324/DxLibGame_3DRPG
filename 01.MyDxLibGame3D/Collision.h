@@ -69,13 +69,8 @@ public:
     // コンストラクタ
     Box(const VECTOR& _center, const VECTOR& _scale)
     {
-        // 大きさを半分にして最大の点と最小の点を決める
-        VECTOR scale = VGet(_scale.x / 2.0f, _scale.y / 2.0f, _scale.z / 2.0f);
-        m_min = VGet(_center.x - scale.x, _center.y - scale.y, _center.z - scale.z);
-        m_max = VGet(_center.x + scale.x, _center.y + scale.y, _center.z + scale.z);
-
-        m_center = _center;
         m_scale = _scale;
+        UpdateMinMax(_center);
         CalcVertex();
     }
 
@@ -96,4 +91,19 @@ public:
     VECTOR m_vertex[8];     // ボックスの頂点
 
     VECTOR m_scale;         // ボックスのサイズ
+};
+
+// 壁(Wall)
+class Wall
+{
+public:
+    // コンストラクタ
+    Wall(const VECTOR& _start, const VECTOR& _end, const float& _height);
+
+    VECTOR m_direction;     // 向き
+    VECTOR m_start;         // 開始点
+    VECTOR m_end;           // 終了点
+    float m_height;         // 高さ
+    float m_planeD;         // 平面方程式のd値
+    float m_yRotate;        // Y軸回転用
 };
