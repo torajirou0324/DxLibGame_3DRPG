@@ -10,7 +10,7 @@ public:
     BoxCollider();
     ~BoxCollider() override;    // 個別クラスがあるので独自で削除を行う
 
-    void Init(const VECTOR& _pos, const VECTOR& _scale, const ObjectTag& _tag);
+    void Init(const VECTOR& _pos, const VECTOR& _scale, const ObjectTag& _tag, std::function<void()> _func = nullptr);
     void UpdatePosition(const VECTOR& _pos) { m_pBox->UpdateMinMax(_pos); }
 
     // 当たり判定を検出(相手のコライダー)
@@ -22,4 +22,5 @@ public:
     const Box* GetBoxAddress() const { return m_pBox; }
 private:
     Box* m_pBox;
+    std::function<void()> m_func;   // 関数ポインタ
 };

@@ -7,7 +7,7 @@
 #include "Input.h"
 #include "ColliderManager.h"
 
-const float r = -60.0f;					// プレイヤーとカメラの距離
+const float r = -80.0f;					// プレイヤーとカメラの距離
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ void Player::Init()
 
 	// コライダーをセット
 	m_pBoxCollider = new BoxCollider;
-	m_pBoxCollider->Init(m_position, VGet(20.0f, 50.0f, 20.0f), ObjectTag::Player);
+	m_pBoxCollider->Init(m_position, VGet(20.0f, 50.0f, 20.0f), ObjectTag::Player,std::bind(&Player::PushbackVolume, this));
 
 	ColliderManager::AddColliderInfo(m_pBoxCollider);
 }
@@ -118,7 +118,7 @@ void Player::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
-	OnCollisionEnter();
+	ColliderManager::OnCollisionEnter(m_pBoxCollider);
 	// ３Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);
 }
@@ -180,7 +180,7 @@ void Player::Input()
 		right.z = cosf(m_rotate.y + addRad);
 		inputVector = VAdd(right, inputVector);
 		input = true;
-		m_rotate.y += 0.02f;
+		//m_rotate.y += 0.02f;
 	}
 
 	// 左を押していたら左に進む
@@ -190,7 +190,7 @@ void Player::Input()
 		left.z = cosf(m_rotate.y - addRad);
 		inputVector = VAdd(left, inputVector);
 		input = true;
-		m_rotate.y -= 0.02f;
+		//m_rotate.y -= 0.02f;
 	}
 
 	// 入力有（加速）・入力無（減速）
@@ -281,7 +281,6 @@ void Player::Animation()
 			m_isDeathFlag = true;
 			m_animTime = m_animTotalTime;
 		}
-		m_animType = Anim::Idle;
 		m_attackNow = false;
 	}
 
@@ -337,25 +336,27 @@ void Player::LevelManager()
 	}
 }
 
+//-----------------------------------------------------------------------------
+// @brief  プレイヤーへの追従カメラ.
+//-----------------------------------------------------------------------------
 void Player::Camera()
 {
-	VECTOR cameraPos = VGet(0.0f, 80.0f, 0.0f);
+	VECTOR cameraPos = VGet(0.0f, 240.0f, 0.0f);
 
-	cameraPos.x = m_position.x + sinf(m_rotate.y) * r;
-	cameraPos.z = m_position.z + cosf(m_rotate.y) * r;
+	cameraPos.x = m_position.x + sinf(m_rotate.y) * r + 20.0f;
+	cameraPos.z = m_position.z + cosf(m_rotate.y) * r - 20.0f;
 
 	SetCameraPositionAndTarget_UpVecY(cameraPos, VGet(m_position.x,m_position.y + 40,m_position.z));
 }
 
-void Player::OnCollisionEnter()
+//-----------------------------------------------------------------------------
+// @brief  衝突判定時のめり込み量を戻す際に呼ぶもの.
+//-----------------------------------------------------------------------------
+void Player::PushbackVolume()
 {
-	if (ColliderManager::OnCollisionEnter(m_pBoxCollider))
-	{
-
-
-		// 当たっているためめり込み量押し戻して上げる
-		m_position = VAdd(m_position, m_pBoxCollider->GetCollisionInfo().m_fixVec);
-	}
+	// 衝突判定時に呼び出す用
+	// 当たっているためめり込み量押し戻して上げる
+	m_position = VAdd(m_position, m_pBoxCollider->GetCollisionInfo().m_fixVec);
 }
 
 //-----------------------------------------------------------------------------

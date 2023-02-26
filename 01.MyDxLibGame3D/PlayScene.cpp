@@ -26,14 +26,22 @@ PlayScene::PlayScene()
 
 	// ï«Çê∂ê¨
 	m_pWallCollider = new WallCollider;
-	float start = -100.0f;
-	float end = 100.0f;
+	float start = -150.0f;
+	float end = 150.0f;
 	m_pWallCollider->Init(VGet(start, 0.0f, end), VGet(end, 0.0f, end), 50.0f, ObjectTag::Wall);
 	ColliderManager::AddColliderInfo(m_pWallCollider);
 
-	m_pBoxCollider = new BoxCollider;
-	m_pBoxCollider->Init(VGet(0.0f, 0.0f, 200.0f), VGet(50.0f, 50.0f, 50.0f), ObjectTag::Enemy);
-	ColliderManager::AddColliderInfo(m_pBoxCollider);
+	m_pWallCollider = new WallCollider;
+	m_pWallCollider->Init(VGet(start, 0.0f, start), VGet(start, 0.0f, end), 50.0f, ObjectTag::Wall);
+	ColliderManager::AddColliderInfo(m_pWallCollider);
+
+	m_pWallCollider = new WallCollider;
+	m_pWallCollider->Init(VGet(start, 0.0f, start), VGet(end, 0.0f, start), 50.0f, ObjectTag::Wall);
+	ColliderManager::AddColliderInfo(m_pWallCollider);
+
+	m_pWallCollider = new WallCollider;
+	m_pWallCollider->Init(VGet(end, 0.0f, start), VGet(end, 0.0f, end), 50.0f, ObjectTag::Wall);
+	ColliderManager::AddColliderInfo(m_pWallCollider);
 
 	// é©ã@Ç∆ìGÇÃê∂ê¨
 	m_pCharacterAttackNow = nullptr;
@@ -75,11 +83,6 @@ PlayScene::~PlayScene()
 	{
 		delete m_pWallCollider;
 		m_pWallCollider = nullptr;
-	}
-	if (m_pBoxCollider != nullptr)
-	{
-		delete m_pBoxCollider;
-		m_pBoxCollider = nullptr;
 	}
 
 	for (int i = 0; i < m_pEnemyArray.size(); i++)

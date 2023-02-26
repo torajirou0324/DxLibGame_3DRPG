@@ -2,8 +2,10 @@
 // @brief  衝突判定の基礎クラス定義ヘッダー.
 //-----------------------------------------------------------------------------
 #pragma once
-#include <DxLib.h>
 #include <limits>
+#include <functional>
+#include <DxLib.h>
+
 
 // 衝突情報
 class CollisionInfo
@@ -72,11 +74,7 @@ public:
     {
         m_scale = _scale;
         UpdateMinMax(_center);
-        CalcVertex();
     }
-
-    // ボックスの8頂点を計算してセットする関数
-    void CalcVertex();
 
     // コライダー位置の更新処理
     void UpdateMinMax(const VECTOR& _center);
@@ -89,7 +87,6 @@ public:
     VECTOR m_center;        // ボックスの中心点
     VECTOR m_min;           // ボックス最小座標
     VECTOR m_max;           // ボックス最大座標
-    VECTOR m_vertex[8];     // ボックスの頂点
 
     VECTOR m_scale;         // ボックスのサイズ
 };
@@ -105,8 +102,6 @@ public:
     VECTOR m_start;         // 開始点
     VECTOR m_end;           // 終了点
     float m_height;         // 高さ
-    float m_planeD;         // 平面方程式のd値
-    float m_yRotate;        // Y軸回転用
 };
 
 bool Intersect(const Box& _b1, const Box& _b2, CollisionInfo& _info);

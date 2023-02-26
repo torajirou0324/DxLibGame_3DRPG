@@ -93,6 +93,8 @@ void ColliderManager::RemoveColliderInfo(WallCollider* _wall)
 //-----------------------------------------------------------------------------
 bool ColliderManager::OnCollisionEnter(ColliderBase* _coll)
 {
+    bool CollisionFlag = false;
+
     // 当たり判定を行うか判定
     if (_coll->GetOnCollisionFlag())
     {
@@ -122,11 +124,11 @@ bool ColliderManager::OnCollisionEnter(ColliderBase* _coll)
             if (_coll->HitCheck(collisionManager->m_WallColliderArray[i]))
             {
                 // 当たったときの処理を行う
-                return true;
+                CollisionFlag = true;
             }
         }
     }
-    return false;
+    return CollisionFlag;
 }
 
 // ボックスの描画

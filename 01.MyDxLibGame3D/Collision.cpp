@@ -1,21 +1,6 @@
 #include "Collision.h"
 #include <math.h>
 
-void Box::CalcVertex()
-{
-    // 箱の上側4点
-    m_vertex[0] = VGet(m_min.x, m_min.y, m_max.z);
-    m_vertex[1] = VGet(m_max.x, m_min.y, m_max.z);
-    m_vertex[2] = VGet(m_min.x, m_max.y, m_max.z);
-    m_vertex[3] = VGet(m_max.x, m_max.y, m_max.z);
-
-    // 箱の下側4点VECTOR
-    m_vertex[4] = VGet(m_min.x, m_min.y, m_min.z);
-    m_vertex[5] = VGet(m_max.x, m_min.y, m_min.z);
-    m_vertex[6] = VGet(m_min.x, m_max.y, m_min.z);
-    m_vertex[7] = VGet(m_max.x, m_max.y, m_min.z);
-}
-
 void Box::UpdateMinMax(const VECTOR& _center)
 {
     // 大きさを半分にして最大の点と最小の点を決める
@@ -25,8 +10,6 @@ void Box::UpdateMinMax(const VECTOR& _center)
     m_max = VGet(_center.x + scale.x, _center.y + scale.y, _center.z + scale.z);
 
     m_center = _center;
-
-    CalcVertex();
 }
 
 void Box::Scaling(float _x, float _y, float _z)
@@ -47,20 +30,6 @@ Wall::Wall(const VECTOR& _start, const VECTOR& _end, const float& _height)
     m_start = _start;
     m_end = _end;
     m_height = _height;
-
-    // 壁面の表面ベクトルを求める
-    VECTOR nomalizeWallLine = VSub(_end, _start);
-    nomalizeWallLine = VNorm(nomalizeWallLine);
-
-    // 壁面の平面方程式
-    m_direction = VCross(CollMath::m_unitY, nomalizeWallLine);
-    m_planeD = -1.0f * VDot(m_direction, _start);
-
-    // 表示回転角と回転方向
-    VECTOR sgnVec = VCross(CollMath::m_unitY, nomalizeWallLine);
-    float yAngle = acosf(VDot(CollMath::m_unitY, nomalizeWallLine)) - CollMath::m_piOver2;
-
-    m_yRotate = sgnVec.z > 0 ? yAngle : -yAngle + CollMath::m_pi;
 }
 
 bool Intersect(const Box& _b1, const Box& _b2, CollisionInfo& _info)
@@ -126,15 +95,11 @@ void CalcCollisionFixVec(const Box& _box1, const Box& _box2, VECTOR& _calcFixVec
     float dz = (CollMath::Abs(dz1) < CollMath::Abs(dz2)) ? dx1 : dz2;
 
     // x,y,zのうちもっとも差が小さい軸で位置を調整
-    if (CollMath::Abs(dx) <= CollMath::Abs(dy) && CollMath::Abs(dx) <= CollMath::Abs(dz))
+    if (CollMath::Abs(dx) < CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.x = dx;
     }
-    else if (CollMath::Abs(dy) <= CollMath::Abs(dx) && CollMath::Abs(dy) <= CollMath::Abs(dz))
-    {
-        _calcFixVec.y = dy;
-    }
-    else
+    if (CollMath::Abs(dx) > CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.z = dz;
     }
@@ -156,24 +121,16 @@ void CalcCollisionFixVec(const Box& _b, const Wall& _w, VECTOR& _calcFixVec)
     float dz2 = wallMax.z - _b.m_min.z;
 
     // dx,dy,dzのそれぞれ1と2のうち絶対値が小さいほうをセットする
-    //float dx = (CollMath::Abs(dx1) < CollMath::Abs(dx2)) ? dx1 : dx2;
-    //float dy = (CollMath::Abs(dy1) < CollMath::Abs(dy2)) ? dy1 : dy2;
-    //float dz = (CollMath::Abs(dz1) < CollMath::Abs(dz2)) ? dx1 : dz2;
-
-    float dx = -1.0f * (dx1 + dx2);
-    float dy = -1.0f * (dy1 + dy2);
-    float dz = -1.0f * (dz1 + dz2);
+    float dx = (CollMath::Abs(dx1) < CollMath::Abs(dx2)) ? dx1 : dx2;
+    float dy = (CollMath::Abs(dy1) < CollMath::Abs(dy2)) ? dy1 : dy2;
+    float dz = (CollMath::Abs(dz1) < CollMath::Abs(dz2)) ? dz1 : dz2;
 
     // x,y,zのうちもっとも差が小さい軸で位置を調整
-    if (CollMath::Abs(dx) <= CollMath::Abs(dy) && CollMath::Abs(dx) <= CollMath::Abs(dz) && dx != 0.0f)
+    if (CollMath::Abs(dx) < CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.x = dx;
     }
-    else if (CollMath::Abs(dy) <= CollMath::Abs(dx) && CollMath::Abs(dy) <= CollMath::Abs(dz) && dy != 0.0f)
-    {
-        _calcFixVec.y = dy;
-    }
-    else
+    if (CollMath::Abs(dx) > CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.z = dz;
     }
@@ -200,15 +157,11 @@ void CalcCollisionFixVec(const Wall& _w, const Box& _b, VECTOR& _calcFixVec)
     float dz = (CollMath::Abs(dz1) < CollMath::Abs(dz2)) ? dz1 : dz2;
 
     // x,y,zのうちもっとも差が小さい軸で位置を調整
-    if (CollMath::Abs(dx) <= CollMath::Abs(dy) && CollMath::Abs(dx) <= CollMath::Abs(dz))
+    if (CollMath::Abs(dx) < CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.x = dx;
     }
-    else if (CollMath::Abs(dy) <= CollMath::Abs(dx) && CollMath::Abs(dy) <= CollMath::Abs(dz))
-    {
-        _calcFixVec.y = dy;
-    }
-    else
+    if (CollMath::Abs(dx) > CollMath::Abs(dz) && dx != 0.0f)
     {
         _calcFixVec.z = dz;
     }

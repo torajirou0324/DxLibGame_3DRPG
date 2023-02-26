@@ -49,7 +49,7 @@ public:
 private:
 	void Camera();
 
-	void OnCollisionEnter();
+	void PushbackVolume();
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
 	// nowVecからdirVecの最短の回転方向を調べる(Y軸).

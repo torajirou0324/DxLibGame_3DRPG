@@ -45,5 +45,5 @@ void BattleMoveMentEnd::Draw()
 {
     printfDx("全キャラ行動完了待機処理\n");
     printfDx("%s:%d", m_pPlaySceneStorage->GetAttackNowCharacter()->GetName().c_str(), m_pPlaySceneStorage->GetAttackNowCharacter()->GetAttackNowFlag());
-    
+    DrawFormatString(650, 800, GetColor(255, 255, 255), "%sが%dのこうげき", m_pPlaySceneStorage->GetAttackNowCharacter()->GetName().c_str(), m_pPlaySceneStorage->GetAttackNowCharacter()->GetAllStatus().ATK);
 }
