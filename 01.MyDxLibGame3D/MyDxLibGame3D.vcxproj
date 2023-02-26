@@ -190,6 +190,7 @@
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="TargetCommand.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="WallCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />

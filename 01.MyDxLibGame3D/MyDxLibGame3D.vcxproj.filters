@@ -178,6 +178,9 @@
     <ClCompile Include="BoxCollider.cpp">
       <Filter>ソース ファイル\Collider</Filter>
     </ClCompile>
+    <ClCompile Include="WallCollider.cpp">
+      <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">

@@ -24,14 +24,16 @@ public:
     {}
     virtual ~ColliderBase(){}   // デストラクタ(継承先でオーバーライド用)
 
-    // 当たり判定を検出(相手のコライダー)
-    virtual bool CollisionDetection(ColliderBase* _coll){}
     // 当たり判定を実行するかしないかのフラグを返す
     const bool& GetOnCollisionFlag() { return m_onCollisionFlag; }
 
+    // 当たり判定を検出(相手のコライダー)
     // 当たり判定結果を返す
-    virtual bool HitCheck(class BoxCollider* _other){}
-    virtual bool HitCheck(class WallCollider* _other){}
+    virtual bool HitCheck(class BoxCollider* _other) { return false; }
+    virtual bool HitCheck(class WallCollider* _other) { return false; }
+
+    // 当たり判定情報を返す
+    CollisionInfo& GetCollisionInfo() { return *m_pCollInfo; }
 protected:
     CollisionInfo* m_pCollInfo;     // 当たり判定情報
     ObjectTag m_onCollisionTag;     // 当たったオブジェクトのタグ名

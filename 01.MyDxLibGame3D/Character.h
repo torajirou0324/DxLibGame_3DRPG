@@ -149,7 +149,7 @@ protected:
 
     Status m_status;            // キャラクターのステータス（戦闘時変化用）
     Status m_basicStatus;       // キャラクターステータス（基礎ステータス）
-    SKILL m_skillStorage[4];    // 技格納用の配列
+    SKILL m_skillStorage[3];    // 技格納用の配列
     SKILL m_useSkill;		    // 使用する技格納用.
 
     Anim m_animType;            // 現在のアニメーション保存用

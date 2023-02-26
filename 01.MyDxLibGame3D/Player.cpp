@@ -2,19 +2,24 @@
 // @brief  プレイヤークラス.
 //-----------------------------------------------------------------------------
 #include "Player.h"
+
 #include <math.h>
 #include "Input.h"
+#include "ColliderManager.h"
 
-const float r = -80.0f;					// プレイヤーとカメラの距離
+const float r = -60.0f;					// プレイヤーとカメラの距離
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
 Player::Player()
-	: m_rotate(VGet(0.0f,0.0f,0.0f))
+	: m_mpMAX(0)
+	, m_expMAX(0)
+	, m_rotate(VGet(0.0f,0.0f,0.0f))
 	, m_velocity(VGet(0.0f,0.0f,0.0f))
 	, m_dir(VGet(0, 0, 1))
 	, m_aimDir(VGet(0, 0, 0))
 	, m_rotateNow(false)
+	, m_pBoxCollider(nullptr)
 {
 	// プレイヤーです
 	m_isPlayerFlag = true;
@@ -35,6 +40,10 @@ Player::Player()
 //-----------------------------------------------------------------------------
 Player::~Player()
 {
+	if (m_pBoxCollider != nullptr)
+	{
+		delete m_pBoxCollider;
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -70,18 +79,23 @@ void Player::Init()
 	m_animTime = 0.0f;
 	m_animTotalTime = MV1GetAnimTotalTime(m_animHandle[m_animType], 0);
 
-	// 技のスキルの世界
-	SKILL skillarray[4] = {
+	// 技のスキルの箱
+	SKILL skillarray[3] = {
 		{"たたく", AttributeType::Physical, 10,0,0},
 		{"フレア",AttributeType::Special,20,3,0},
 		{"ヒール",AttributeType::Recovery,10,2,0},
-		{"",AttributeType::None,0,0,0}
 	};
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 3; i++)
 	{
 		m_skillStorage[i] = skillarray[i];
 	}
+
+	// コライダーをセット
+	m_pBoxCollider = new BoxCollider;
+	m_pBoxCollider->Init(m_position, VGet(20.0f, 50.0f, 20.0f), ObjectTag::Player);
+
+	ColliderManager::AddColliderInfo(m_pBoxCollider);
 }
 
 //-----------------------------------------------------------------------------
@@ -95,6 +109,7 @@ void Player::Update()
 	Camera();
 
 	m_position = VAdd(m_position, m_velocity);
+	m_pBoxCollider->UpdatePosition(m_position);
 
 	// 向きに合わせてモデル回転
 	MATRIX rotYMat = MGetRotY(180.0f * DX_PI_F / 180.0f);
@@ -103,6 +118,7 @@ void Player::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
+	OnCollisionEnter();
 	// ３Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);
 }
@@ -323,12 +339,23 @@ void Player::LevelManager()
 
 void Player::Camera()
 {
-	VECTOR cameraPos = VGet(0.0f, 180.0f, 0.0f);
+	VECTOR cameraPos = VGet(0.0f, 80.0f, 0.0f);
 
 	cameraPos.x = m_position.x + sinf(m_rotate.y) * r;
 	cameraPos.z = m_position.z + cosf(m_rotate.y) * r;
 
 	SetCameraPositionAndTarget_UpVecY(cameraPos, VGet(m_position.x,m_position.y + 40,m_position.z));
+}
+
+void Player::OnCollisionEnter()
+{
+	if (ColliderManager::OnCollisionEnter(m_pBoxCollider))
+	{
+
+
+		// 当たっているためめり込み量押し戻して上げる
+		m_position = VAdd(m_position, m_pBoxCollider->GetCollisionInfo().m_fixVec);
+	}
 }
 
 //-----------------------------------------------------------------------------

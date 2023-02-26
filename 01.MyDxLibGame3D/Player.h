@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 #include "Character.h"
+#include "BoxCollider.h"
 
 class Player : public Character
 {
@@ -47,6 +48,8 @@ public:
 	const SKILL* GetSKILL() { return m_skillStorage; }
 private:
 	void Camera();
+
+	void OnCollisionEnter();
 	// 二つのベクトルの角度が同じか.
 	bool IsNearAngle(const VECTOR& v1, const VECTOR& v2);
 	// nowVecからdirVecの最短の回転方向を調べる(Y軸).
@@ -63,4 +66,6 @@ private:
 	VECTOR m_velocity;		// プレイヤーの速度.
 	VECTOR m_dir;			// プレイヤーの向き.
 	VECTOR m_aimDir;		// プレイヤーの目標方向.
+
+	BoxCollider* m_pBoxCollider;
 };

@@ -8,6 +8,8 @@
 #include "Enemy.h"
 #include "Player.h"
 #include "BattleEventManager.h"
+#include "BoxCollider.h"
+#include "WallCollider.h"
 
 enum NormalState		// ノーマルイベントの状態管理.
 {
@@ -60,6 +62,8 @@ private:
 	std::vector<Enemy*> m_pEnemyArray;
 	Character* m_pCharacterAttackNow;		// 攻撃中のキャラクター
 	Player* m_pPlayer;
+	BoxCollider* m_pBoxCollider;			// 
+	WallCollider* m_pWallCollider;			// 
 
 	BattleEventManager* m_pBattleManager;	// バトル管理クラスポインタ.
 

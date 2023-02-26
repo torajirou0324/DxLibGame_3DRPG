@@ -2,11 +2,13 @@
 // @brief  プレイシーンクラス.
 //-----------------------------------------------------------------------------
 #include "PlayScene.h"
+
 #include <functional>
 #include <DxLib.h>
 #include "Deamon.h"
 #include "Field.h"
 #include "Input.h"
+#include "ColliderManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -20,6 +22,19 @@ PlayScene::PlayScene()
 	, m_commandIndex(1)
 	, m_pBattleManager(nullptr)
 {
+	ColliderManager::CreateInstance();
+
+	// 壁を生成
+	m_pWallCollider = new WallCollider;
+	float start = -100.0f;
+	float end = 100.0f;
+	m_pWallCollider->Init(VGet(start, 0.0f, end), VGet(end, 0.0f, end), 50.0f, ObjectTag::Wall);
+	ColliderManager::AddColliderInfo(m_pWallCollider);
+
+	m_pBoxCollider = new BoxCollider;
+	m_pBoxCollider->Init(VGet(0.0f, 0.0f, 200.0f), VGet(50.0f, 50.0f, 50.0f), ObjectTag::Enemy);
+	ColliderManager::AddColliderInfo(m_pBoxCollider);
+
 	// 自機と敵の生成
 	m_pCharacterAttackNow = nullptr;
 	m_pPlayer = new Player;
@@ -50,10 +65,21 @@ PlayScene::PlayScene()
 //-----------------------------------------------------------------------------
 PlayScene::~PlayScene()
 {
+	ColliderManager::DeleteInstance();
 	if (m_pBattleManager != nullptr)
 	{
 		delete m_pBattleManager;
 		m_pBattleManager = nullptr;
+	}
+	if (m_pWallCollider != nullptr)
+	{
+		delete m_pWallCollider;
+		m_pWallCollider = nullptr;
+	}
+	if (m_pBoxCollider != nullptr)
+	{
+		delete m_pBoxCollider;
+		m_pBoxCollider = nullptr;
 	}
 
 	for (int i = 0; i < m_pEnemyArray.size(); i++)
@@ -204,6 +230,7 @@ void PlayScene::NormalEventDraw()
 {
 	printfDx("camPos x:%d y:%d z:%d\n", m_cameraPos.x, m_cameraPos.y, m_cameraPos.z);
 	Field::DrawCall();
+	ColliderManager::ColliderVisuale();
 	m_pPlayer->Draw();
 }
 

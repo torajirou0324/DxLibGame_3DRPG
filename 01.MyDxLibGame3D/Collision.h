@@ -3,6 +3,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 #include <DxLib.h>
+#include <limits>
 
 // 衝突情報
 class CollisionInfo
@@ -107,3 +108,29 @@ public:
     float m_planeD;         // 平面方程式のd値
     float m_yRotate;        // Y軸回転用
 };
+
+bool Intersect(const Box& _b1, const Box& _b2, CollisionInfo& _info);
+bool Intersect(const Box& _b, const Wall& _w, CollisionInfo& _info);
+bool Intersect(const Wall& _w, const Box& _b, CollisionInfo& _info);
+
+void CalcCollisionFixVec(const Box& _box1, const Box& _box2, VECTOR& _calcFixVec); // Boxのめり込み(Box)をもどす量を計算
+void CalcCollisionFixVec(const Box& _b, const Wall& _w, VECTOR& _calcFixVec);   // Boxのめり込み(Wall)を戻す量を計算
+void CalcCollisionFixVec(const Wall& _w, const Box& _b, VECTOR& _calcFixVec);   // Wallのめり込み(Box)を戻す量を計算
+
+// 当たり判定に使った数学関数
+namespace CollMath
+{
+    const float m_pi = 3.1415926535f;
+    const float m_twoPi = m_pi * 2.0f;
+    const float m_piOver2 = m_pi / 2.0f;
+    const float m_infinity = std::numeric_limits<float>::infinity();
+    const float m_negInfinity = -std::numeric_limits<float>::infinity();
+    const VECTOR m_unitX = VGet(1.0f, 0.0f, 0.0f);
+    const VECTOR m_unitY = VGet(0.0f, 1.0f, 0.0f);
+    const VECTOR m_unitZ = VGet(0.0f, 0.0f, 1.0f);
+
+    inline float Abs(float _value)
+    {
+        return fabs(_value);
+    }
+}

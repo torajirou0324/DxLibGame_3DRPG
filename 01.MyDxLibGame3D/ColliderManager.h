@@ -4,14 +4,16 @@
 
 #pragma once
 #include <vector>
-#include "ColliderBase.h"
+#include "BoxCollider.h"
+#include "WallCollider.h"
 
 class ColliderManager
 {
     // シングルトン
     static ColliderManager* collisionManager;
     // 全てのコライダー格納配列
-    std::vector<ColliderBase*> m_colliderArray;
+    std::vector<BoxCollider*> m_boxColliderArray;
+    std::vector<WallCollider*> m_WallColliderArray;
 
 public:
     // コピー禁止
@@ -24,7 +26,14 @@ public:
     static void CreateInstance();
     static void DeleteInstance();
 
-    static void AddColliderInfo(ColliderBase* _coll);
-    static void RemoveColliderInfo(ColliderBase* _coll);
+    // 追加
+    static void AddColliderInfo(BoxCollider* _box);
+    static void AddColliderInfo(WallCollider* _wall);
+    // 削除
+    static void RemoveColliderInfo(BoxCollider* _box);
+    static void RemoveColliderInfo(WallCollider* _wall);
+    // 衝突判定
     static bool OnCollisionEnter(ColliderBase* _coll);
+    // 今あるコライダーを可視化する
+    static void ColliderVisuale();
 };
