@@ -190,6 +190,7 @@
     <ClCompile Include="SkillCommand.cpp" />
     <ClCompile Include="TargetCommand.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="WalkAroundEnemy.cpp" />
     <ClCompile Include="WallCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +230,7 @@
     </ClInclude>
     <ClInclude Include="Input.h" />
     <ClInclude Include="BattleMoveMentStart.h" />
+    <ClInclude Include="NormalEventManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SceneBase.h" />
@@ -239,6 +241,7 @@
     <ClInclude Include="Status.h" />
     <ClInclude Include="TargetCommand.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="WalkAroundEnemy.h" />
     <ClInclude Include="WallCollider.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -28,7 +28,11 @@ void WallCollider::Init(const VECTOR& _start, const VECTOR& _end, const float _h
 {
     m_onCollisionFlag = true;
     m_onCollisionTag = _tag;
-    m_pWall = new Wall(_start, _end, _height);
+    if (m_pWall == nullptr)
+    {
+        m_pWall = new Wall(_start, _end, _height);
+    }
+
 }
 
 bool WallCollider::HitCheck(BoxCollider* _other)
@@ -40,6 +44,9 @@ bool WallCollider::HitCheck(BoxCollider* _other)
     if (result)
     {
         CalcCollisionFixVec(ownWall, otherBox, m_pCollInfo->m_fixVec);
+
+        // “–‚½‚Á‚½l‚Ìƒ^ƒO‚ğ–á‚¤
+        m_onCollisionTag = ObjectTag::Wall;
     }
     return result;
 }

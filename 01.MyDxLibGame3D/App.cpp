@@ -43,6 +43,9 @@ App::App()
 	AssetManager::LoadModel(AssetManager::Wall, "data/staticObje/Wall.mv1");
 	AssetManager::LoadModel(AssetManager::Player, "data/player/Player.mv1");
 	AssetManager::LoadModel(AssetManager::Deamon, "data/enemy/Deamon/Deamon.mv1");
+	AssetManager::LoadModel(AssetManager::IconRed, "data/Icon/Red.mv1");
+	AssetManager::LoadModel(AssetManager::IconBlue, "data/Icon/Blue.mv1");
+	AssetManager::LoadModel(AssetManager::IconGreen, "data/Icon/Green.mv1");
 	AssetManager::LoadModel(AssetManager::AnimAttack, "data/player/animAttack.mv1");
 	AssetManager::LoadModel(AssetManager::AnimDamage, "data/player/animDamage.mv1");
 	AssetManager::LoadModel(AssetManager::AnimDeath, "data/player/animDeath.mv1");

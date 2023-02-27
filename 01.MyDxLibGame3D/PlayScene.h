@@ -10,6 +10,7 @@
 #include "BattleEventManager.h"
 #include "BoxCollider.h"
 #include "WallCollider.h"
+#include "WalkAroundEnemy.h"
 
 enum NormalState		// ノーマルイベントの状態管理.
 {
@@ -63,6 +64,7 @@ private:
 	Character* m_pCharacterAttackNow;		// 攻撃中のキャラクター
 	Player* m_pPlayer;
 	WallCollider* m_pWallCollider;			// 
+	WalkAroundEnemy* m_pEnemy;
 
 	BattleEventManager* m_pBattleManager;	// バトル管理クラスポインタ.
 

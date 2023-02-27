@@ -26,7 +26,9 @@ public:
 
     // 当たり判定を実行するかしないかのフラグを返す
     const bool& GetOnCollisionFlag() { return m_onCollisionFlag; }
+    const ObjectTag& GetOnCollisionTag() { return m_onCollisionTag; }
 
+    void CollisionInit() { m_onCollisionTag = ObjectTag::None; }
     // 当たり判定を検出(相手のコライダー)
     // 当たり判定結果を返す
     virtual bool HitCheck(class BoxCollider* _other) { return false; }
@@ -37,6 +39,6 @@ public:
 protected:
     CollisionInfo* m_pCollInfo;     // 当たり判定情報
     ObjectTag m_onCollisionTag;     // 当たったオブジェクトのタグ名
-
+    ObjectTag m_ownTag;
     bool m_onCollisionFlag;         // 当たり判定を行うかどうか
 };

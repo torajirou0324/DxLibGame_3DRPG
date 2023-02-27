@@ -86,6 +86,9 @@
     <Filter Include="ソース ファイル\Collider">
       <UniqueIdentifier>{bb888eed-6128-4c62-8701-cac3fbda0381}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Scene\Game\Nomal">
+      <UniqueIdentifier>{a3f1ed68-a2e3-454d-97b6-675798e127dc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="WallCollider.cpp">
       <Filter>ソース ファイル\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="WalkAroundEnemy.cpp">
+      <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -296,6 +302,12 @@
     </ClInclude>
     <ClInclude Include="WallCollider.h">
       <Filter>ソース ファイル\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalEventManager.h">
+      <Filter>ソース ファイル\Scene\Game\Nomal</Filter>
+    </ClInclude>
+    <ClInclude Include="WalkAroundEnemy.h">
+      <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

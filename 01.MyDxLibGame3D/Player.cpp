@@ -16,8 +16,8 @@ Player::Player()
 	, m_expMAX(0)
 	, m_rotate(VGet(0.0f,0.0f,0.0f))
 	, m_velocity(VGet(0.0f,0.0f,0.0f))
-	, m_dir(VGet(0, 0, 1))
-	, m_aimDir(VGet(0, 0, 0))
+	, m_dir(VGet(0.0f, 0.0f, 1.0f))
+	, m_aimDir(VGet(0.0f, 0.0f, 0.0f))
 	, m_rotateNow(false)
 	, m_pBoxCollider(nullptr)
 {
@@ -118,6 +118,7 @@ void Player::Update()
 	// モデルに回転をセットする
 	MV1SetRotationZYAxis(m_modelHandle, negativeVec, VGet(0.0f, 1.0f, 0.0f), 0.0f);
 
+	m_pBoxCollider->CollisionInit();
 	ColliderManager::OnCollisionEnter(m_pBoxCollider);
 	// ３Dモデルのポジション設定
 	MV1SetPosition(m_modelHandle, m_position);

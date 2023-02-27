@@ -29,8 +29,11 @@ void BoxCollider::Init(const VECTOR& _pos, const VECTOR& _scale, const ObjectTag
 {
     m_func = _func;
     m_onCollisionFlag = true;
-    m_onCollisionTag = _tag;
-    m_pBox = new Box(_pos, _scale);
+    m_ownTag = _tag;
+    if (m_pBox == nullptr)
+    {
+        m_pBox = new Box(_pos, _scale);
+    }
 }
 
 bool BoxCollider::HitCheck(BoxCollider* _other)
@@ -39,7 +42,7 @@ bool BoxCollider::HitCheck(BoxCollider* _other)
     const Box& ownBox = *m_pBox;
 
     // 衝突したか調べる
-    bool result = Intersect(otherBox, ownBox, *m_pCollInfo);
+    bool result = Intersect(ownBox, otherBox, *m_pCollInfo);
     if (result)
     {
         // 押し戻し量を計算
@@ -47,7 +50,7 @@ bool BoxCollider::HitCheck(BoxCollider* _other)
         // 押し戻しをかける
         m_func();
         // 当たった人のタグを貰う
-        m_onCollisionTag = _other->m_onCollisionTag;
+        m_onCollisionTag = _other->m_ownTag;
     }
     return result;
 }
@@ -65,6 +68,9 @@ bool BoxCollider::HitCheck(WallCollider* _other)
         CalcCollisionFixVec(ownBox, otherWall, m_pCollInfo->m_fixVec);
         // 押し戻しをかける
         m_func();
+
+        // 当たった人のタグを貰う
+        m_onCollisionTag = ObjectTag::Wall;
     }
     return result;
 }

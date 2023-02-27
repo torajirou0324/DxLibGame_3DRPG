@@ -47,13 +47,10 @@ PlayScene::PlayScene()
 	m_pCharacterAttackNow = nullptr;
 	m_pPlayer = new Player;
 	m_pPlayer->Init();
-
-	auto obj = new Deamon;
-	obj->Init("デーモン1", 1, VGet(0.0f, 4.5f, 20.0f));
-	obj->SetAttackObjectAddress(m_pPlayer);
-	m_pEnemyArray.push_back(obj);
 	m_pCharacter.push_back(m_pPlayer);
-	m_pCharacter.push_back(obj);
+
+	m_pEnemy = new WalkAroundEnemy;
+	m_pEnemy->Init(VGet(0.0f, 0.0f, 100.0f), 1, m_pPlayer->GetAllStatus().LV);
 
 	// バトルステートの初期化
 	m_pBattleManager = new BattleEventManager(this);
@@ -83,6 +80,11 @@ PlayScene::~PlayScene()
 	{
 		delete m_pWallCollider;
 		m_pWallCollider = nullptr;
+	}
+	if (m_pEnemy != nullptr)
+	{
+		delete m_pEnemy;
+		m_pEnemy = nullptr;
 	}
 
 	for (int i = 0; i < m_pEnemyArray.size(); i++)
@@ -188,6 +190,7 @@ void PlayScene::NormalEvent()
 {
 	// ムービー作り
 	m_pPlayer->Update();
+	m_pEnemy->Update();
 
 	if (Input::IsPress(ENTER))
 	{
@@ -235,6 +238,7 @@ void PlayScene::NormalEventDraw()
 	Field::DrawCall();
 	ColliderManager::ColliderVisuale();
 	m_pPlayer->Draw();
+	m_pEnemy->Draw();
 }
 
 //-----------------------------------------------------------------------------
