@@ -7,7 +7,7 @@
 class BattleStart : public BattleStateMachine
 {
 public:
-	BattleStart(class PlayScene* _playScene);						// コンストラクタ.
+	BattleStart(class BattleEventManager* _manager);						// コンストラクタ.
 	~BattleStart() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.
@@ -17,4 +17,6 @@ public:
 private:
 	int m_waitTimer;		// 画面ぼかし時間計り用.
 	int gaussianScreen;		// 画面ぼかし用画像格納用ハンドル.
+
+	class BattleEventManager* m_pBattleManager;
 };

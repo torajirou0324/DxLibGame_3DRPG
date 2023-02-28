@@ -2,14 +2,15 @@
 // @brief  バトルイベントの素早さ比較処理クラス.
 //-----------------------------------------------------------------------------
 #include "BattleComparison.h"
-#include "PlayScene.h"
+
+#include "BattleEventManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleComparison::BattleComparison(class PlayScene* _playScene)
+BattleComparison::BattleComparison(class BattleEventManager* _manager)
 {
-    m_pPlaySceneStorage = _playScene;
+    m_pBattleManager = _manager;
 }
 
 //-----------------------------------------------------------------------------
@@ -31,7 +32,7 @@ void BattleComparison::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleComparison::Update()
 {
-    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    auto& CharacterALL = m_pBattleManager->m_pCharacterArray;
     for (int i = 0; i < CharacterALL.size(); i++)
     {
         for (int j = 0; j < CharacterALL.size(); j++)

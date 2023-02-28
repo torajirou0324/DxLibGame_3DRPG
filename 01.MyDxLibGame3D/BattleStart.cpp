@@ -2,17 +2,18 @@
 // @brief  バトルイベントの戦闘開始処理クラス.
 //-----------------------------------------------------------------------------
 #include "BattleStart.h"
+
 #include "Input.h"
-#include "PlayScene.h"
+#include "BattleEventManager.h"
 
 const int m_waitMaxTime = 40;		// 画面待機時間.
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleStart::BattleStart(class PlayScene* _playScene)
+BattleStart::BattleStart(class BattleEventManager* _manager)
     : m_waitTimer(0)
 {
-    m_pPlaySceneStorage = _playScene;
+    m_pBattleManager = _manager;
     gaussianScreen = MakeScreen(1920, 1080);
 }
 
@@ -54,7 +55,7 @@ void BattleStart::Draw()
 {
     printfDx("バトル開始処理");
 
-    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    auto& CharacterALL = m_pBattleManager->m_pCharacterArray;
     for (int i = 1; i < CharacterALL.size(); i++)       // 敵が現れたことを画面で伝える
     {
         DrawFormatString(650, 740 + 60 * i, GetColor(255, 255, 255), "%sが現れた", CharacterALL[i]->GetName().c_str());

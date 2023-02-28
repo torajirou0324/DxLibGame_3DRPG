@@ -65,6 +65,7 @@ WalkAroundEnemy::~WalkAroundEnemy()
 	MV1DeleteModel(m_modelHandle);
     if (m_pBoxCollider != nullptr)
     {
+        ColliderManager::RemoveColliderInfo(m_pBoxCollider);
         delete m_pBoxCollider;
     }
 }
@@ -187,11 +188,13 @@ void WalkAroundEnemy::PushbackVolume()
     if (m_pBoxCollider->GetOnCollisionTag() == ObjectTag::Player)
     {
         m_isCollisionPlayer = true;
+        m_pBoxCollider->SetOnCollisionFlag(false);
     }
 
     // Õ“Ë”»’èŽž‚ÉŒÄ‚Ño‚·—p
     // “–‚½‚Á‚Ä‚¢‚é‚½‚ß‚ß‚èž‚Ý—Ê‰Ÿ‚µ–ß‚µ‚Äã‚°‚é
     m_position = VAdd(m_position, m_pBoxCollider->GetCollisionInfo().m_fixVec);
+    m_pBoxCollider->UpdatePosition(m_position);
 }
 
 void WalkAroundEnemy::Move()

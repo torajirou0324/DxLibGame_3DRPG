@@ -47,10 +47,12 @@ bool BoxCollider::HitCheck(BoxCollider* _other)
     {
         // 押し戻し量を計算
         CalcCollisionFixVec(ownBox, otherBox, m_pCollInfo->m_fixVec);
-        // 押し戻しをかける
-        m_func();
+
         // 当たった人のタグを貰う
         m_onCollisionTag = _other->m_ownTag;
+
+        // 押し戻しをかける
+        m_func();
     }
     return result;
 }
@@ -66,11 +68,12 @@ bool BoxCollider::HitCheck(WallCollider* _other)
     {
         // 押し戻し量を計算
         CalcCollisionFixVec(ownBox, otherWall, m_pCollInfo->m_fixVec);
-        // 押し戻しをかける
-        m_func();
 
         // 当たった人のタグを貰う
         m_onCollisionTag = ObjectTag::Wall;
+
+        // 押し戻しをかける
+        m_func();
     }
     return result;
 }

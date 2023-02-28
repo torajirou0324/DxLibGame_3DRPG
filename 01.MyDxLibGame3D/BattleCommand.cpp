@@ -2,21 +2,21 @@
 // @brief  バトルイベントのコマンド選択処理クラス.
 //-----------------------------------------------------------------------------
 #include "BattleCommand.h"
+
 #include "Input.h"
-#include "Enemy.h"
-#include "ArrowSymbol.h"
+#include "BattleEventManager.h"
 #include "SimpleCommand.h"
 #include "SkillCommand.h"
 #include "TargetCommand.h"
-#include "PlayScene.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleCommand::BattleCommand(class PlayScene* _playScene)
+BattleCommand::BattleCommand(class BattleEventManager* _manager)
 	: m_commandState(TAG_CommandState::TAG_isPlay)
+	, m_pBattleManager(_manager)
 {
-	auto player = _playScene->GetPlayerAddress();
+	auto player = m_pBattleManager->m_pPlayer;
 	std::function<void(SKILL)> skillfunc = std::bind(&Player::SetUseSkill, player, std::placeholders::_1);
 	std::function<void(Character*)> targetObjectfunc = std::bind(&Player::SetAttackObjectAddress, player, std::placeholders::_1);
 	// コマンド選択の遷移必要数生成
@@ -62,18 +62,11 @@ void BattleCommand::Init()
 	{
 		m_pCommandManager[i]->Init();
 	}
-}
 
-//-----------------------------------------------------------------------------
-// @brief  バトル開始時のみ初期化処理.
-//-----------------------------------------------------------------------------
-void BattleCommand::Init(class Player* _player, std::vector<class Enemy*> _enemyArray)
-{
-	auto skill = _player->GetSKILL();
+	auto skill = m_pBattleManager->m_pPlayer->GetSKILL();
 	m_pCommandManager[TAG_CommandState::TAG_isAttackSkill]->Init(skill);
 	m_pCommandManager[TAG_CommandState::TAG_isMagicSkill]->Init(skill);
-	m_pCommandManager[TAG_CommandState::TAG_isTargetAttack]->Init(_enemyArray);
-	
+	m_pCommandManager[TAG_CommandState::TAG_isTargetAttack]->Init(m_pBattleManager->m_pEnemyArray);
 }
 
 //-----------------------------------------------------------------------------

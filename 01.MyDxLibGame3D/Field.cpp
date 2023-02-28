@@ -83,6 +83,29 @@ void Field::Draw()
 				MV1DrawModel(m_fieldHandle);
 			}
 		}
+
+		for (int side = 0; side < 3; side++)
+		{
+			VECTOR position = VGet(0.0f, 0.0f, 400.0f - (100.0f * side));
+			MV1SetPosition(m_fieldHandle, position);
+			MV1DrawModel(m_fieldHandle);
+			position = VGet(-100.0f, 50.0f, 400.0f - (100.0f * side));
+			MV1SetPosition(m_wallHandle, position);
+			MV1DrawModel(m_wallHandle);
+			position = VGet(100.0f, 50.0f, 400.0f - (100.0f * side));
+			MV1SetPosition(m_wallHandle, position);
+			MV1DrawModel(m_wallHandle);
+		}
+
+		for (int vertical = 0; vertical < 3; vertical++)
+		{
+			for (int side = 0; side < 3; side++)
+			{
+				VECTOR position = VGet(100.0f * (side - 1), 0.0f, 700.0f - (100.0f * vertical));
+				MV1SetPosition(m_fieldHandle, position);
+				MV1DrawModel(m_fieldHandle);
+			}
+		}
 	}
 
 	for (int vertical = 0; vertical < 4; vertical++)
@@ -99,8 +122,20 @@ void Field::Draw()
 		position = VGet(100.0f * (vertical - 1), 50.0f, -200.0f);
 		MV1SetPosition(m_wallHandle, position);
 		MV1DrawModel(m_wallHandle);
-		// ‘O‚Ì•Ç
-		position = VGet(-100.0f * (vertical - 1), 50.0f, 200.0f);
+	}
+
+	// •Ç
+	for (int side = 0; side < 5; side++)
+	{
+		VECTOR position = VGet(-200.0f + (side * 100.0f), 50.0f, 800.0f);
+		MV1SetPosition(m_wallHandle, position);
+		MV1DrawModel(m_wallHandle);
+
+		position = VGet(-200.0f, 50.0f, 800.0f - (side * 100.0f));
+		MV1SetPosition(m_wallHandle, position);
+		MV1DrawModel(m_wallHandle);
+
+		position = VGet(200.0f, 50.0f, 800.0f - (side * 100.0f));
 		MV1SetPosition(m_wallHandle, position);
 		MV1DrawModel(m_wallHandle);
 	}

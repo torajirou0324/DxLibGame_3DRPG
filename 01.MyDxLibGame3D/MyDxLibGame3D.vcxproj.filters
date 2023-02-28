@@ -187,6 +187,9 @@
     <ClCompile Include="WalkAroundEnemy.cpp">
       <Filter>ソース ファイル\GameObject\Character\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="NormalEventManager.cpp">
+      <Filter>ソース ファイル\Scene\Game\Nomal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">

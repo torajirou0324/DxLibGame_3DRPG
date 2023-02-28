@@ -7,10 +7,12 @@
 class BattleComparison : public BattleStateMachine
 {
 public:
-	BattleComparison(class PlayScene* _playScene);						// コンストラクタ.
+	BattleComparison(class BattleEventManager* _manager);						// コンストラクタ.
 	~BattleComparison() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.
 	TAG_BattleState Update() override;	// 更新処理.
 	void Draw() override;				// 描画処理.
+
+	class BattleEventManager* m_pBattleManager;
 };

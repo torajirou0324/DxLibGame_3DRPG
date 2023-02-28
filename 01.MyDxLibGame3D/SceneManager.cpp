@@ -9,6 +9,7 @@
 #include "Player.h"
 #include "Field.h"
 #include "Input.h"
+#include "ColliderManager.h"
 #include "ArrowSymbol.h"
 #include "DebugDrawGrid.h"
 
@@ -31,6 +32,7 @@ SceneManager::~SceneManager()
 	ClearScene();
 	Field::DeleteInstance();
 	Input::DeleteInstance();
+	ColliderManager::DeleteInstance();
 }
 
 //-----------------------------------------------------------------------------

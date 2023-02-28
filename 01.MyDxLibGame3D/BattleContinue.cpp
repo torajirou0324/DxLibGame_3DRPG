@@ -2,14 +2,15 @@
 // @brief  ターン継続処理クラス.
 //-----------------------------------------------------------------------------
 #include "BattleContinue.h"
-#include "PlayScene.h"
+
+#include "BattleEventManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleContinue::BattleContinue(class PlayScene* _playScene)
+BattleContinue::BattleContinue(class BattleEventManager* _manager)
 {
-    m_pPlaySceneStorage = _playScene;
+    m_pBattleManager = _manager;
 }
 
 //-----------------------------------------------------------------------------
@@ -31,7 +32,7 @@ void BattleContinue::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleContinue::Update()
 {
-    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    auto& CharacterALL = m_pBattleManager->m_pCharacterArray;
     // 全員のアクションが終わるまで行動実行処理へ戻る
     for (int i = 0; i < CharacterALL.size(); i++)
     {

@@ -42,6 +42,7 @@ Player::~Player()
 {
 	if (m_pBoxCollider != nullptr)
 	{
+		ColliderManager::RemoveColliderInfo(m_pBoxCollider);
 		delete m_pBoxCollider;
 	}
 }
@@ -358,6 +359,7 @@ void Player::PushbackVolume()
 	// 衝突判定時に呼び出す用
 	// 当たっているためめり込み量押し戻して上げる
 	m_position = VAdd(m_position, m_pBoxCollider->GetCollisionInfo().m_fixVec);
+	m_pBoxCollider->UpdatePosition(m_position);
 }
 
 //-----------------------------------------------------------------------------

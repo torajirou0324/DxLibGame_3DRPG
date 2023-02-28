@@ -4,8 +4,10 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <functional>
 #include <DxLib.h>
-#include "Character.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "ArrowSymbol.h"
 
 enum TAG_BattleState	// バトルイベントの状態管理.
@@ -31,10 +33,6 @@ public:
 	}
 
 	virtual void Init() = 0;
-	virtual void Init(class Player* _player, std::vector<class Enemy*> _enemyArray){}
 	virtual TAG_BattleState Update() = 0;
 	virtual void Draw() = 0;
-
-protected:
-	class PlayScene* m_pPlaySceneStorage;		// 攻撃中のキャラクター
 };

@@ -7,7 +7,7 @@
 class BattleMoveMentStart : public BattleStateMachine
 {
 public:
-	BattleMoveMentStart(class PlayScene* _playScene);						// コンストラクタ.
+	BattleMoveMentStart(class BattleEventManager* _manager);						// コンストラクタ.
 	~BattleMoveMentStart() override;			// デストラクタ.
 
 	void Init() override;				// 初期化処理.
@@ -17,4 +17,6 @@ public:
 private:
 	bool m_enemyAllDeadFlag;			// 敵が死んでいるか判定用.
 	bool m_playerDeadFlag;				// 自機が死んでいるか判定用.
+
+	class BattleEventManager* m_pBattleManager;
 };

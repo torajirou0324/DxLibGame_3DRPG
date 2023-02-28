@@ -2,17 +2,17 @@
 // @brief  全キャラ行動処理実行クラス.
 //-----------------------------------------------------------------------------
 #include "BattleMoveMentStart.h"
-#include "Player.h"
-#include "PlayScene.h"
+
+#include "BattleEventManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleMoveMentStart::BattleMoveMentStart(class PlayScene* _playScene)
+BattleMoveMentStart::BattleMoveMentStart(class BattleEventManager* _manager)
     : m_enemyAllDeadFlag(false)
     , m_playerDeadFlag(false)
 {
-    m_pPlaySceneStorage = _playScene;
+    m_pBattleManager = _manager;
 }
 
 //-----------------------------------------------------------------------------
@@ -36,14 +36,15 @@ void BattleMoveMentStart::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleMoveMentStart::Update()
 {
-    auto CharacterALL = m_pPlaySceneStorage->GetCharacterArrayAddress();
+    auto& CharacterALL = m_pBattleManager->m_pCharacterArray;
     for (int i = 0; i < CharacterALL.size(); i++)
     {
         // 行動が終わっていないかつ、死んでいないとき行動する
         if (!CharacterALL[i]->GetActionFlag() && !CharacterALL[i]->GetDeathFlag())
         {
+
             CharacterALL[i]->Move();
-            m_pPlaySceneStorage->SetAttackObjectAddress(CharacterALL[i]);    // 現在行動しているキャラクターを代入する
+            m_pBattleManager->m_pAttackNowCharacter = CharacterALL[i];    // 現在行動しているキャラクターを代入する
             break;
         }
     }

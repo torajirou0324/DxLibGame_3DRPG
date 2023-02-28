@@ -51,10 +51,10 @@ bool Intersect(const Box& _b, const Wall& _w, CollisionInfo& _info)
     VECTOR wallMax = VGet(_w.m_end.x, _w.m_end.y + _w.m_height, _w.m_end.z);
 
     bool result = _b.m_max.x < wallMin.x ||
-        _b.m_max.y < wallMin.y ||
+        //_b.m_max.y < wallMin.y ||
         _b.m_max.z < wallMin.z ||
         wallMax.x < _b.m_min.x ||
-        wallMax.y < _b.m_min.y ||
+        //wallMax.y < _b.m_min.y ||
         wallMax.z < _b.m_min.z;
 
     // 1‚Â‚àtrue‚ð•Ô‚³‚È‚¯‚ê‚ÎA2‚Â‚ÍÕ“Ë‚µ‚Ä‚¢‚é

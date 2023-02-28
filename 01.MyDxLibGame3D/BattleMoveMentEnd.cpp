@@ -2,14 +2,15 @@
 // @brief  全キャラ行動完了待機処理クラス.
 //-----------------------------------------------------------------------------
 #include "BattleMoveMentEnd.h"
-#include "PlayScene.h"
+
+#include "BattleEventManager.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
-BattleMoveMentEnd::BattleMoveMentEnd(class PlayScene* _playScene)
+BattleMoveMentEnd::BattleMoveMentEnd(class BattleEventManager* _manager)
 {
-    m_pPlaySceneStorage = _playScene;
+    m_pBattleManager = _manager;
 }
 
 //-----------------------------------------------------------------------------
@@ -31,7 +32,7 @@ void BattleMoveMentEnd::Init()
 //-----------------------------------------------------------------------------
 TAG_BattleState BattleMoveMentEnd::Update()
 {
-    if (!m_pPlaySceneStorage->GetAttackNowCharacter()->GetAttackNowFlag())
+    if (!m_pBattleManager->m_pAttackNowCharacter->GetAttackNowFlag())
     {
         return TAG_BattleState::Continue;
     }
@@ -44,6 +45,6 @@ TAG_BattleState BattleMoveMentEnd::Update()
 void BattleMoveMentEnd::Draw()
 {
     printfDx("全キャラ行動完了待機処理\n");
-    printfDx("%s:%d", m_pPlaySceneStorage->GetAttackNowCharacter()->GetName().c_str(), m_pPlaySceneStorage->GetAttackNowCharacter()->GetAttackNowFlag());
-    DrawFormatString(650, 800, GetColor(255, 255, 255), "%sが%dのこうげき", m_pPlaySceneStorage->GetAttackNowCharacter()->GetName().c_str(), m_pPlaySceneStorage->GetAttackNowCharacter()->GetAllStatus().ATK);
+    printfDx("%s:%d", m_pBattleManager->m_pAttackNowCharacter->GetName().c_str(), m_pBattleManager->m_pAttackNowCharacter->GetAttackNowFlag());
+    DrawFormatString(650, 800, GetColor(255, 255, 255), "%sが%dのこうげき", m_pBattleManager->m_pAttackNowCharacter->GetName().c_str(), m_pBattleManager->m_pAttackNowCharacter->GetAllStatus().ATK);
 }

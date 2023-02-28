@@ -98,21 +98,6 @@ bool ColliderManager::OnCollisionEnter(ColliderBase* _coll)
     // 当たり判定を行うか判定
     if (_coll->GetOnCollisionFlag())
     {
-        for (int i = 0; i < collisionManager->m_boxColliderArray.size(); i++)
-        {
-            if (_coll == collisionManager->m_boxColliderArray[i] || !collisionManager->m_boxColliderArray[i]->GetOnCollisionFlag())
-            {
-                continue;
-            }
-
-            // 自分以外のコライダーと当たっていたら
-            if (_coll->HitCheck(collisionManager->m_boxColliderArray[i]))
-            {
-                // 当たったときの処理を行う
-                return true;
-            }
-        }
-
         for (int i = 0; i < collisionManager->m_WallColliderArray.size(); i++)
         {
             if (_coll == collisionManager->m_WallColliderArray[i] || !collisionManager->m_WallColliderArray[i]->GetOnCollisionFlag())
@@ -122,6 +107,27 @@ bool ColliderManager::OnCollisionEnter(ColliderBase* _coll)
 
             // 自分以外のコライダーと当たっていたら
             if (_coll->HitCheck(collisionManager->m_WallColliderArray[i]))
+            {
+                // 当たったときの処理を行う
+                CollisionFlag = true;
+            }
+        }
+
+        // 壁優先
+        if (CollisionFlag)
+        {
+            return CollisionFlag = true;
+        }
+
+        for (int i = 0; i < collisionManager->m_boxColliderArray.size(); i++)
+        {
+            if (_coll == collisionManager->m_boxColliderArray[i] || !collisionManager->m_boxColliderArray[i]->GetOnCollisionFlag())
+            {
+                continue;
+            }
+
+            // 自分以外のコライダーと当たっていたら
+            if (_coll->HitCheck(collisionManager->m_boxColliderArray[i]))
             {
                 // 当たったときの処理を行う
                 CollisionFlag = true;

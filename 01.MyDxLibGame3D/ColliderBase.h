@@ -26,6 +26,7 @@ public:
 
     // “–‚½‚è”»’è‚ğÀs‚·‚é‚©‚µ‚È‚¢‚©‚Ìƒtƒ‰ƒO‚ğ•Ô‚·
     const bool& GetOnCollisionFlag() { return m_onCollisionFlag; }
+    void SetOnCollisionFlag(bool _flag) { m_onCollisionFlag = _flag; }
     const ObjectTag& GetOnCollisionTag() { return m_onCollisionTag; }
 
     void CollisionInit() { m_onCollisionTag = ObjectTag::None; }
