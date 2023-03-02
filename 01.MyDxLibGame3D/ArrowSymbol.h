@@ -9,3 +9,8 @@ void DrawArrowVertical(int posX, int posY);
 void DrawArrowSide(int posX, int posY);
 // 矢印の微動処理
 void ArrowUpdate();
+
+// フェードアウトイン
+void FadeInInit();
+void FadeOutInit();
+void FadeDraw();

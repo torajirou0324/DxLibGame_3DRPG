@@ -26,12 +26,13 @@ App::App()
 	AssetManager::LoadImage(AssetManager::Title, "data/Title/Title.png");
 	AssetManager::LoadImage(AssetManager::RightArrow, "data/comand/RightArrow.png");
 	AssetManager::LoadImage(AssetManager::DownArrow, "data/comand/DownArrow.png");
+	AssetManager::LoadImage(AssetManager::Button_Arrow, "data/Icon/button_Arrow.png");
 	AssetManager::LoadImage(AssetManager::BlackWindow, "data/comand/BlackWindow.png");
 	AssetManager::LoadImage(AssetManager::CommandWindowWhite, "data/comand/commandWindowWhite.png");
 	AssetManager::LoadImage(AssetManager::CommandWindowBlack, "data/comand/commandWindowBlack.png");
 	AssetManager::LoadImage(AssetManager::StatusWindow, "data/comand/StatusWindow.png");
 	AssetManager::LoadImage(AssetManager::MapTile, "data/staticObje/MapTile.png");
-	AssetManager::LoadImage(AssetManager::PlayerTexture1, "data/player/playertex.png");
+	AssetManager::LoadImage(AssetManager::PlayerTexture1, "data/player/Albedo.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture2, "data/player/playertex1.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture3, "data/player/playertex2.png");
 	AssetManager::LoadImage(AssetManager::PlayerTexture4, "data/player/playertex3.png");
@@ -41,7 +42,7 @@ App::App()
 
 	AssetManager::LoadModel(AssetManager::Field, "data/staticObje/Field.mv1");
 	AssetManager::LoadModel(AssetManager::Wall, "data/staticObje/Wall.mv1");
-	AssetManager::LoadModel(AssetManager::Player, "data/player/Player.mv1");
+	AssetManager::LoadModel(AssetManager::Player, "data/player/Hero.mv1");
 	AssetManager::LoadModel(AssetManager::Deamon, "data/enemy/Deamon/Deamon.mv1");
 	AssetManager::LoadModel(AssetManager::IconRed, "data/Icon/Red.mv1");
 	AssetManager::LoadModel(AssetManager::IconBlue, "data/Icon/Blue.mv1");

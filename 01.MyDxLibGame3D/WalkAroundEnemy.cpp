@@ -5,6 +5,7 @@
 
 #include "ColliderManager.h"
 
+
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
 //-----------------------------------------------------------------------------
@@ -199,7 +200,7 @@ void WalkAroundEnemy::PushbackVolume()
 
 void WalkAroundEnemy::Move()
 {
-    // 時間経過で移動をさせる
+    // 時間経過で移動をさせる方向を決める
     m_timer++;
     if (m_timer > 360)
     {
@@ -207,22 +208,23 @@ void WalkAroundEnemy::Move()
     }
     if (m_timer % 60 == 0)
     {
+        // 60フレーム毎に乱数を取る
         auto flag = GetRand(3);
         if (flag == 0)
         {
-            m_velocity = VGet(0.0f, 0.0f, 1.0f);
+            m_velocity = VGet(0.0f, 0.0f, 1.0f);    // 前方向
         }
         if(flag == 1)
         {
-            m_velocity = VGet(1.0f, 0.0f, 0.0f);
+            m_velocity = VGet(1.0f, 0.0f, 0.0f);    // 後方向
         }
         if (flag == 2)
         {
-            m_velocity = VGet(0.0f, 0.0f, -1.0f);
+            m_velocity = VGet(0.0f, 0.0f, -1.0f);   // 左方向
         }
         if (flag == 3)
         {
-            m_velocity = VGet(-1.0f, 0.0f, 0.0f);
+            m_velocity = VGet(-1.0f, 0.0f, 0.0f);   // 右方向
         }
     }
 

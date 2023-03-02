@@ -110,6 +110,9 @@ void PlayScene::Draw()
 	{
 		m_pNomalManager->Draw();
 	}
+
+	// フェード描画
+	FadeDraw();
 }
 
 void PlayScene::ChangeSetBattleFlag(const bool& _flag)

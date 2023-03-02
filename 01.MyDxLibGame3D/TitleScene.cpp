@@ -24,15 +24,7 @@ TitleScene::TitleScene()
 	m_nameSettingFlag = false;
 	m_playerHandle = AssetManager::UseModel(AssetManager::Player);
 	int GraphHandle = AssetManager::UseImage(AssetManager::PlayerTexture1);
-	int GraphHandle1 = AssetManager::UseImage(AssetManager::PlayerTexture2);
-	int GraphHandle2 = AssetManager::UseImage(AssetManager::PlayerTexture3);
-	int GraphHandle3 = AssetManager::UseImage(AssetManager::PlayerTexture4);
 	MV1SetTextureGraphHandle(m_playerHandle, 0, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_playerHandle, 1, GraphHandle2, TRUE);
-	MV1SetTextureGraphHandle(m_playerHandle, 2, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_playerHandle, 3, GraphHandle2, TRUE);
-	MV1SetTextureGraphHandle(m_playerHandle, 4, GraphHandle, TRUE);
-	MV1SetTextureGraphHandle(m_playerHandle, 5, GraphHandle1, TRUE);
 	// プレイヤーモデルの大きさと座標をセット
 	MV1SetScale(m_playerHandle, VGet(0.3f, 0.3f, 0.3f));
 	MV1SetPosition(m_playerHandle, VGet(0.0f, 0.0f, 0.0f));

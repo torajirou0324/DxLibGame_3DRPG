@@ -8,6 +8,8 @@
 #include "Field.h"
 #include "ColliderManager.h"
 #include "Player.h"
+#include "Collision.h"
+#include "ArrowSymbol.h"
 
 //-----------------------------------------------------------------------------
 // @brief  コンストラクタ.
@@ -155,6 +157,20 @@ void NormalEventManager::Update()
 			enemy = nullptr;
 		}
 	}
+
+	if (Input::IsPress(ENTER))
+	{
+		if (m_fadeFlag)
+		{
+			FadeOutInit();
+			m_fadeFlag = false;
+		}
+		else
+		{
+			FadeInInit();
+			m_fadeFlag = true;
+		}
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -169,4 +185,48 @@ void NormalEventManager::Draw()
 	{
 		m_pEnemyArray[i]->Draw();
 	}
+
+	// 矢印アイコンのアルファ値判定
+	if (Input::IsPressed(UP))
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		DrawRotaGraph(250, 850, 1.0f, 0.0f, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	else
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawRotaGraph(250, 850, 1.0f, 0.0f, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	if (Input::IsPressed(DOWN))
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		DrawRotaGraph(250, 1000, 1.0f, CollMath::m_pi, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	else
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawRotaGraph(250, 1000, 1.0f, CollMath::m_pi, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	if (Input::IsPressed(RIGHT))
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		DrawRotaGraph(400, 1000, 1.0f, CollMath::m_pi / 2, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	else
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawRotaGraph(400, 1000, 1.0f, CollMath::m_pi / 2, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	if (Input::IsPressed(LEFT))
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		DrawRotaGraph(100, 1000, 1.0f, CollMath::m_pi / -2, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	else
+	{
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+		DrawRotaGraph(100, 1000, 1.0f, CollMath::m_pi / -2, AssetManager::UseImage(AssetManager::Button_Arrow), TRUE);
+	}
+	// アルファ値の初期化
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
 }

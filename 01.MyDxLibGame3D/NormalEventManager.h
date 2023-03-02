@@ -18,6 +18,8 @@ public:
     void Draw();
 
 private:
+    bool m_fadeFlag = false;
+
     std::function<void(bool, class WalkAroundEnemy*)> m_func;
     class Player* m_pPlayer;
 

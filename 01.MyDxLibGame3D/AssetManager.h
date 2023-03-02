@@ -18,6 +18,7 @@ public:
         Title,
         RightArrow,
         DownArrow,
+        Button_Arrow,
         BlackWindow,
         CommandWindowWhite,
         CommandWindowBlack,
